@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp"
+    tools:context=".view.offer.NewOfferActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back" />
+
+    <TextView
+        android:id="@+id/tvNewOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New offer"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNewOffer">
+
+        <TextView
+            android:id="@+id/tvOfferType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Offer"
+            android:fontFamily="@font/poppins"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spOfferTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/offer_types"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:background="@drawable/custom_spinner"
+            app:layout_constraintTop_toBottomOf="@id/tvOfferType"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOfferTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Title"
+            android:fontFamily="@font/poppins"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spOfferTypes" />
+
+        <EditText
+            android:id="@+id/etOfferTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:hint="Give your offer a title"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:background="@drawable/custom_input"
+            app:layout_constraintTop_toBottomOf="@id/tvOfferTitle"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOfferImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Image"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etOfferTitle" />
+
+        <EditText
+            android:id="@+id/btnUploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_input"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:textColor="#000"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvOfferImage"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/tvPetType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Pet"
+            android:fontFamily="@font/poppins"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnUploadImage" />
+
+        <Spinner
+            android:id="@+id/spPetTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/pet_types"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:background="@drawable/custom_spinner"
+            app:layout_constraintTop_toBottomOf="@id/tvPetType"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tvStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="From"
+            android:fontFamily="@font/poppins"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spPetTypes" />
+
+        <EditText
+            android:id="@+id/etStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="DD/MM/YYYY"
+            android:fontFamily="@font/poppins"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:drawableEnd="@drawable/ic_calendar"
+            android:padding="10dp"
+            android:background="@drawable/custom_input"
+            app:layout_constraintTop_toBottomOf="@id/tvStartDate"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tvEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="To"
+            android:fontFamily="@font/poppins"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etStartDate" />
+
+        <EditText
+            android:id="@+id/etEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="DD/MM/YYYY"
+            android:fontFamily="@font/poppins"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:drawableEnd="@drawable/ic_calendar"
+            android:padding="10dp"
+            android:background="@drawable/custom_input"
+            app:layout_constraintTop_toBottomOf="@id/tvEndDate"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOfferAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Address"
+            android:fontFamily="@font/poppins"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etEndDate" />
+
+        <EditText
+            android:id="@+id/etOfferAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your address"
+            android:fontFamily="@font/poppins"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:background="@drawable/custom_input"
+            app:layout_constraintTop_toBottomOf="@id/tvOfferAddress"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOfferDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Description"
+            android:fontFamily="@font/poppins"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etOfferAddress" />
+
+        <EditText
+            android:id="@+id/etOfferDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter more details"
+            android:fontFamily="@font/poppins"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:background="@drawable/custom_input"
+            app:layout_constraintTop_toBottomOf="@id/tvOfferDesc"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#EFEFEF"
+            app:cornerRadius="10dp"
+            android:text="Cancel"
+            android:fontFamily="@font/poppins"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btnSubmit"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="175dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary_color"
+            app:cornerRadius="10dp"
+            android:textAllCaps="false"
+            android:textColor="#FFF"
+            android:text="Submit"
+            android:fontFamily="@font/poppins"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="173dp"
+            tools:layout_editor_absoluteX="207dp"
+            tools:layout_editor_absoluteY="669dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

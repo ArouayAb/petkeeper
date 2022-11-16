@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Pet Keeper</string>
+    <string-array name="offer_types">
+        <item>Keeper</item>
+        <item>Owner</item>
+    </string-array>
+    <string-array name="pet_types">
+        <item>Cat</item>
+        <item>Dog</item>
+        <item>Bird</item>
+        <item>Fish</item>
+        <item>Rabbit</item>
+        <item>Rodent</item>
+        <item>Reptile</item>
+    </string-array>
 </resources>
