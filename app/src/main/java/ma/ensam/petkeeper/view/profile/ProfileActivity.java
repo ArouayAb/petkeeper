@@ -2,6 +2,9 @@ package ma.ensam.petkeeper.view.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import java.util.Objects;
+
 import ma.ensam.petkeeper.R;
 
 public class ProfileActivity extends AppCompatActivity {
