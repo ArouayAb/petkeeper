@@ -4,6 +4,448 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.profile.ProfileActivity">
+    tools:context=".view.profile.ProfileActivity" >
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="#FFB82E"
+        android:clickable="true"
+        android:contentDescription="@string/add_button_str"
+        app:backgroundTint="#0000"
+        app:layout_constraintBottom_toBottomOf="@+id/header_separator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        app:tint="@color/white" />
+
+    <RelativeLayout
+        android:id="@+id/header_separator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/back_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5sp"
+                android:paddingEnd="5sp"
+                android:text="Profile"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_baseline_arrow_back_ios_new_24" />
+        </FrameLayout>
+
+        <ScrollView
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_below="@+id/header">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/profile_picture"
+                        android:layout_width="112dp"
+                        android:layout_height="112dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="3dp"
+                        app:layout_constraintBottom_toTopOf="@+id/profile_name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/roundedCorners"
+                        app:srcCompat="@drawable/avatar_placeholder" />
+
+                    <ImageView
+                        android:id="@+id/rating"
+                        android:layout_width="96dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="6dp"
+                        android:contentDescription="desc_placeholder"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.501"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_phone_number" />
+
+                    <TextView
+                        android:id="@+id/profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="Jhon Doe"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/profile_phone_number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
+
+                    <TextView
+                        android:id="@+id/profile_phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="+212 6 61 22 43 32"
+                        app:layout_constraintBottom_toTopOf="@+id/rating"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.501"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/upload_image"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginStart="92dp"
+                        android:layout_marginTop="92dp"
+                        android:background="#DCDCDC"
+                        android:onClick="onClickUploadImage"
+                        app:layout_constraintStart_toStartOf="@+id/profile_picture"
+                        app:layout_constraintTop_toTopOf="@+id/profile_picture"
+                        app:shapeAppearanceOverlay="@style/circleView"
+                        app:srcCompat="@android:drawable/ic_menu_upload"
+                        app:strokeColor="@null" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="193dp">
+
+                    <TextView
+                        android:id="@+id/favorite_pet_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Favorite pet"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/country_value"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/city_label" />
+
+                    <TextView
+                        android:id="@+id/email_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="Email"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/country_value"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/favorite_pet_label" />
+
+                    <TextView
+                        android:id="@+id/email_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="220dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="email.dd@gmail.com"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/favorite_pet_value" />
+
+                    <TextView
+                        android:id="@+id/favorite_pet_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="220dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Cat"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/city_value" />
+
+                    <TextView
+                        android:id="@+id/general_info_tab"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:height="38dp"
+                        android:background="#EFEFEF"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center|start"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        android:text="General info"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/country_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Country"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/country_value"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/general_info_tab" />
+
+                    <TextView
+                        android:id="@+id/city_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:text="City"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/country_value"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/country_label" />
+
+                    <TextView
+                        android:id="@+id/city_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="220dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Marrakech"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/country_value" />
+
+                    <TextView
+                        android:id="@+id/country_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="220dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Morocco"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/general_info_tab" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="219dp">
+
+                    <TextView
+                        android:id="@+id/posts_tab"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:height="38dp"
+                        android:background="#EFEFEF"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center|start"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        android:text="Posts"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fillViewport="true"
+                        app:layout_constraintTop_toBottomOf="@+id/posts_tab"
+                        tools:layout_editor_absoluteX="0dp">
+
+                        <LinearLayout
+                            android:id="@+id/card_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <!--                        Duplicate-->
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/reviews_tab"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:height="38dp"
+                            android:background="#EFEFEF"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center|start"
+                            android:paddingStart="30dp"
+                            android:paddingEnd="30dp"
+                            android:text="Reviews"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/star_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/reviews_tab"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:id="@+id/star_1"
+                                android:tag="star1"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="29dp"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="@string/star_number"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/star_empty"
+                                android:clickable="true"
+                                android:onClick="onClickUpdateStars"/>
+
+                            <ImageButton
+                                android:id="@+id/star_2"
+                                android:tag="star2"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="29dp"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="@string/star_number"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/star_empty"
+                                android:clickable="true"
+                                android:onClick="onClickUpdateStars"/>
+
+                            <ImageButton
+                                android:id="@+id/star_3"
+                                android:tag="star3"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="29dp"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="@string/star_number"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/star_empty"
+                                android:clickable="true"
+                                android:onClick="onClickUpdateStars"/>
+
+                            <ImageButton
+                                android:id="@+id/star_4"
+                                android:tag="star4"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="29dp"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="@string/star_number"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/star_empty"
+                                android:clickable="true"
+                                android:onClick="onClickUpdateStars"/>
+
+                            <ImageButton
+                                android:id="@+id/star_5"
+                                android:tag="star5"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="29dp"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="@string/star_number"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/star_empty"
+                                android:clickable="true"
+                                android:onClick="onClickUpdateStars"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/write_review"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="29dp"
+                            android:layout_marginTop="112dp"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:minHeight="48dp"
+                            android:onClick="onClickWriteReviewPopup"
+                            android:text="Write a review"
+                            android:textAllCaps="false"
+                            android:textColor="#FFB82E"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/review_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@+id/write_review"
+                            android:layout_marginTop="15dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent">
+
+                            <!--                        Duplicate-->
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
