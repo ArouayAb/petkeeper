@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Pet Keeper</string>
+
     <string name="arrow_left">arrow left</string>
     <string name="offer">Offer</string>
     <string name="scroll_view">scroll view</string>
@@ -10,4 +11,30 @@
     <string name="_4">4</string>
     <string name="_5">5</string>
     <string name="reviews">Reviews</string>
+    <string-array name="offer_types">
+        <item>Keeper</item>
+        <item>Owner</item>
+    </string-array>
+    <string-array name="pet_types">
+        <item>Cat</item>
+        <item>Dog</item>
+        <item>Bird</item>
+        <item>Fish</item>
+        <item>Rabbit</item>
+        <item>Rodent</item>
+        <item>Reptile</item>
+    </string-array>
+    <string name="add_button_str">Add Post</string>
+    <string name="star_number">star 1</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="logo">logo</string>
+    <string name="bg_image">bg_image</string>
+    <string name="password">Password</string>
+    <string name="signup">Signup</string>
+    <string name="lastname">Lastname</string>
+    <string name="firstname">Firstname</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="you_don_t_have_an_account">You don\'t have an account?</string>
+    <string name="you_already_have_an_account">You already have an account?</string>
 </resources>
