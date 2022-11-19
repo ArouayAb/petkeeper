@@ -2,4 +2,15 @@
     <string name="app_name">Pet Keeper</string>
     <string name="add_button_str">Add Post</string>
     <string name="star_number">star 1</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="logo">logo</string>
+    <string name="bg_image">bg_image</string>
+    <string name="password">Password</string>
+    <string name="signup">Signup</string>
+    <string name="lastname">Lastname</string>
+    <string name="firstname">Firstname</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="you_don_t_have_an_account">You don\'t have an account?</string>
+    <string name="you_already_have_an_account">You already have an account?</string>
 </resources>
