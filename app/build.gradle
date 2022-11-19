@@ -16,6 +16,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    sourceSets {
+        main.res.srcDirs = [
+                'src/main/res',
+                file('src/main/layouts').listFiles()
+        ]
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,6 +40,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0"
     implementation "android.arch.lifecycle:viewmodel:1.1.0"
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
     // default dependencies :
     implementation 'androidx.appcompat:appcompat:1.5.1'

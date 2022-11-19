@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_picture_review"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="10dp"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circleView"
+            app:srcCompat="@drawable/avatar_placeholder"
+            app:strokeColor="#FFB82E"
+            app:strokeWidth="1dp" />
+
+        <TextView
+            android:id="@+id/profile_name_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@id/profile_picture_review"
+            android:text="John Doe"
+            android:textColor="@color/black"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/profile_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I will give him 3 stars"
+            android:textSize="8sp"
+            android:layout_toEndOf="@id/profile_picture_review"
+            android:layout_below="@id/profile_name_review"/>
+
+        <ImageView
+            android:layout_width="55dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="14dp"
+            android:layout_toEndOf="@id/profile_picture_review"
+            android:contentDescription="desc_placeholder"
+            android:src="@drawable/img_1" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
