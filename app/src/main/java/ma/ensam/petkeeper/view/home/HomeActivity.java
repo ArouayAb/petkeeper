@@ -1,7 +1,6 @@
 package ma.ensam.petkeeper.view.home;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,10 +8,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +17,8 @@ import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.model.entity.PetCategory;
 import ma.ensam.petkeeper.model.entity.PostHome;
 import ma.ensam.petkeeper.view.auth.LoginActivity;
+import ma.ensam.petkeeper.view.home.adapter.HomeAdapterCategory;
+import ma.ensam.petkeeper.view.home.adapter.HomeAdapterPost;
 
 public class HomeActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package ma.ensam.petkeeper.view.home;
+package ma.ensam.petkeeper.view.home.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

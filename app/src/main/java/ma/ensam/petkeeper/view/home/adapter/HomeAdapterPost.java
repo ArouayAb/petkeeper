@@ -1,4 +1,4 @@
-package ma.ensam.petkeeper.view.home;
+package ma.ensam.petkeeper.view.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;

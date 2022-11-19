@@ -20,7 +20,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.auth.LoginActivity"
+            android:name=".view.home.HomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -34,7 +34,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.home.HomeActivity"
+            android:name=".view.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
