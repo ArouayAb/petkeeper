@@ -28,6 +28,14 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".view.offer.OfferKeeperActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        
+        <activity
             android:name=".view.home.HomeActivity"
             android:exported="false">
             <meta-data
