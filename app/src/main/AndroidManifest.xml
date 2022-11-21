@@ -14,21 +14,25 @@
         android:theme="@style/Theme.PetKeeper"
         tools:targetApi="31">
         <activity
-            android:name=".view.offer.OfferOwnerActivity"
+            android:name=".views.offer.OfferOwnerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".views.offer.NewOfferActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.offer.NewOfferActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".view.offer.OfferKeeperActivity"
+            android:name=".views.offer.OfferKeeperActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -36,14 +40,14 @@
         </activity>
         
         <activity
-            android:name=".view.home.HomeActivity"
+            android:name=".views.home.HomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.profile.ProfileActivity"
+            android:name=".views.profile.ProfileActivity"
             android:exported="false">
 
             <meta-data
@@ -51,19 +55,16 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.auth.SignupActivity"
+            android:name=".views.auth.SignupActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.auth.LoginActivity"
+            android:name=".views.auth.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

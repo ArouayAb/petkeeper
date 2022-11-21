@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class BitmapUtility {
     public static Bitmap extractFromUri(Context context, Uri uri) {
