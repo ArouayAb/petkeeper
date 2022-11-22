@@ -1,6 +1,7 @@
 package ma.ensam.petkeeper.entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -32,8 +33,8 @@ public class Offer {
 
     private long profileCreatorId;
 
-    public Offer() {
-    }
+    @Ignore
+    private Profile creator;
 
     public Offer(OfferType type, PetSpecies pet, String title, String description, String image_url,
                  Date fromDate, Date toDate, Date creationDate, long profileCreatorId) {

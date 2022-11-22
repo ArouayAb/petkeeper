@@ -6,16 +6,16 @@ import androidx.lifecycle.MutableLiveData;
 
 import ma.ensam.petkeeper.entities.User;
 
-public class UserRepo {
+public class UserRepository {
 
-    private static UserRepo instance;
-    private UserRepo(){
+    private static UserRepository instance;
+    private UserRepository(){
 
     }
 
-    public static UserRepo getInstance(Activity mContext){
+    public static UserRepository getInstance(Activity mContext){
         if (instance == null){
-            instance = new UserRepo();
+            instance = new UserRepository();
         }
         return instance;
     }

@@ -1,12 +1,17 @@
 package ma.ensam.petkeeper.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 import ma.ensam.petkeeper.entities.Profile;
+import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
+import ma.ensam.petkeeper.entities.relations.UserAndProfile;
 
 @Dao
 public interface ProfileDao {
@@ -24,5 +29,14 @@ public interface ProfileDao {
     void delete(Profile profile);
 
     @Query("SELECT * FROM profiles WHERE id = :id")
-    Profile findById(long id);
+    LiveData<Profile> findById(long id);
+
+    @Query("SELECT * FROM profiles WHERE id = :id")
+    LiveData<UserAndProfile> findProfileAndUserByProfileId(long id);
+
+    @Query("SELECT * FROM profiles WHERE id = :id")
+    LiveData<ProfileWithOffers> findProfileAndOffersById(long id);
+
+    @Query("SELECT * FROM profiles")
+    LiveData<List<Profile>> findAll();
 }

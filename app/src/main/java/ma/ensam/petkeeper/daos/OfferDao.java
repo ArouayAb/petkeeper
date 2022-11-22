@@ -1,12 +1,17 @@
 package ma.ensam.petkeeper.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
+import java.util.List;
+
 import ma.ensam.petkeeper.entities.Offer;
+import ma.ensam.petkeeper.entities.relations.OfferWithCreator;
 
 @Dao
 public interface OfferDao {
@@ -24,5 +29,12 @@ public interface OfferDao {
     void delete(Offer offer);
 
     @Query("SELECT * FROM offers WHERE id = :id")
-    Offer findById(long id);
+    LiveData<Offer> findById(long id);
+
+//    @Transaction
+//    @Query("SELECT * FROM offers WHERE id = :id")
+//    LiveData<OfferWithCreator> findOfferAndCreatorByOfferId(long id);
+
+    @Query("SELECT * FROM offers")
+    LiveData<List<Offer>> findAll();
 }
