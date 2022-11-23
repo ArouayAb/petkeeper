@@ -1,11 +1,15 @@
 package ma.ensam.petkeeper.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
+import ma.ensam.petkeeper.entities.Profile;
 import ma.ensam.petkeeper.entities.User;
 
 @Dao
@@ -24,5 +28,8 @@ public interface UserDao {
     void delete(User user);
 
     @Query("SELECT * FROM users WHERE id = :id")
-    User findById(long id);
+    LiveData<User> findById(long id);
+
+    @Query("SELECT * FROM users")
+    LiveData<List<User>> findAll();
 }

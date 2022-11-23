@@ -1,4 +1,4 @@
-package ma.ensam.petkeeper.views.auth;
+package ma.ensam.petkeeper.viewmodels;
 
 import android.app.Activity;
 
