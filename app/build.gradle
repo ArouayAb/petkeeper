@@ -38,6 +38,7 @@ android {
 dependencies {
     // added dependencies :
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    implementation 'androidx.room:room-common:2.4.3'
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0"
     implementation "android.arch.lifecycle:viewmodel:1.1.0"
     implementation 'pub.devrel:easypermissions:3.0.0'
@@ -46,7 +47,6 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.14.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.0'
-
 
     // default dependencies :
     implementation 'androidx.appcompat:appcompat:1.5.1'
