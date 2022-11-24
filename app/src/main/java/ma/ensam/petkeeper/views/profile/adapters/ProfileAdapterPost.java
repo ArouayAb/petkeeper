@@ -33,8 +33,9 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
         this.mItemClickListener = mItemClickListener;
     }
 
-    public void setProfilePosts(List<PostProfile> profilePosts) {
+    public void updateProfilePosts(List<PostProfile> profilePosts) {
         this.profilePosts = profilePosts;
+        this.notifyDataSetChanged();
     }
 
     @NonNull
@@ -63,7 +64,7 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
         holder.petSpecies.setText(profilePosts.get(position).getPetSpecies());
         holder.petSpecies.setText(profilePosts.get(position).getPetSpecies());
 
-        holder.cardInner.setOnClickListener(view -> {
+        holder.rootView.setOnClickListener(view -> {
             mItemClickListener.onItemClick(profilePosts.get(position));
         });
     }
@@ -78,7 +79,7 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final ConstraintLayout cardInner;
+        private final FrameLayout rootView;
         private final TextView cardProfileName;
         private final TextView cardCreationDate;
         private final TextView cardTitle;
@@ -89,7 +90,9 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardInner = (ConstraintLayout) ((FrameLayout) itemView).getChildAt(0);
+            rootView = (FrameLayout) itemView;
+
+            View cardInner = (ConstraintLayout) ((FrameLayout) itemView).getChildAt(0);
             cardProfileImage = cardInner.findViewById(R.id.card_profile_picture);
             cardProfileName = cardInner.findViewById(R.id.card_profile_name);
             cardCreationDate = cardInner.findViewById(R.id.card_profile_date);

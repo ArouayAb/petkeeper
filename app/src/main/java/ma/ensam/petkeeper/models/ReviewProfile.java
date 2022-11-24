@@ -1,18 +1,28 @@
 package ma.ensam.petkeeper.models;
 
-import java.util.Date;
+import ma.ensam.petkeeper.models.compositeKeys.ReviewKey;
 
 public class ReviewProfile {
+    private ReviewKey id;
     private String profileUrl;
     private String userName;
     private String reviewText;
     private int reviewStars;
 
-    public ReviewProfile(String profileUrl, String userName, String reviewText, int reviewStars) {
+    public ReviewProfile(ReviewKey id, String profileUrl, String userName, String reviewText, int reviewStars) {
+        this.id = id;
         this.profileUrl = profileUrl;
         this.userName = userName;
         this.reviewText = reviewText;
         this.reviewStars = reviewStars;
+    }
+
+    public ReviewKey getId() {
+        return id;
+    }
+
+    public void setId(ReviewKey id) {
+        this.id = id;
     }
 
     public String getProfileUrl() {

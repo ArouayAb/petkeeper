@@ -3,6 +3,7 @@ package ma.ensam.petkeeper.models;
 import java.util.Date;
 
 public class PostProfile {
+    private long id;
     private String profileUrl;
     private String userName;
     private Date creationDate;
@@ -11,7 +12,8 @@ public class PostProfile {
     private Date from;
     private Date to;
 
-    public PostProfile(String profileUrl, String userName, Date creationDate, String titre, String petSpecies, Date from, Date to) {
+    public PostProfile(long id, String profileUrl, String userName, Date creationDate, String titre, String petSpecies, Date from, Date to) {
+        this.id = id;
         this.profileUrl = profileUrl;
         this.userName = userName;
         this.creationDate = creationDate;
@@ -19,6 +21,14 @@ public class PostProfile {
         this.petSpecies = petSpecies;
         this.from = from;
         this.to = to;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getProfileUrl() {

@@ -3,83 +3,59 @@ package ma.ensam.petkeeper.views.profile;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.PathUtils;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.sql.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ma.ensam.petkeeper.R;
-import ma.ensam.petkeeper.config.app.AppConfig;
-import ma.ensam.petkeeper.entities.Offer;
-import ma.ensam.petkeeper.entities.Profile;
-import ma.ensam.petkeeper.models.PostHome;
+import ma.ensam.petkeeper.models.compositeKeys.ReviewKey;
 import ma.ensam.petkeeper.models.PostProfile;
 import ma.ensam.petkeeper.models.ReviewProfile;
 import ma.ensam.petkeeper.utils.BitmapUtility;
 import ma.ensam.petkeeper.utils.PathUtil;
-import ma.ensam.petkeeper.viewmodels.HomeViewModel;
 import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
 import ma.ensam.petkeeper.viewmodels.ReviewViewModel;
-import ma.ensam.petkeeper.views.auth.LoginActivity;
-import ma.ensam.petkeeper.views.home.HomeActivity;
-import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
 import ma.ensam.petkeeper.views.profile.adapters.ProfileAdapterPost;
 import ma.ensam.petkeeper.views.profile.adapters.ProfileAdapterReview;
-import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class ProfileActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
-    private RecyclerView.Adapter<ProfileAdapterPost.ViewHolder> cardsAdapter;
-    private RecyclerView.Adapter<ProfileAdapterReview.ViewHolder> reviewsAdapter;
+    private ProfileAdapterPost cardsAdapter;
+    private ProfileAdapterReview reviewsAdapter;
     private ProfileViewModel profileViewModel;
     private ReviewViewModel reviewViewModel;
     private ConstraintLayout upperInfo;
@@ -91,6 +67,8 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
 
     private final long temp_current_profile_id = 1L;
     private final long temp_self_profile_id = 2L;
+
+    private final boolean isVisitingSelfProfile = temp_self_profile_id == temp_current_profile_id;
 
     private final String[] galleryPermissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -107,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     }
 
     public void ensureReviewEligibility() {
-        if(temp_self_profile_id == temp_current_profile_id) {
+        if(this.isVisitingSelfProfile) {
             LinearLayout reviewSection = findViewById(R.id.review_section);
             LinearLayout starContainer = findViewById(R.id.star_container);
             TextView writeReview = findViewById(R.id.write_review);
@@ -117,6 +95,16 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         }
     }
 
+    public void togglePostCreation() {
+        if(!this.isVisitingSelfProfile) {
+            FloatingActionButton addPostButton = findViewById(R.id.add_post_button);
+            ConstraintLayout rootView = findViewById(R.id.root_view);
+
+            rootView.removeView(addPostButton);
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +117,10 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         this.reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
 
         ensureReviewEligibility();
+        togglePostCreation();
+
+        initProfileCardRecyclerView(this.postProfiles);
+        initProfileReviewRecyclerView(this.reviewProfiles);
 
         this.profileViewModel.findProfileWithUserById(temp_current_profile_id).observe(this, (userAndProfile) -> {
             if (userAndProfile == null) return;
@@ -168,6 +160,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             this.postProfiles = profileWithOffers.offers.stream()
                     .map(offer ->
                             new PostProfile(
+                                    offer.getId(),
                                     profileWithOffers.profile.getProfilePicUrl(),
                                     profileWithOffers.profile.getFullName(),
                                     offer.getCreationDate(),
@@ -176,8 +169,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                                     offer.getFromDate(),
                                     offer.getToDate()))
                     .collect(Collectors.toList());
-
-            updateProfileCardRecyclerView(this.postProfiles);
+            this.cardsAdapter.updateProfilePosts(this.postProfiles);
         });
         this.profileViewModel.findProfilesWithReviewsOnIt(temp_current_profile_id).observe(this, profileWithReviewList -> {
             if (profileWithReviewList == null) return;
@@ -185,16 +177,20 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             this.reviewProfiles = profileWithReviewList.stream()
                     .map((profileWithReview) ->
                             new ReviewProfile(
+                                    new ReviewKey(
+                                            profileWithReview.review.getRevieweeProfileId(),
+                                            profileWithReview.review.getReviewerProfileId()
+                                    ),
                                     profileWithReview.profile.getProfilePicUrl(),
                                     profileWithReview.profile.getFullName(),
                                     profileWithReview.review.getBody(),
                                     profileWithReview.review.getRating()
                             ))
                     .collect(Collectors.toList());
-
-            updateProfileReviewRecyclerView(this.reviewProfiles);
+            this.reviewsAdapter.updateProfileReviews(this.reviewProfiles);
         });
         this.reviewViewModel.findReviewByIds(temp_current_profile_id, temp_self_profile_id).observe(this, (review) -> {
+            if(this.isVisitingSelfProfile) return;
             if (review == null) {
                 LinearLayout starContainer = findViewById(R.id.star_container);
                 for (int i = 0; i < starContainer.getChildCount(); i++) {
@@ -236,34 +232,34 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         );
     }
 
-    public void updateProfileCardRecyclerView(List<PostProfile> profilePosts) {
+    public void initProfileCardRecyclerView(List<PostProfile> profilePosts) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerViewCardList = findViewById(R.id.recycler_cards);
         recyclerViewCardList.setLayoutManager(linearLayoutManager);
 
-        cardsAdapter = new ProfileAdapterPost(
+        this.cardsAdapter = new ProfileAdapterPost(
                 profilePosts,
-                postProfile -> {
-                    Toast.makeText(ProfileActivity.this, postProfile.getTitre() + " clicked", Toast.LENGTH_SHORT)
+                (postProfile) -> {
+                    Toast.makeText(ProfileActivity.this, postProfile.getId() + " clicked", Toast.LENGTH_SHORT)
                             .show();
                 });
 
-        recyclerViewCardList.setAdapter(cardsAdapter);
+        recyclerViewCardList.setAdapter(this.cardsAdapter);
     }
 
-    public void updateProfileReviewRecyclerView(List<ReviewProfile> reviewProfiles) {
+    public void initProfileReviewRecyclerView(List<ReviewProfile> reviewProfiles) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView recyclerViewCardList = findViewById(R.id.review_container);
         recyclerViewCardList.setLayoutManager(linearLayoutManager);
 
-        reviewsAdapter = new ProfileAdapterReview(
+        this.reviewsAdapter = new ProfileAdapterReview(
                 reviewProfiles,
                 reviewProfile -> {
-                    Toast.makeText(ProfileActivity.this, reviewProfile.getReviewStars() + " clicked", Toast.LENGTH_SHORT)
+                    Toast.makeText(ProfileActivity.this, reviewProfile.getId().toString() + " clicked", Toast.LENGTH_SHORT)
                             .show();
                 });
 
-        recyclerViewCardList.setAdapter(reviewsAdapter);
+        recyclerViewCardList.setAdapter(this.reviewsAdapter);
     }
 
     public void onClickUploadImage(View view) {

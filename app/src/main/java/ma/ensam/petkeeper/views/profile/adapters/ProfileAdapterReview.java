@@ -33,8 +33,9 @@ public class ProfileAdapterReview extends RecyclerView.Adapter<ProfileAdapterRev
         this.mItemClickListener = mItemClickListener;
     }
 
-    public void setProfilePosts(List<ReviewProfile> profilePosts) {
+    public void updateProfileReviews(List<ReviewProfile> profilePosts) {
         this.reviewProfiles = profilePosts;
+        this.notifyDataSetChanged();
     }
 
     @NonNull
