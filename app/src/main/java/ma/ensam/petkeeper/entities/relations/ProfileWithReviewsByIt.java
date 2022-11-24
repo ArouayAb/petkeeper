@@ -6,6 +6,7 @@ import androidx.room.Relation;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.Profile;
+import ma.ensam.petkeeper.entities.Review;
 
 public class ProfileWithReviewsByIt {
 
@@ -13,8 +14,8 @@ public class ProfileWithReviewsByIt {
 
     @Relation(
             parentColumn = "id",
-            entityColumn = "revieweeProfileId"
+            entityColumn = "reviewerProfileId"
     )
 
-    public List<Profile> reviewees;
+    public List<Review> reviews;
 }

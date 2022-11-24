@@ -8,6 +8,7 @@ import androidx.room.Transaction;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
+import ma.ensam.petkeeper.entities.relations.ProfileWithReviewsOnIt;
 import ma.ensam.petkeeper.entities.relations.UserAndProfile;
 
 @Dao
@@ -18,4 +19,7 @@ public interface RelationDao {
 
     @Query("SELECT * FROM offers JOIN profiles ON profiles.id = offers.profileCreatorId WHERE profiles.id = :id")
     LiveData<ProfileWithOffers> findProfileWithOffersById(long id);
+
+    @Query("SELECT * FROM reviews JOIN profiles ON profiles.id = reviews.revieweeProfileId WHERE reviews.revieweeProfileId = :id")
+    LiveData<ProfileWithReviewsOnIt> findProfileWithReviewsOnIt(long id);
 }

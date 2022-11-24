@@ -7,8 +7,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.PathUtils;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,15 +19,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +41,10 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.sql.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,21 +53,39 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ma.ensam.petkeeper.R;
+import ma.ensam.petkeeper.config.app.AppConfig;
 import ma.ensam.petkeeper.entities.Offer;
 import ma.ensam.petkeeper.entities.Profile;
+import ma.ensam.petkeeper.models.PostHome;
+import ma.ensam.petkeeper.models.PostProfile;
+import ma.ensam.petkeeper.models.ReviewProfile;
 import ma.ensam.petkeeper.utils.BitmapUtility;
+import ma.ensam.petkeeper.utils.PathUtil;
+import ma.ensam.petkeeper.viewmodels.HomeViewModel;
 import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
+import ma.ensam.petkeeper.views.auth.LoginActivity;
+import ma.ensam.petkeeper.views.home.HomeActivity;
+import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
+import ma.ensam.petkeeper.views.profile.adapters.ProfileAdapterPost;
+import ma.ensam.petkeeper.views.profile.adapters.ProfileAdapterReview;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class ProfileActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private RecyclerView.Adapter<ProfileAdapterPost.ViewHolder> cardsAdapter;
+    private RecyclerView.Adapter<ProfileAdapterReview.ViewHolder> reviewsAdapter;
     private ProfileViewModel profileViewModel;
     private ConstraintLayout upperInfo;
     private ConstraintLayout generalInfo;
-    private LinearLayout cardContainer;
     private LayoutInflater layoutInflater;
+
+    private List<ReviewProfile> reviewProfiles = new ArrayList<>();
+    private List<PostProfile> postProfiles = new ArrayList<>();
+
+    private final long temp_current_profile_id = 1L;
+    private final long temp_self_profile_id = 2L;
 
     private final String[] galleryPermissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -71,9 +98,19 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
 
     private final Map<String, Drawable> drawableMap = new HashMap<>();
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-
     public ProfileActivity() {
+    }
+
+    public void ensureReviewEligibility() {
+        if(temp_self_profile_id == temp_current_profile_id) {
+            LinearLayout reviewSection = findViewById(R.id.review_section);
+            LinearLayout starContainer = findViewById(R.id.star_container);
+            TextView writeReview = findViewById(R.id.write_review);
+            RecyclerView recyclerView = findViewById(R.id.review_container);
+
+            reviewSection.removeView(starContainer);
+            reviewSection.removeView(writeReview);
+        }
     }
 
     @Override
@@ -82,14 +119,16 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         setContentView(R.layout.activity_profile);
 
         this.layoutInflater = LayoutInflater.from(this);
-        this.cardContainer = findViewById(R.id.card_container);
+//        this.cardContainer = findViewById(R.id.card_container);
 
         drawableMap.put("star_full", ContextCompat.getDrawable(this, R.drawable.star_full));
         drawableMap.put("star_empty", ContextCompat.getDrawable(this, R.drawable.star_empty));
 
-        long temp_id = 1L;
+        ensureReviewEligibility();
+
         this.profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
-        this.profileViewModel.findProfileWithUserById(temp_id).observe(this, (userAndProfile) -> {
+
+        this.profileViewModel.findProfileWithUserById(temp_current_profile_id).observe(this, (userAndProfile) -> {
             if (userAndProfile == null) return;
 
             this.upperInfo = findViewById(R.id.upper_info);
@@ -121,82 +160,87 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             profileCity.setText(userAndProfile.profile.getCity());
             profileEmail.setText(userAndProfile.user.getEmail());
         });
-
-        this.profileViewModel.findProfileWithOffersById(temp_id).observe(this, (profileWithOffers) -> {
+        this.profileViewModel.findProfileWithOffersById(temp_current_profile_id).observe(this, (profileWithOffers) -> {
             if (profileWithOffers == null) return;
 
-            for(Offer offer: profileWithOffers.offers) {
-                ConstraintLayout card = (ConstraintLayout) layoutInflater.inflate(
-                        R.layout.card_layout,
-                        cardContainer,
-                        false
-                );
-                FrameLayout cardProfileNameFrame = (FrameLayout) card.getChildAt(0);
-                ConstraintLayout cardInner = (ConstraintLayout) cardProfileNameFrame.getChildAt(0);
+            this.postProfiles = profileWithOffers.offers.stream()
+                .map(offer ->
+                        new PostProfile(
+                            profileWithOffers.profile.getProfilePicUrl(),
+                            profileWithOffers.profile.getFullName(),
+                            offer.getCreationDate(),
+                            offer.getTitle(),
+                            offer.getPet().toString(),
+                            offer.getFromDate(),
+                            offer.getToDate()))
+                .collect(Collectors.toList());
 
-                TextView cardProfileName = (TextView) cardInner.getViewById(R.id.card_profile_name);
-                TextView cardTitle = (TextView) cardInner.getViewById(R.id.card_title);
-                TextView cardProfileDate = (TextView) cardInner.getViewById(R.id.card_profile_date);
-                TextView cardPetValue = (TextView) cardInner.getViewById(R.id.card_pet_value);
-                TextView cardFromValue = (TextView) cardInner.getViewById(R.id.card_from_value);
-                TextView cardToValue = (TextView) cardInner.getViewById(R.id.card_to_value);
-                ShapeableImageView cardProfilePicture = (ShapeableImageView) cardInner.getViewById(R.id.card_profile_picture);
-
-                Bitmap bm = BitmapUtility.extractFromPath(profileWithOffers.profile.getProfilePicUrl());
-
-                cardProfilePicture.setImageBitmap(bm);
-                cardProfileName.setText(profileWithOffers.profile.getFullName());
-                cardTitle.setText(offer.getTitle());
-                cardProfileDate.setText(this.dateFormat.format(offer.getCreationDate()));
-                cardPetValue.setText(offer.getPet().toString());
-                cardFromValue.setText(this.dateFormat.format(offer.getFromDate()));
-                cardToValue.setText(this.dateFormat.format(offer.getToDate()));
-
-                cardContainer.addView(card);
-            }
-            profileViewModel.findProfileWithOffersById(temp_id).removeObservers(this);
+            updateProfileCardRecyclerView(this.postProfiles);
         });
+        this.profileViewModel.findProfileWithReviewsOnIt(temp_current_profile_id).observe(this, (profileWithReviews -> {
+            if (profileWithReviews == null) return;
+
+            this.reviewProfiles = profileWithReviews.reviews.stream()
+                    .map(review ->
+                            new ReviewProfile(
+                                    profileWithReviews.profile.getProfilePicUrl(),
+                                    profileWithReviews.profile.getFullName(),
+                                    review.getBody(),
+                                    review.getRating()
+                            ))
+                    .collect(Collectors.toList());
+            updateProfileReviewRecyclerView(this.reviewProfiles);
+        }));
+
 
         this.activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if(result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        ShapeableImageView profilePicture = findViewById(R.id.profile_picture);
 
-                        Bitmap bitmap = BitmapUtility.extractFromUri(
-                                this,
-                                Objects.requireNonNull(data).getData()
-                        );
-
-
-                        profilePicture.setImageBitmap(bitmap);
-                        for (int i = 0; i < cardContainer.getChildCount(); i++) {
-                            ConstraintLayout constraintLayout = (ConstraintLayout) cardContainer.getChildAt(i);
-                            FrameLayout frameLayout = (FrameLayout) constraintLayout.getChildAt(0);
-                            ConstraintLayout innerConstraintLayout = (ConstraintLayout) frameLayout.getChildAt(0);
-                            ShapeableImageView cardProfilePicture = (ShapeableImageView) innerConstraintLayout.getChildAt(1);
-
-                            cardProfilePicture.setImageBitmap(bitmap);
+                        Uri uri = Objects.requireNonNull(data).getData();
+                        String filePath = null;
+                        try {
+                            filePath = PathUtil.getPath(ProfileActivity.this, uri);
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
                         }
+
+                        profileViewModel.updateProfilePicUrlById(temp_current_profile_id, filePath);
                     }
                 }
         );
+    }
 
-        LinearLayout reviewContainer = findViewById(R.id.review_container);
-        ConstraintLayout review = (ConstraintLayout) layoutInflater.inflate(
-                R.layout.review_layout,
-                reviewContainer,
-                false
-        );
+    public void updateProfileCardRecyclerView(List<PostProfile> profilePosts) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerViewCardList = findViewById(R.id.recycler_cards);
+        recyclerViewCardList.setLayoutManager(linearLayoutManager);
 
-        ConstraintLayout review2 = (ConstraintLayout) layoutInflater.inflate(
-                R.layout.review_layout,
-                reviewContainer,
-                false
-        );
-        reviewContainer.addView(review);
-        reviewContainer.addView(review2);
+        cardsAdapter = new ProfileAdapterPost(
+                profilePosts,
+                view -> {
+                    Toast.makeText(ProfileActivity.this, view.getId() + " clicked", Toast.LENGTH_SHORT)
+                            .show();
+                });
+
+        recyclerViewCardList.setAdapter(cardsAdapter);
+    }
+
+    public void updateProfileReviewRecyclerView(List<ReviewProfile> reviewProfiles) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView recyclerViewCardList = findViewById(R.id.review_container);
+        recyclerViewCardList.setLayoutManager(linearLayoutManager);
+
+        reviewsAdapter = new ProfileAdapterReview(
+                reviewProfiles,
+                view -> {
+                    Toast.makeText(ProfileActivity.this, view.getId() + " clicked", Toast.LENGTH_SHORT)
+                            .show();
+                });
+
+        recyclerViewCardList.setAdapter(reviewsAdapter);
     }
 
     public void onClickUploadImage(View view) {
@@ -253,8 +297,6 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 

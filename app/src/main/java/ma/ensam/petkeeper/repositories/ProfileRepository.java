@@ -21,6 +21,7 @@ import ma.ensam.petkeeper.daos.ProfileDao;
 import ma.ensam.petkeeper.daos.RelationDao;
 import ma.ensam.petkeeper.entities.Profile;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
+import ma.ensam.petkeeper.entities.relations.ProfileWithReviewsOnIt;
 import ma.ensam.petkeeper.entities.relations.UserAndProfile;
 
 public class ProfileRepository {
@@ -48,6 +49,12 @@ public class ProfileRepository {
     public void update(Profile profile) {
         this.executor.execute(() -> {
             this.profileDao.update(profile);
+        });
+    }
+
+    public void updateProfilePicUrlById(long id, String profilePicUrl) {
+        this.executor.execute(() -> {
+            this.profileDao.updateProfilePicUrlById(id, profilePicUrl);
         });
     }
 
@@ -94,6 +101,19 @@ public class ProfileRepository {
             );
 
             return profileWithOffers.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public LiveData<ProfileWithReviewsOnIt> findProfileWithReviewsOnIt(long id) {
+        try {
+            CompletableFuture<LiveData<ProfileWithReviewsOnIt>> profileWithReviews = CompletableFuture.supplyAsync(
+                    () -> relationDao.findProfileWithReviewsOnIt(id)
+            );
+
+            return profileWithReviews.get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             return null;

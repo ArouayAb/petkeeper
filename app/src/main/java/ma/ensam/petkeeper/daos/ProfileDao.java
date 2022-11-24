@@ -23,6 +23,9 @@ public interface ProfileDao {
     @Update
     void update(Profile profile);
 
+    @Query("UPDATE profiles SET profilePicUrl = :profilePicUrl WHERE id = :id")
+    void updateProfilePicUrlById(long id, String profilePicUrl);
+
     @Delete
     void delete(Profile profile);
 

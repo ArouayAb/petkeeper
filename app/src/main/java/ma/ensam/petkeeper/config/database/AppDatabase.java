@@ -61,7 +61,10 @@ public abstract class AppDatabase extends RoomDatabase {
             new Thread(() -> {
                 instance.userDao().insertAll(
                         new User("user1@gmail.com", "password1"),
-                        new User("user2@gmail.com", "password2")
+                        new User("user2@gmail.com", "password2"),
+                        new User("user3@gmail.com", "password3"),
+                        new User("user4@gmail.com", "password4"),
+                        new User("user5@gmail.com", "password5")
                 );
 
                 instance.profileDao().insertAll(
@@ -70,7 +73,16 @@ public abstract class AppDatabase extends RoomDatabase {
                                 "morocco", "marrakech", 1),
                         new Profile("fullname2", "0611203040",
                                 "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
-                                "morocco", "marrakech", 2)
+                                "morocco", "marrakech", 2),
+                        new Profile("fullname2", "0611203041",
+                                "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 3),
+                        new Profile("fullname2", "0611203042",
+                                "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 4),
+                        new Profile("fullname2", "0611203043",
+                                "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 5)
                 );
 
                 instance.offerDao().insertAll(
@@ -88,6 +100,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
                 instance.reviewDao().insertAll(
                         new Review(1,2, 1, "very bad"),
+                        new Review(3,1, 2, "mildly bad"),
+                        new Review(4,1, 3, "mediocre"),
+                        new Review(5,1, 4, "good"),
                         new Review(2, 1, 1, "very bad too >:(")
                 );
 

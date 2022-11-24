@@ -11,6 +11,7 @@ import java.util.List;
 
 import ma.ensam.petkeeper.entities.Profile;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
+import ma.ensam.petkeeper.entities.relations.ProfileWithReviewsOnIt;
 import ma.ensam.petkeeper.entities.relations.UserAndProfile;
 import ma.ensam.petkeeper.repositories.ProfileRepository;
 
@@ -31,6 +32,10 @@ public class ProfileViewModel extends AndroidViewModel {
     public void update(Profile profile) {
         this.repository.update(profile);
     }
+    public void updateProfilePicUrlById(long id, String profilePicUrl) {
+        this.repository.updateProfilePicUrlById(id, profilePicUrl);
+    }
+
 
     public void delete(Profile profile) {
         this.repository.delete(profile);
@@ -51,5 +56,9 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public LiveData<ProfileWithOffers> findProfileWithOffersById(long id) {
         return this.repository.findProfileWithOffersById(id);
+    }
+
+    public LiveData<ProfileWithReviewsOnIt> findProfileWithReviewsOnIt(long id) {
+        return this.repository.findProfileWithReviewsOnIt(id);
     }
 }

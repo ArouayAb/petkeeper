@@ -23,6 +23,10 @@ public class Profile {
 
     private long userId;
 
+    public Profile() {
+
+    }
+
     public Profile(String fullName, String phoneNumber, String about, String profilePicUrl, String country, String city, long userId) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
