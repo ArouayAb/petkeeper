@@ -13,22 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.net.URISyntaxException;
@@ -37,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 import ma.ensam.petkeeper.R;
@@ -61,6 +66,8 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     private ConstraintLayout upperInfo;
     private ConstraintLayout generalInfo;
     private LayoutInflater layoutInflater;
+    private View writeReviewRootView;
+    private PopupWindow writeReviewWindow;
 
     private List<ReviewProfile> reviewProfiles = new ArrayList<>();
     private List<PostProfile> postProfiles = new ArrayList<>();
@@ -113,6 +120,8 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
 
         setContentView(R.layout.activity_profile);
         this.layoutInflater = LayoutInflater.from(this);
+        this.writeReviewRootView = layoutInflater.inflate(R.layout.write_review_layout, null);
+
         this.profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         this.reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
 
@@ -187,6 +196,13 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                                     profileWithReview.review.getRating()
                             ))
                     .collect(Collectors.toList());
+
+            double averageStars = this.reviewProfiles.stream()
+                    .mapToDouble(ReviewProfile::getReviewStars)
+                    .average()
+                    .orElse(0D);
+
+            ((RatingBar) findViewById(R.id.profile_rating)).setRating((float) averageStars);
             this.reviewsAdapter.updateProfileReviews(this.reviewProfiles);
         });
         this.reviewViewModel.findReviewByIds(temp_current_profile_id, temp_self_profile_id).observe(this, (review) -> {
@@ -279,28 +295,27 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     }
 
     public void onClickWriteReviewPopup(View view) {
-        View popupView = layoutInflater.inflate(R.layout.write_review_layout, null);
-
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        popupWindow.setElevation(40);
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_shadow));
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        this.writeReviewWindow = new PopupWindow(this.writeReviewRootView, width, height, focusable);
+        this.writeReviewWindow.setElevation(40);
+        this.writeReviewWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.rounded_shadow));
+        this.writeReviewWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
     }
 
     public void onClickSubmitReview(View view) {
-        View mainLayout = layoutInflater.inflate(R.layout.write_review_layout, null);
-        TextInputLayout reviewTextLayout = mainLayout.findViewById(R.id.review_text);
+        TextInputEditText reviewBody = this.writeReviewRootView.findViewById(R.id.review_text_edit);
 
-        if(reviewTextLayout == null && reviewTextLayout.getEditText() == null) return;
-        String reviewBody = reviewTextLayout.getEditText().getText().toString();
+        if(reviewBody == null) return;
+        String reviewText = Objects.requireNonNull(reviewBody.getText()).toString();
         this.reviewViewModel.updateBodyByIds(
                 temp_current_profile_id,
                 temp_self_profile_id,
-                reviewBody
+                reviewText
         );
+        this.writeReviewWindow.dismiss();
     }
 
     public void onClickUpdateStars(View view) {
