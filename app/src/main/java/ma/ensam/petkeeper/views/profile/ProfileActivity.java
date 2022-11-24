@@ -13,13 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +31,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -41,17 +38,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 import ma.ensam.petkeeper.R;
+import ma.ensam.petkeeper.entities.enums.OfferType;
 import ma.ensam.petkeeper.models.compositeKeys.ReviewKey;
 import ma.ensam.petkeeper.models.PostProfile;
 import ma.ensam.petkeeper.models.ReviewProfile;
 import ma.ensam.petkeeper.utils.BitmapUtility;
-import ma.ensam.petkeeper.utils.PathUtil;
+import ma.ensam.petkeeper.utils.PathUtility;
 import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
 import ma.ensam.petkeeper.viewmodels.ReviewViewModel;
+import ma.ensam.petkeeper.views.offer.NewOfferActivity;
+import ma.ensam.petkeeper.views.offer.OfferKeeperActivity;
+import ma.ensam.petkeeper.views.offer.OfferOwnerActivity;
 import ma.ensam.petkeeper.views.profile.adapters.ProfileAdapterPost;
 import ma.ensam.petkeeper.views.profile.adapters.ProfileAdapterReview;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -73,7 +73,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     private List<PostProfile> postProfiles = new ArrayList<>();
 
     private final long temp_current_profile_id = 1L;
-    private final long temp_self_profile_id = 2L;
+    private final long temp_self_profile_id = 1L;
 
     private final boolean isVisitingSelfProfile = temp_self_profile_id == temp_current_profile_id;
 
@@ -172,6 +172,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                     .map(offer ->
                             new PostProfile(
                                     offer.getId(),
+                                    offer.getType().toString(),
                                     profileWithOffers.profile.getProfilePicUrl(),
                                     profileWithOffers.profile.getFullName(),
                                     offer.getCreationDate(),
@@ -229,7 +230,6 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             }
         });
 
-
         this.activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -239,7 +239,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                         Uri uri = Objects.requireNonNull(data).getData();
                         String filePath = null;
                         try {
-                            filePath = PathUtil.getPath(ProfileActivity.this, uri);
+                            filePath = PathUtility.getPath(ProfileActivity.this, uri);
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
@@ -258,8 +258,11 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         this.cardsAdapter = new ProfileAdapterPost(
                 profilePosts,
                 (postProfile) -> {
-                    Toast.makeText(ProfileActivity.this, postProfile.getId() + " clicked", Toast.LENGTH_SHORT)
-                            .show();
+                    Class<?> targetActivity = postProfile.getOfferType().equals(OfferType.KEEPER.toString()) ?
+                            OfferKeeperActivity.class : OfferOwnerActivity.class;
+                    Intent offerActivityIntent = new Intent(this, targetActivity);
+                    offerActivityIntent.putExtra("offerId", postProfile.getId());
+                    this.activityResultLauncher.launch(offerActivityIntent);
                 });
 
         recyclerViewCardList.setAdapter(this.cardsAdapter);
@@ -332,6 +335,16 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         );
 
         this.reviewViewModel.updateRatingByIds(temp_current_profile_id, temp_self_profile_id, starIndex);
+    }
+
+    public void onClickRedirectToNewOffer(View view) {
+        Intent offerActivityIntent = new Intent(this, NewOfferActivity.class);
+        offerActivityIntent.putExtra("profileId", temp_self_profile_id);
+        this.activityResultLauncher.launch(offerActivityIntent);
+    }
+
+    public void onClickReturnToPreviousActivity(View view) {
+        this.finish();
     }
 
     @Override

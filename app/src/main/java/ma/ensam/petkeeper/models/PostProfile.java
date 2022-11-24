@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class PostProfile {
     private long id;
+    private String OfferType;
     private String profileUrl;
     private String userName;
     private Date creationDate;
@@ -12,8 +13,9 @@ public class PostProfile {
     private Date from;
     private Date to;
 
-    public PostProfile(long id, String profileUrl, String userName, Date creationDate, String titre, String petSpecies, Date from, Date to) {
+    public PostProfile(long id, String offerType, String profileUrl, String userName, Date creationDate, String titre, String petSpecies, Date from, Date to) {
         this.id = id;
+        OfferType = offerType;
         this.profileUrl = profileUrl;
         this.userName = userName;
         this.creationDate = creationDate;
@@ -21,6 +23,14 @@ public class PostProfile {
         this.petSpecies = petSpecies;
         this.from = from;
         this.to = to;
+    }
+
+    public String getOfferType() {
+        return OfferType;
+    }
+
+    public void setOfferType(String offerType) {
+        OfferType = offerType;
     }
 
     public long getId() {

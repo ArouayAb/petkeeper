@@ -12,7 +12,7 @@ import android.provider.MediaStore;
 
 import java.net.URISyntaxException;
 
-public class PathUtil {
+public class PathUtility {
     /*
      * Gets the file path of the given Uri.
      */
