@@ -38,6 +38,10 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
         this.notifyDataSetChanged();
     }
 
+    public List<PostProfile> getProfilePosts() {
+        return this.profilePosts;
+    }
+
     @NonNull
     @Override
     public ProfileAdapterPost.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

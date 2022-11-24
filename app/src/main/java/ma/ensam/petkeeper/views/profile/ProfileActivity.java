@@ -147,6 +147,8 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             Runnable updateProfilePic = () -> {
                 Bitmap bm = BitmapUtility.extractFromPath(userAndProfile.profile.getProfilePicUrl());
                 profilePictureView.setImageBitmap(bm);
+                this.cardsAdapter.notifyDataSetChanged();
+                this.reviewsAdapter.notifyDataSetChanged();
             };
 
             if (EasyPermissions.hasPermissions(ProfileActivity.this, galleryPermissions)) {
