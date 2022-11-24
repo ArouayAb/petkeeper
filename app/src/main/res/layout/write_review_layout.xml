@@ -1,86 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/reviews_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:height="38dp"
+        android:background="#EFEFEF"
+        android:fontFamily="sans-serif"
+        android:gravity="center|start"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="Write Review"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:id="@+id/review_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/reviews_tab"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:gravity="center"
+        android:padding="5dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/review_text"
+            android:padding="10dp"
+            android:inputType="textMultiLine"
+            android:hint="Review text"
+            android:textCursorDrawable="@null"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/petkeeper_yellow"
+            app:hintTextColor="@color/petkeeper_yellow">
 
-            <RelativeLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/review_text_edit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="match_parent"
+                android:gravity="top|left"
+                android:lines="5"
+                android:scrollbars="vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/reviews_tab"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:height="38dp"
-                    android:background="#EFEFEF"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center|start"
-                    android:paddingStart="30dp"
-                    android:paddingEnd="30dp"
-                    android:text="Write Review"
-                    android:textColor="@color/black"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/review_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/reviews_tab"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <!--                        Duplicate-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:padding="10dp"
-                            android:inputType="textMultiLine"
-                            android:hint="Review text"
-                            android:textCursorDrawable="@null"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            app:boxStrokeColor="@color/petkeeper_yellow"
-                            app:hintTextColor="@color/petkeeper_yellow">
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="top|left"
-                                android:lines="5"
-                                android:scrollbars="vertical"/>
-                        </com.google.android.material.textfield.TextInputLayout>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Submit"
-                        android:textAllCaps="false"
-                        android:backgroundTint="#FFB82E"/>
-                </LinearLayout>
-            </RelativeLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/submit_review_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:backgroundTint="#FFB82E"
+            android:onClick="onClickSubmitReview"/>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

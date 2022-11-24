@@ -20,6 +20,7 @@ import ma.ensam.petkeeper.config.database.AppDatabase;
 import ma.ensam.petkeeper.daos.ProfileDao;
 import ma.ensam.petkeeper.daos.RelationDao;
 import ma.ensam.petkeeper.entities.Profile;
+import ma.ensam.petkeeper.entities.Review;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.entities.relations.ProfileWithReviewsOnIt;
 import ma.ensam.petkeeper.entities.relations.UserAndProfile;
@@ -30,7 +31,6 @@ public class ProfileRepository {
     private LiveData<List<Profile>> allProfiles;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Application application;
-
 
     public ProfileRepository(Application application) {
         this.application = application;
@@ -107,10 +107,10 @@ public class ProfileRepository {
         }
     }
 
-    public LiveData<ProfileWithReviewsOnIt> findProfileWithReviewsOnIt(long id) {
+    public LiveData<List<ProfileWithReviewsOnIt>> findProfilesWithReviewsOnIt(long id) {
         try {
-            CompletableFuture<LiveData<ProfileWithReviewsOnIt>> profileWithReviews = CompletableFuture.supplyAsync(
-                    () -> relationDao.findProfileWithReviewsOnIt(id)
+            CompletableFuture<LiveData<List<ProfileWithReviewsOnIt>>> profileWithReviews = CompletableFuture.supplyAsync(
+                    () -> relationDao.findProfilesWithReviewsOnIt(id)
             );
 
             return profileWithReviews.get();
@@ -119,5 +119,4 @@ public class ProfileRepository {
             return null;
         }
     }
-
 }

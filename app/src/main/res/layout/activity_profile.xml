@@ -136,22 +136,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/general_info"
                     android:layout_width="match_parent"
-                    android:layout_height="193dp">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/favorite_pet_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Favorite pet"
-                        android:textColor="@color/black"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/country_value"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/city_label" />
 
                     <TextView
                         android:id="@+id/email_label"
@@ -168,7 +154,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/country_value"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/favorite_pet_label" />
+                        app:layout_constraintTop_toBottomOf="@+id/city_label" />
 
                     <TextView
                         android:id="@+id/email_value"
@@ -180,17 +166,6 @@
                         android:text="email.dd@gmail.com"
                         android:textSize="13sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/favorite_pet_value" />
-
-                    <TextView
-                        android:id="@+id/favorite_pet_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="220dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Cat"
-                        android:textSize="13sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/city_value" />
 

@@ -19,17 +19,18 @@ import ma.ensam.petkeeper.config.app.AppConfig;
 import ma.ensam.petkeeper.entities.Profile;
 import ma.ensam.petkeeper.models.PostHome;
 import ma.ensam.petkeeper.models.PostProfile;
+import ma.ensam.petkeeper.models.ReviewProfile;
 import ma.ensam.petkeeper.utils.BitmapUtility;
 import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
 import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
 
 public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.ViewHolder> {
     private List<PostProfile> profilePosts;
-    private View.OnClickListener mOnClickListener;
+    private ItemClickedListener mItemClickListener;
 
-    public ProfileAdapterPost(List<PostProfile> profilePosts, View.OnClickListener mOnClickListener) {
+    public ProfileAdapterPost(List<PostProfile> profilePosts, ItemClickedListener mItemClickListener) {
         this.profilePosts = profilePosts;
-        this.mOnClickListener = mOnClickListener;
+        this.mItemClickListener = mItemClickListener;
     }
 
     public void setProfilePosts(List<PostProfile> profilePosts) {
@@ -40,7 +41,6 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
     @Override
     public ProfileAdapterPost.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflated = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
-        inflated.setOnClickListener(mOnClickListener);
         return new ProfileAdapterPost.ViewHolder(inflated);
     }
 
@@ -62,6 +62,10 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
         holder.cardTitle.setText(profilePosts.get(position).getTitre());
         holder.petSpecies.setText(profilePosts.get(position).getPetSpecies());
         holder.petSpecies.setText(profilePosts.get(position).getPetSpecies());
+
+        holder.cardInner.setOnClickListener(view -> {
+            mItemClickListener.onItemClick(profilePosts.get(position));
+        });
     }
 
     @Override
@@ -69,7 +73,12 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
         return profilePosts.size();
     }
 
+    public interface ItemClickedListener {
+        void onItemClick(PostProfile postProfile);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private final ConstraintLayout cardInner;
         private final TextView cardProfileName;
         private final TextView cardCreationDate;
         private final TextView cardTitle;
@@ -80,8 +89,7 @@ public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ConstraintLayout cardInner = (ConstraintLayout) ((FrameLayout) itemView).getChildAt(0);
-
+            cardInner = (ConstraintLayout) ((FrameLayout) itemView).getChildAt(0);
             cardProfileImage = cardInner.findViewById(R.id.card_profile_picture);
             cardProfileName = cardInner.findViewById(R.id.card_profile_name);
             cardCreationDate = cardInner.findViewById(R.id.card_profile_date);

@@ -1,53 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:gravity="start"
+    android:clickable="true"
+    style="@style/Widget.AppCompat.Button.Borderless.Colored">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_picture_review"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="10dp"
+        android:padding="1dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/circleView"
+        app:srcCompat="@drawable/avatar_placeholder"
+        app:strokeColor="#FFB82E"
+        app:strokeWidth="1dp" />
+
+    <TextView
+        android:id="@+id/profile_name_review"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:clickable="true"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored">
+        android:layout_marginTop="3dp"
+        android:layout_toEndOf="@id/profile_picture_review"
+        android:text="John Doe"
+        android:textColor="@color/black"
+        android:textSize="11sp" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profile_picture_review"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="10dp"
-            android:padding="1dp"
-            android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/circleView"
-            app:srcCompat="@drawable/avatar_placeholder"
-            app:strokeColor="#FFB82E"
-            app:strokeWidth="1dp" />
+    <TextView
+        android:id="@+id/profile_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I will give him 3 stars"
+        android:textSize="8sp"
+        android:layout_toEndOf="@id/profile_picture_review"
+        android:layout_below="@id/profile_name_review"/>
 
-        <TextView
-            android:id="@+id/profile_name_review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/profile_picture_review"
-            android:text="John Doe"
-            android:textColor="@color/black"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/profile_review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I will give him 3 stars"
-            android:textSize="8sp"
-            android:layout_toEndOf="@id/profile_picture_review"
-            android:layout_below="@id/profile_name_review"/>
-
-        <RatingBar
-            android:id="@+id/review_rating_stars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?android:attr/ratingBarStyleSmall"
-            android:rating="3"
-            android:numStars="5"
-            android:progressTint="@color/petkeeper_yellow"
-            android:progressBackgroundTint="@color/petkeeper_yellow"
-            android:layout_marginStart="250dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/profile_picture_review" />
-    </RelativeLayout>
+    <RatingBar
+        android:id="@+id/review_rating_stars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/ratingBarStyleSmall"
+        android:rating="3"
+        android:numStars="5"
+        android:progressTint="@color/petkeeper_yellow"
+        android:progressBackgroundTint="@color/petkeeper_yellow"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/profile_picture_review" />
+</RelativeLayout>

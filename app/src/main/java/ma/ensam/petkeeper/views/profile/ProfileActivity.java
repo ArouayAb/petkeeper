@@ -26,6 +26,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -35,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.w3c.dom.Text;
 
@@ -63,6 +66,7 @@ import ma.ensam.petkeeper.utils.BitmapUtility;
 import ma.ensam.petkeeper.utils.PathUtil;
 import ma.ensam.petkeeper.viewmodels.HomeViewModel;
 import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
+import ma.ensam.petkeeper.viewmodels.ReviewViewModel;
 import ma.ensam.petkeeper.views.auth.LoginActivity;
 import ma.ensam.petkeeper.views.home.HomeActivity;
 import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
@@ -77,6 +81,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     private RecyclerView.Adapter<ProfileAdapterPost.ViewHolder> cardsAdapter;
     private RecyclerView.Adapter<ProfileAdapterReview.ViewHolder> reviewsAdapter;
     private ProfileViewModel profileViewModel;
+    private ReviewViewModel reviewViewModel;
     private ConstraintLayout upperInfo;
     private ConstraintLayout generalInfo;
     private LayoutInflater layoutInflater;
@@ -106,7 +111,6 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             LinearLayout reviewSection = findViewById(R.id.review_section);
             LinearLayout starContainer = findViewById(R.id.star_container);
             TextView writeReview = findViewById(R.id.write_review);
-            RecyclerView recyclerView = findViewById(R.id.review_container);
 
             reviewSection.removeView(starContainer);
             reviewSection.removeView(writeReview);
@@ -116,17 +120,15 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-
-        this.layoutInflater = LayoutInflater.from(this);
-//        this.cardContainer = findViewById(R.id.card_container);
-
         drawableMap.put("star_full", ContextCompat.getDrawable(this, R.drawable.star_full));
         drawableMap.put("star_empty", ContextCompat.getDrawable(this, R.drawable.star_empty));
 
-        ensureReviewEligibility();
-
+        setContentView(R.layout.activity_profile);
+        this.layoutInflater = LayoutInflater.from(this);
         this.profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+        this.reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+
+        ensureReviewEligibility();
 
         this.profileViewModel.findProfileWithUserById(temp_current_profile_id).observe(this, (userAndProfile) -> {
             if (userAndProfile == null) return;
@@ -164,33 +166,54 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             if (profileWithOffers == null) return;
 
             this.postProfiles = profileWithOffers.offers.stream()
-                .map(offer ->
-                        new PostProfile(
-                            profileWithOffers.profile.getProfilePicUrl(),
-                            profileWithOffers.profile.getFullName(),
-                            offer.getCreationDate(),
-                            offer.getTitle(),
-                            offer.getPet().toString(),
-                            offer.getFromDate(),
-                            offer.getToDate()))
-                .collect(Collectors.toList());
+                    .map(offer ->
+                            new PostProfile(
+                                    profileWithOffers.profile.getProfilePicUrl(),
+                                    profileWithOffers.profile.getFullName(),
+                                    offer.getCreationDate(),
+                                    offer.getTitle(),
+                                    offer.getPet().toString(),
+                                    offer.getFromDate(),
+                                    offer.getToDate()))
+                    .collect(Collectors.toList());
 
             updateProfileCardRecyclerView(this.postProfiles);
         });
-        this.profileViewModel.findProfileWithReviewsOnIt(temp_current_profile_id).observe(this, (profileWithReviews -> {
-            if (profileWithReviews == null) return;
+        this.profileViewModel.findProfilesWithReviewsOnIt(temp_current_profile_id).observe(this, profileWithReviewList -> {
+            if (profileWithReviewList == null) return;
 
-            this.reviewProfiles = profileWithReviews.reviews.stream()
-                    .map(review ->
+            this.reviewProfiles = profileWithReviewList.stream()
+                    .map((profileWithReview) ->
                             new ReviewProfile(
-                                    profileWithReviews.profile.getProfilePicUrl(),
-                                    profileWithReviews.profile.getFullName(),
-                                    review.getBody(),
-                                    review.getRating()
+                                    profileWithReview.profile.getProfilePicUrl(),
+                                    profileWithReview.profile.getFullName(),
+                                    profileWithReview.review.getBody(),
+                                    profileWithReview.review.getRating()
                             ))
                     .collect(Collectors.toList());
+
             updateProfileReviewRecyclerView(this.reviewProfiles);
-        }));
+        });
+        this.reviewViewModel.findReviewByIds(temp_current_profile_id, temp_self_profile_id).observe(this, (review) -> {
+            if (review == null) {
+                LinearLayout starContainer = findViewById(R.id.star_container);
+                for (int i = 0; i < starContainer.getChildCount(); i++) {
+                    ImageButton star = (ImageButton) starContainer.getChildAt(i);
+                    star.setImageDrawable(drawableMap.get("star_empty"));
+                }
+                return;
+            }
+
+            LinearLayout starContainer = findViewById(R.id.star_container);
+            for (int i = 0; i < review.getRating(); i++) {
+                ImageButton star = (ImageButton) starContainer.getChildAt(i);
+                star.setImageDrawable(drawableMap.get("star_full"));
+            }
+            for (int i = review.getRating(); i < starContainer.getChildCount(); i++) {
+                ImageButton star = (ImageButton) starContainer.getChildAt(i);
+                star.setImageDrawable(drawableMap.get("star_empty"));
+            }
+        });
 
 
         this.activityResultLauncher = registerForActivityResult(
@@ -220,8 +243,8 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
 
         cardsAdapter = new ProfileAdapterPost(
                 profilePosts,
-                view -> {
-                    Toast.makeText(ProfileActivity.this, view.getId() + " clicked", Toast.LENGTH_SHORT)
+                postProfile -> {
+                    Toast.makeText(ProfileActivity.this, postProfile.getTitre() + " clicked", Toast.LENGTH_SHORT)
                             .show();
                 });
 
@@ -235,8 +258,8 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
 
         reviewsAdapter = new ProfileAdapterReview(
                 reviewProfiles,
-                view -> {
-                    Toast.makeText(ProfileActivity.this, view.getId() + " clicked", Toast.LENGTH_SHORT)
+                reviewProfile -> {
+                    Toast.makeText(ProfileActivity.this, reviewProfile.getReviewStars() + " clicked", Toast.LENGTH_SHORT)
                             .show();
                 });
 
@@ -260,7 +283,6 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     }
 
     public void onClickWriteReviewPopup(View view) {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
         View popupView = layoutInflater.inflate(R.layout.write_review_layout, null);
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -272,9 +294,21 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
+    public void onClickSubmitReview(View view) {
+        View mainLayout = layoutInflater.inflate(R.layout.write_review_layout, null);
+        TextInputLayout reviewTextLayout = mainLayout.findViewById(R.id.review_text);
+
+        if(reviewTextLayout == null && reviewTextLayout.getEditText() == null) return;
+        String reviewBody = reviewTextLayout.getEditText().getText().toString();
+        this.reviewViewModel.updateBodyByIds(
+                temp_current_profile_id,
+                temp_self_profile_id,
+                reviewBody
+        );
+    }
+
     public void onClickUpdateStars(View view) {
         String starTag = (String) view.getTag();
-        LinearLayout starContainer = findViewById(R.id.star_container);
 
         int starIndex = Integer.parseInt(
                 starTag.chars()
@@ -284,14 +318,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                 .collect(Collectors.joining())
         );
 
-        for (int i = 0; i < starIndex; i++) {
-            ImageButton star = (ImageButton) starContainer.getChildAt(i);
-            star.setImageDrawable(drawableMap.get("star_full"));
-        }
-        for (int i = starIndex; i < starContainer.getChildCount(); i++) {
-            ImageButton star = (ImageButton) starContainer.getChildAt(i);
-            star.setImageDrawable(drawableMap.get("star_empty"));
-        }
+        this.reviewViewModel.updateRatingByIds(temp_current_profile_id, temp_self_profile_id, starIndex);
     }
 
     @Override

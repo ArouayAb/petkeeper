@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.Profile;
+import ma.ensam.petkeeper.entities.Review;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.entities.relations.ProfileWithReviewsOnIt;
 import ma.ensam.petkeeper.entities.relations.UserAndProfile;
@@ -58,7 +59,7 @@ public class ProfileViewModel extends AndroidViewModel {
         return this.repository.findProfileWithOffersById(id);
     }
 
-    public LiveData<ProfileWithReviewsOnIt> findProfileWithReviewsOnIt(long id) {
-        return this.repository.findProfileWithReviewsOnIt(id);
+    public LiveData<List<ProfileWithReviewsOnIt>> findProfilesWithReviewsOnIt(long id) {
+        return this.repository.findProfilesWithReviewsOnIt(id);
     }
 }

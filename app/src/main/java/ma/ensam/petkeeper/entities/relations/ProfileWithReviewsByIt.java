@@ -14,7 +14,7 @@ public class ProfileWithReviewsByIt {
 
     @Relation(
             parentColumn = "id",
-            entityColumn = "reviewerProfileId"
+            entityColumn = "revieweeProfileId"
     )
 
     public List<Review> reviews;

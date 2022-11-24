@@ -20,6 +20,6 @@ public interface RelationDao {
     @Query("SELECT * FROM offers JOIN profiles ON profiles.id = offers.profileCreatorId WHERE profiles.id = :id")
     LiveData<ProfileWithOffers> findProfileWithOffersById(long id);
 
-    @Query("SELECT * FROM reviews JOIN profiles ON profiles.id = reviews.revieweeProfileId WHERE reviews.revieweeProfileId = :id")
-    LiveData<ProfileWithReviewsOnIt> findProfileWithReviewsOnIt(long id);
+    @Query("SELECT * FROM reviews JOIN profiles ON profiles.id = reviews.reviewerProfileId WHERE reviews.revieweeProfileId = :id")
+    LiveData<List<ProfileWithReviewsOnIt>> findProfilesWithReviewsOnIt(long id);
 }
