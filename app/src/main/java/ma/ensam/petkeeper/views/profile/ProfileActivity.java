@@ -141,8 +141,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                         Intent data = result.getData();
 
                         Uri uri = Objects.requireNonNull(data).getData();
-                        String filePath = null;
-                        try {
+                        String filePath = null;try {
                             filePath = PathUtility.getPath(ProfileActivity.this, uri);
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
@@ -198,6 +197,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                             OfferKeeperActivity.class : OfferOwnerActivity.class;
                     Intent offerActivityIntent = new Intent(this, targetActivity);
                     offerActivityIntent.putExtra("offerId", offerProfile.getId());
+                    offerActivityIntent.putExtra("currentProfileId", this.self_profile_id);
                     this.activityResultLauncher.launch(offerActivityIntent);
                 });
 
@@ -275,7 +275,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
 
     public void onClickRedirectToNewOffer(View view) {
         Intent offerActivityIntent = new Intent(this, NewOfferActivity.class);
-        offerActivityIntent.putExtra("profileId", self_profile_id);
+        offerActivityIntent.putExtra("currentProfileId", self_profile_id);
         this.activityResultLauncher.launch(offerActivityIntent);
     }
 
