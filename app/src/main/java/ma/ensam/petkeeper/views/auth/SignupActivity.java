@@ -71,8 +71,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         });
 
-
-
         login_btn.setOnClickListener(this);
 
     }
