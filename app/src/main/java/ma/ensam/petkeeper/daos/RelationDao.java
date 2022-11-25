@@ -14,7 +14,7 @@ import ma.ensam.petkeeper.entities.relations.UserAndProfile;
 @Dao
 public interface RelationDao {
     @Transaction
-    @Query("SELECT * FROM profiles JOIN users ON users.id = profiles.userId WHERE users.id = :id")
+    @Query("SELECT * FROM profiles JOIN users ON users.id = profiles.userId WHERE profiles.id = :id")
     LiveData<UserAndProfile> findProfileWithUserById(long id);
 
     @Query("SELECT * FROM offers JOIN profiles ON profiles.id = offers.profileCreatorId WHERE profiles.id = :id")

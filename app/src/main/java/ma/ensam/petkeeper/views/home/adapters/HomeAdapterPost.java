@@ -1,4 +1,4 @@
-package ma.ensam.petkeeper.views.home.adapter;
+package ma.ensam.petkeeper.views.home.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.models.PostHome;
 
-public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewModel>{
+public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHolder>{
 
     ArrayList<PostHome> allPosts;
     private HomeAdapterPost.ItemClickedListener mItemListener;
@@ -27,16 +27,17 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewMo
         this.allPosts =  petCategories;
         this.mItemListener = mItemListener;
     }
+
     @NonNull
     @Override
-    public HomeAdapterPost.ViewModel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeAdapterPost.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_home_post,parent,false);
-        return new HomeAdapterPost.ViewModel(inflate);
+        return new HomeAdapterPost.ViewHolder(inflate);
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBindViewHolder(@NonNull HomeAdapterPost.ViewModel holder, int position) {
+    public void onBindViewHolder(@NonNull HomeAdapterPost.ViewHolder holder, int position) {
         holder.postUserName.setText(allPosts.get(position).getUserName());
         holder.postPet.setText(allPosts.get(position).getPet());
         holder.postFrom.setText(allPosts.get(position).getFrom());
@@ -70,13 +71,14 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewMo
         void onClickSeeProfile(String ownerProfileOrOwnerProfileId);
     }
 
-    public class ViewModel extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView postUserName, postPet, postType, postFrom, postTo, postGender, postDuration,postDesc;
         ImageView postImage;
         ConstraintLayout constraintLayout;
         LinearLayout seePostLayout;
 
-        public ViewModel(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             postUserName = itemView.findViewById(R.id.user_name_id);
             postDesc = itemView.findViewById(R.id.post_desc_id);

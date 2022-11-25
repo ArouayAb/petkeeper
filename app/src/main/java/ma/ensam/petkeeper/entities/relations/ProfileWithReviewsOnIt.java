@@ -6,15 +6,18 @@ import androidx.room.Relation;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.Profile;
+import ma.ensam.petkeeper.entities.Review;
 
 public class ProfileWithReviewsOnIt {
     @Embedded
     public Profile profile;
 
     @Relation(
+            entity = Review.class,
             parentColumn = "id",
             entityColumn = "reviewerProfileId"
     )
 
-    public List<Profile> reviewers;
+    public Review review;
+
 }

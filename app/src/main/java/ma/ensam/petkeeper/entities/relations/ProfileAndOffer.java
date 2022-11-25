@@ -8,8 +8,7 @@ import java.util.List;
 import ma.ensam.petkeeper.entities.Offer;
 import ma.ensam.petkeeper.entities.Profile;
 
-public class ProfileWithOffers {
-
+public class ProfileAndOffer {
     @Embedded
     public Profile profile;
 
@@ -18,5 +17,5 @@ public class ProfileWithOffers {
             parentColumn = "id",
             entityColumn = "profileCreatorId"
     )
-    public List<Offer> offers;
+    public Offer offer;
 }

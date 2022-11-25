@@ -8,7 +8,7 @@ import ma.ensam.petkeeper.entities.User;
 
 public class UserAndProfile {
 
-    @Embedded public Profile profile;
+    @Embedded public User user;
 
     @Relation(
             entity = User.class,
@@ -16,5 +16,5 @@ public class UserAndProfile {
             entityColumn = "id"
     )
 
-    public User user;
+    public Profile profile;
 }

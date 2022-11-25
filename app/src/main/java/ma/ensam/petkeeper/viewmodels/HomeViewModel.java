@@ -1,4 +1,4 @@
-package ma.ensam.petkeeper.views.home;
+package ma.ensam.petkeeper.viewmodels;
 
 import java.util.ArrayList;
 
