@@ -5,17 +5,17 @@ import androidx.room.Relation;
 
 import java.util.List;
 
+import ma.ensam.petkeeper.entities.Offer;
 import ma.ensam.petkeeper.entities.Profile;
-import ma.ensam.petkeeper.entities.Review;
 
-public class ProfileWithReviewsByIt {
-
-    @Embedded public Profile profile;
+public class ProfileAndOffer {
+    @Embedded
+    public Profile profile;
 
     @Relation(
+            entity = Offer.class,
             parentColumn = "id",
-            entityColumn = "revieweeProfileId"
+            entityColumn = "profileCreatorId"
     )
-
-    public List<Review> reviews;
+    public Offer offer;
 }

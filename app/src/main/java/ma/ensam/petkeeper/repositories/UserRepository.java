@@ -30,22 +30,32 @@ public class UserRepository {
         this.allUsers = this.userDao.findAll();
     }
 
-    public void insert(User user) {
-        this.executor.execute(() -> {
-            this.userDao.insert(user);
-        });
-    }
-
     public void update(User user) {
         this.executor.execute(() -> {
             this.userDao.update(user);
         });
     }
 
-    public void delete(User user){
+    public void delete(User user) {
         this.executor.execute(() -> {
             this.userDao.delete(user);
         });
+    }
+
+    public long insert(User user) {
+        CompletableFuture<Long> id = CompletableFuture.supplyAsync(
+                () -> userDao.insert(user)
+        );
+        try {
+            return id.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public LiveData<User> login(User user){
+        return this.userDao.login(user.getEmail(),user.getPassword());
     }
 
     public LiveData<User> findById(long id) {

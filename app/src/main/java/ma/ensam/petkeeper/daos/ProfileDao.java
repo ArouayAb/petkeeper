@@ -15,13 +15,16 @@ import ma.ensam.petkeeper.entities.Profile;
 public interface ProfileDao {
 
     @Insert
-    void insert(Profile profile);
+    long insert(Profile profile);
 
     @Insert
     void insertAll(Profile... profiles);
 
     @Update
     void update(Profile profile);
+
+    @Query("UPDATE profiles SET profilePicUrl = :profilePicUrl WHERE id = :id")
+    void updateProfilePicUrlById(long id, String profilePicUrl);
 
     @Delete
     void delete(Profile profile);

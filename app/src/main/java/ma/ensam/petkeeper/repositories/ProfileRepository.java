@@ -20,7 +20,9 @@ import ma.ensam.petkeeper.config.database.AppDatabase;
 import ma.ensam.petkeeper.daos.ProfileDao;
 import ma.ensam.petkeeper.daos.RelationDao;
 import ma.ensam.petkeeper.entities.Profile;
+import ma.ensam.petkeeper.entities.Review;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
+import ma.ensam.petkeeper.entities.relations.ProfileWithReviewsOnIt;
 import ma.ensam.petkeeper.entities.relations.UserAndProfile;
 
 public class ProfileRepository {
@@ -30,7 +32,6 @@ public class ProfileRepository {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Application application;
 
-
     public ProfileRepository(Application application) {
         this.application = application;
         AppDatabase db = AppDatabase.getInstance(application);
@@ -39,15 +40,27 @@ public class ProfileRepository {
         this.allProfiles = this.profileDao.findAll();
     }
 
-    public void insert(Profile profile) {
-        this.executor.execute(() -> {
-            this.profileDao.insert(profile);
-        });
+    public long insert(Profile profile) {
+        CompletableFuture<Long> id = CompletableFuture.supplyAsync(
+                () -> profileDao.insert(profile)
+        );
+        try {
+            return id.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public void update(Profile profile) {
         this.executor.execute(() -> {
             this.profileDao.update(profile);
+        });
+    }
+
+    public void updateProfilePicUrlById(long id, String profilePicUrl) {
+        this.executor.execute(() -> {
+            this.profileDao.updateProfilePicUrlById(id, profilePicUrl);
         });
     }
 
@@ -100,4 +113,16 @@ public class ProfileRepository {
         }
     }
 
+    public LiveData<List<ProfileWithReviewsOnIt>> findProfilesWithReviewsOnIt(long id) {
+        try {
+            CompletableFuture<LiveData<List<ProfileWithReviewsOnIt>>> profileWithReviews = CompletableFuture.supplyAsync(
+                    () -> relationDao.findProfilesWithReviewsOnIt(id)
+            );
+
+            return profileWithReviews.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
