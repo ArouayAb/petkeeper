@@ -1,6 +1,7 @@
 package ma.ensam.petkeeper.config.database;
 
 import android.content.Context;
+import android.os.Environment;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -13,6 +14,7 @@ import java.util.Date;
 
 import ma.ensam.petkeeper.daos.OfferDao;
 import ma.ensam.petkeeper.daos.ProfileDao;
+import ma.ensam.petkeeper.daos.RelationDao;
 import ma.ensam.petkeeper.daos.ReviewDao;
 import ma.ensam.petkeeper.daos.UserDao;
 import ma.ensam.petkeeper.entities.Offer;
@@ -38,9 +40,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ReviewDao reviewDao();
 
+    public abstract RelationDao relationDao();
+
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = Room.databaseBuilder(context, AppDatabase.class, "petkeeper-db")
+            instance = Room.databaseBuilder(context, AppDatabase.class,
+                            "petkeeper-db")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallBack)
                     .build();
@@ -56,16 +61,28 @@ public abstract class AppDatabase extends RoomDatabase {
             new Thread(() -> {
                 instance.userDao().insertAll(
                         new User("user1@gmail.com", "password1"),
-                        new User("user2@gmail.com", "password2")
+                        new User("user2@gmail.com", "password2"),
+                        new User("user3@gmail.com", "password3"),
+                        new User("user4@gmail.com", "password4"),
+                        new User("user5@gmail.com", "password5")
                 );
 
                 instance.profileDao().insertAll(
                         new Profile("fullname1", "0610203040",
-                                "user1 desc", "pic_url",
-                                "marrakesh, morocco", 1),
+                                "user1 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 1),
                         new Profile("fullname2", "0611203040",
-                                "user2 desc", "pic_url",
-                                "marrakesh, morocco", 2)
+                                "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 2),
+                        new Profile("fullname2", "0611203041",
+                                "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 3),
+                        new Profile("fullname2", "0611203042",
+                                "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 4),
+                        new Profile("fullname2", "0611203043",
+                                "user2 desc", Environment.getExternalStorageDirectory().getPath() + "/Download/LnRrYf6e_400x400.jpg",
+                                "morocco", "marrakech", 5)
                 );
 
                 instance.offerDao().insertAll(
@@ -74,11 +91,18 @@ public abstract class AppDatabase extends RoomDatabase {
                                 new Date(), new Date(), 1),
                         new Offer(OfferType.OWNER, PetSpecies.DOG, "d o g",
                                 "big  m a l e  sleepy dog", "img_url",new Date(),
+                                new Date(), new Date(), 1),
+                        new Offer(OfferType.OWNER, PetSpecies.DOG, "DOG AHEAD",
+                                "big pansexual non binary dog", "img_url",new Date(),
                                 new Date(), new Date(), 1)
+
                 );
 
                 instance.reviewDao().insertAll(
                         new Review(1,2, 1, "very bad"),
+                        new Review(3,1, 2, "mildly bad"),
+                        new Review(4,1, 3, "mediocre"),
+                        new Review(5,1, 4, "good"),
                         new Review(2, 1, 1, "very bad too >:(")
                 );
 

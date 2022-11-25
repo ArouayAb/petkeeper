@@ -16,9 +16,10 @@ import android.widget.Toast;
 import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.models.PetCategory;
 import ma.ensam.petkeeper.models.PostHome;
+import ma.ensam.petkeeper.viewmodels.HomeViewModel;
 import ma.ensam.petkeeper.views.auth.LoginActivity;
-import ma.ensam.petkeeper.views.home.adapter.HomeAdapterCategory;
-import ma.ensam.petkeeper.views.home.adapter.HomeAdapterPost;
+import ma.ensam.petkeeper.views.home.adapters.HomeAdapterCategory;
+import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -93,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
         RecyclerView recyclerViewCategoryList = findViewById(R.id.recycler_post_id);
         recyclerViewCategoryList.setLayoutManager(linearLayoutManager);
 
-        RecyclerView.Adapter<HomeAdapterPost.ViewModel> adapter = new HomeAdapterPost(HomeViewModel.getAllPosts(), new HomeAdapterPost.ItemClickedListener() {
+        RecyclerView.Adapter<HomeAdapterPost.ViewHolder> adapter = new HomeAdapterPost(HomeViewModel.getAllPosts(), new HomeAdapterPost.ItemClickedListener() {
             @Override
             public void onClickItem(PostHome postHome) {
                 ShowToast(postHome.getUserName()+" said : "+postHome.getDescription());

@@ -2,18 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.profile.ProfileActivity" >
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/add_offer_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="50dp"
         android:backgroundTint="#FFB82E"
         android:clickable="true"
+        android:onClick="onClickRedirectToNewOffer"
         android:contentDescription="@string/add_button_str"
         app:backgroundTint="#0000"
         app:layout_constraintBottom_toBottomOf="@+id/header_separator"
@@ -37,6 +39,8 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="5sp"
                 android:paddingEnd="5sp"
+                android:clickable="true"
+                android:onClick="onClickReturnToPreviousActivity"
                 android:text="Profile"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
@@ -57,6 +61,7 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/upper_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -74,15 +79,19 @@
                         app:shapeAppearanceOverlay="@style/roundedCorners"
                         app:srcCompat="@drawable/avatar_placeholder" />
 
-                    <ImageView
-                        android:id="@+id/rating"
-                        android:layout_width="96dp"
-                        android:layout_height="16dp"
+                    <RatingBar
+                        android:id="@+id/profile_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:layout_marginBottom="6dp"
-                        android:contentDescription="desc_placeholder"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/img_1"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:stepSize="0.1"
+                        android:rating="3.0"
+                        android:max="5"
+                        android:numStars="5"
+                        android:progressTint="@color/petkeeper_yellow"
+                        android:progressBackgroundTint="@color/petkeeper_yellow"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.501"
@@ -111,7 +120,7 @@
                         android:layout_marginTop="3dp"
                         android:layout_marginBottom="3dp"
                         android:text="+212 6 61 22 43 32"
-                        app:layout_constraintBottom_toTopOf="@+id/rating"
+                        app:layout_constraintBottom_toTopOf="@+id/profile_rating"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.501"
                         app:layout_constraintStart_toStartOf="parent"
@@ -133,23 +142,10 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/general_info"
                     android:layout_width="match_parent"
-                    android:layout_height="193dp">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/favorite_pet_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Favorite pet"
-                        android:textColor="@color/black"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/country_value"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/city_label" />
 
                     <TextView
                         android:id="@+id/email_label"
@@ -166,7 +162,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/country_value"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/favorite_pet_label" />
+                        app:layout_constraintTop_toBottomOf="@+id/city_label" />
 
                     <TextView
                         android:id="@+id/email_value"
@@ -178,17 +174,6 @@
                         android:text="email.dd@gmail.com"
                         android:textSize="13sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/favorite_pet_value" />
-
-                    <TextView
-                        android:id="@+id/favorite_pet_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="220dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Cat"
-                        android:textSize="13sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/city_value" />
 
@@ -285,24 +270,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <HorizontalScrollView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_cards"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fillViewport="true"
-                        app:layout_constraintTop_toBottomOf="@+id/posts_tab"
-                        tools:layout_editor_absoluteX="0dp">
+                        app:layout_constraintTop_toBottomOf="@+id/posts_tab">
 
-                        <LinearLayout
-                            android:id="@+id/card_container"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <!--                        Duplicate-->
-
-                        </LinearLayout>
-                    </HorizontalScrollView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -310,7 +284,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/review_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -335,20 +310,18 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <LinearLayout
+                        <com.google.android.flexbox.FlexboxLayout
                             android:id="@+id/star_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/reviews_tab"
                             android:layout_marginTop="15dp"
-                            android:orientation="horizontal">
+                            app:justifyContent="space_evenly">
 
                             <ImageButton
                                 android:id="@+id/star_1"
                                 android:tag="star1"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:layout_marginStart="29dp"
                                 android:background="@android:color/transparent"
                                 android:contentDescription="@string/star_number"
                                 android:scaleType="centerCrop"
@@ -361,7 +334,6 @@
                                 android:tag="star2"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:layout_marginStart="29dp"
                                 android:background="@android:color/transparent"
                                 android:contentDescription="@string/star_number"
                                 android:scaleType="centerCrop"
@@ -374,7 +346,6 @@
                                 android:tag="star3"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:layout_marginStart="29dp"
                                 android:background="@android:color/transparent"
                                 android:contentDescription="@string/star_number"
                                 android:scaleType="centerCrop"
@@ -387,7 +358,6 @@
                                 android:tag="star4"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:layout_marginStart="29dp"
                                 android:background="@android:color/transparent"
                                 android:contentDescription="@string/star_number"
                                 android:scaleType="centerCrop"
@@ -400,14 +370,13 @@
                                 android:tag="star5"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:layout_marginStart="29dp"
                                 android:background="@android:color/transparent"
                                 android:contentDescription="@string/star_number"
                                 android:scaleType="centerCrop"
                                 app:srcCompat="@drawable/star_empty"
                                 android:clickable="true"
                                 android:onClick="onClickUpdateStars"/>
-                        </LinearLayout>
+                        </com.google.android.flexbox.FlexboxLayout>
 
                         <TextView
                             android:id="@+id/write_review"
@@ -415,7 +384,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="29dp"
-                            android:layout_marginTop="112dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
                             android:clickable="true"
                             android:gravity="center"
                             android:minHeight="48dp"
@@ -428,19 +398,17 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/review_container"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_below="@+id/write_review"
-                            android:layout_marginTop="15dp"
-                            android:orientation="vertical"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="true"
+                            android:scrollbars="vertical"
+                            android:minHeight="110dp"
                             app:layout_constraintBottom_toBottomOf="parent">
 
-                            <!--                        Duplicate-->
-
-                        </LinearLayout>
-                    </RelativeLayout>
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

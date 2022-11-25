@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ma.ensam.petkeeper.R;
+import ma.ensam.petkeeper.viewmodels.AuthViewModel;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
