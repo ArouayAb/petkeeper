@@ -62,10 +62,10 @@ public abstract class AppDatabase extends RoomDatabase {
                 instance.profileDao().insertAll(
                         new Profile("fullname1", "0610203040",
                                 "user1 desc", "pic_url",
-                                "marrakesh, morocco", 1),
+                                "marrakesh"," morocco", 1),
                         new Profile("fullname2", "0611203040",
                                 "user2 desc", "pic_url",
-                                "marrakesh, morocco", 2)
+                                "marrakesh"," morocco", 2)
                 );
 
                 instance.offerDao().insertAll(

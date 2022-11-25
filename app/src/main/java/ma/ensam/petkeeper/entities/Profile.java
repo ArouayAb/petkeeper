@@ -17,16 +17,19 @@ public class Profile {
 
     private String profilePicUrl;
 
-    private String address;
+    private String country;
+
+    private String city;
 
     private long userId;
 
-    public Profile(String fullName, String phoneNumber, String about, String profilePicUrl, String address, long userId) {
+    public Profile(String fullName, String phoneNumber, String about, String profilePicUrl, String country, String city, long userId) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.about = about;
         this.profilePicUrl = profilePicUrl;
-        this.address = address;
+        this.country = country;
+        this.city = city;
         this.userId = userId;
     }
 
@@ -70,12 +73,20 @@ public class Profile {
         this.profilePicUrl = profilePicUrl;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCountry() {
+        return country;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public long getUserId() {

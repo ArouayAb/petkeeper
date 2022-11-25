@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class BitmapUtility {
@@ -28,5 +31,16 @@ public class BitmapUtility {
         }
 
         return bitmap;
+    }
+
+    public static Bitmap extractFromPath(String url) {
+        File imageFile = new File(url);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(imageFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return BitmapFactory.decodeStream(fis);
     }
 }

@@ -11,7 +11,8 @@ import java.util.concurrent.ExecutionException;
 import ma.ensam.petkeeper.config.database.AppDatabase;
 import ma.ensam.petkeeper.daos.OfferDao;
 import ma.ensam.petkeeper.entities.Offer;
-import ma.ensam.petkeeper.entities.relations.OfferWithCreator;
+import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
+import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 
 public class OfferRepository {
     private OfferDao offerDao;
@@ -40,21 +41,27 @@ public class OfferRepository {
         }
     }
 
-//    public LiveData<OfferWithCreator> findOfferAndCreatorByOfferId(long id) {
-//        CompletableFuture<LiveData<OfferWithCreator>> offer = CompletableFuture.supplyAsync(
-//                () -> offerDao.findOfferAndCreatorByOfferId(id)
-//        );
-//        try {
-//            return offer.get();
-//        } catch (ExecutionException | InterruptedException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public LiveData<ProfileAndOffer> findProfileAndOfferByOfferId(long id) {
+        CompletableFuture<LiveData<ProfileAndOffer>> pwo = CompletableFuture.supplyAsync(
+                () -> offerDao.findOfferAndProfileByOfferId(id)
+        );
+        try {
+            return pwo.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-    public void insert(Offer offer) {
-        new Thread(() -> {
-            offerDao.insert(offer);
-        }).start();
+    public long insert(Offer offer) {
+        CompletableFuture<Long> id = CompletableFuture.supplyAsync(
+                () -> offerDao.insert(offer)
+        );
+        try {
+            return id.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

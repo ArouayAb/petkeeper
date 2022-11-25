@@ -69,12 +69,12 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--                android:entries="@array/offer_types"-->
             <Spinner
                 android:id="@+id/spOfferTypes"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/custom_spinner"
-                android:entries="@array/offer_types"
                 android:dropDownVerticalOffset="47dp"
                 android:popupBackground="@drawable/custom_input"
                 android:padding="4dp"
@@ -148,12 +148,12 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnUploadImage" />
 
+<!--            android:entries="@array/pet_types"-->
             <Spinner
                 android:id="@+id/spPetTypes"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/custom_spinner"
-                android:entries="@array/pet_types"
                 android:dropDownVerticalOffset="47dp"
                 android:popupBackground="@drawable/custom_input"
                 android:padding="4dp"

@@ -8,7 +8,8 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.Offer;
-import ma.ensam.petkeeper.entities.relations.OfferWithCreator;
+import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
+import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.repositories.OfferRepository;
 
 public class OfferViewModel extends AndroidViewModel {
@@ -27,16 +28,16 @@ public class OfferViewModel extends AndroidViewModel {
         return allOffers;
     }
 
-    public void insert(Offer offer) {
-        offerRepository.insert(offer);
+    public long insert(Offer offer) {
+        return offerRepository.insert(offer);
     }
 
-    public LiveData<Offer> findById(Long id) {
+    public LiveData<Offer> findById(long id) {
         return offerRepository.findById(id);
     }
 
-    public LiveData<OfferWithCreator> findOfferAndCreatorByOfferId(Long id) {
-        return offerRepository.findOfferAndCreatorByOfferId(id);
+    public LiveData<ProfileAndOffer> findProfileAndOfferByOfferId(long id) {
+        return offerRepository.findProfileAndOfferByOfferId(id);
     }
 
 }

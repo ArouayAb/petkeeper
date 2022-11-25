@@ -11,13 +11,14 @@ import androidx.room.Update;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.Offer;
-import ma.ensam.petkeeper.entities.relations.OfferWithCreator;
+import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
+import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 
 @Dao
 public interface OfferDao {
 
     @Insert
-    void insert(Offer offer);
+    long insert(Offer offer);
 
     @Insert
     void insertAll(Offer... offers);
@@ -31,10 +32,10 @@ public interface OfferDao {
     @Query("SELECT * FROM offers WHERE id = :id")
     LiveData<Offer> findById(long id);
 
-//    @Transaction
-//    @Query("SELECT * FROM offers WHERE id = :id")
-//    LiveData<OfferWithCreator> findOfferAndCreatorByOfferId(long id);
-
     @Query("SELECT * FROM offers")
     LiveData<List<Offer>> findAll();
+
+    @Transaction
+    @Query("SELECT * FROM offers JOIN profiles ON offers.profileCreatorId = profiles.id WHERE offers.id = :id")
+    LiveData<ProfileAndOffer> findOfferAndProfileByOfferId(long id);
 }

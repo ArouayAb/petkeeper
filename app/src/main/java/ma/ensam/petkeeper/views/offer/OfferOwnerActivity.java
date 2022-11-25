@@ -14,15 +14,13 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ma.ensam.petkeeper.R;
-import ma.ensam.petkeeper.entities.Offer;
-import ma.ensam.petkeeper.entities.relations.OfferWithCreator;
-import ma.ensam.petkeeper.entities.relations.UserAndProfile;
+import ma.ensam.petkeeper.config.database.AppDatabase;
+import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
+import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.viewmodels.OfferViewModel;
-import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
 
 public class OfferOwnerActivity extends AppCompatActivity {
     OfferViewModel offerViewModel;
-    ProfileViewModel profileViewModel;
     long offerId;
 
     ImageView ivProfilePic;
@@ -42,32 +40,42 @@ public class OfferOwnerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_owner);
 
-        offerId = 1; // TEST-ONLY
+        bindViews();
 
+        offerViewModel = ViewModelProviders.of(OfferOwnerActivity.this)
+                .get(OfferViewModel.class);
+        offerId = getIntent().getLongExtra("offerId", 0);
+        if (offerId == 0) {
+            Toast.makeText(
+                    OfferOwnerActivity.this,
+                    "Error retrieving offer details",
+                    Toast.LENGTH_LONG
+            ).show();
+        } else {
+            fetchOfferAndUpdateActivity();
+        }
+
+        btnCall.setOnClickListener(view -> {
+            String number = "0669696969";
+            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number)));
+        });
+    }
+
+    private void fetchOfferAndUpdateActivity() {
         try {
-//            offerViewModel = ViewModelProviders.of(OfferOwnerActivity.this)
-//                    .get(OfferViewModel.class);
-
-            profileViewModel = ViewModelProviders.of(OfferOwnerActivity.this)
-                    .get(ProfileViewModel.class);
-
-            profileViewModel.findProfileAndUserByProfileId(offerId).observe(this,
-                    userAndProfile -> {
-                        tvProfileName.setText(userAndProfile.profile.getFullName());
-                        tvOfferDate.setText(userAndProfile.user.getEmail());
-                    });
-
-//            offerViewModel.findOfferAndCreatorByOfferId(offerId).observe(
-//                    OfferOwnerActivity.this,
-//                    this::updateView);
+            offerViewModel.findProfileAndOfferByOfferId(offerId).observe(
+                    OfferOwnerActivity.this,
+                    this::updateView);
         } catch (Exception e) {
             Toast.makeText(
                     OfferOwnerActivity.this,
-                    e.getMessage(),
+                    "Error : " + e.getMessage(),
                     Toast.LENGTH_LONG
             ).show();
         }
+    }
 
+    private void bindViews() {
         ivProfilePic = findViewById(R.id.ivProfilePic);
         tvProfileName = findViewById(R.id.tvProfileName);
         tvOfferDate = findViewById(R.id.tvOfferDate);
@@ -79,23 +87,21 @@ public class OfferOwnerActivity extends AppCompatActivity {
         tvToResp = findViewById(R.id.tvToResp);
         tvDurationResp = findViewById(R.id.tvDurationResp);
         btnCall = findViewById(R.id.btnCall);
-
-        btnCall.setOnClickListener(view -> {
-            String number = "0669696969";
-            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number)));
-        });
     }
 
-//    public void updateView(OfferWithCreator owc) {
-//        // ivProfilePic
-//        tvProfileName.setText(owc.creator.getFullName());
-//        tvOfferDate.setText(owc.offer.getCreationDate().toString());
-//        tvOfferDescr.setText(owc.offer.getDescription());
-//        // ivPetImage
-//        tvPetResp.setText(owc.offer.getPet().name());
-//        tvAddressResp.setText(owc.creator.getAddress());
-//        tvFromResp.setText(owc.offer.getFromDate().toString());
-//        tvToResp.setText(owc.offer.getToDate().toString());
-//        // tvDuration
-//    }
+    public void updateView(ProfileAndOffer pwo) {
+        // ivProfilePic
+        tvProfileName.setText(pwo.profile.getFullName());
+        tvOfferDate.setText(pwo.offer.getCreationDate().toString());
+        tvOfferDescr.setText(pwo.offer.getDescription());
+        // ivPetImage
+        tvPetResp.setText(pwo.offer.getPet().name());
+        tvAddressResp.setText(pwo.profile.getCity() + ", " + pwo.profile.getCountry());
+        tvFromResp.setText(pwo.offer.getFromDate().toString());
+        tvToResp.setText(pwo.offer.getToDate().toString());
+
+        float daysBetween = (pwo.offer.getToDate().getTime()
+                - pwo.offer.getFromDate().getTime()) / (1000 * 60 * 60 * 24);
+        tvDurationResp.setText(daysBetween + " days");
+    }
 }

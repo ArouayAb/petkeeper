@@ -3,48 +3,79 @@ package ma.ensam.petkeeper.views.offer;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Objects;
 
 import ma.ensam.petkeeper.R;
+import ma.ensam.petkeeper.config.database.AppDatabase;
+import ma.ensam.petkeeper.entities.Offer;
+import ma.ensam.petkeeper.entities.enums.OfferType;
+import ma.ensam.petkeeper.entities.enums.PetSpecies;
+import ma.ensam.petkeeper.utils.PathUtility;
+import ma.ensam.petkeeper.viewmodels.OfferViewModel;
 
 public class NewOfferActivity extends AppCompatActivity {
+    OfferViewModel offerViewModel;
+    ActivityResultLauncher<Intent> activityResultLauncher;
+    DatePickerDialog.OnDateSetListener startDateListener;
+    DatePickerDialog.OnDateSetListener endDateListener;
+
+    Spinner spOfferType;
+    EditText etOfferTitle;
+    TextView btnUploadImage;
+    Spinner spPetType;
     TextView etStartDate;
     TextView etEndDate;
-    TextView btnUploadImage;
+    EditText etOfferDesc;
     MaterialButton btnSubmit;
-    ActivityResultLauncher<Intent> activityResultLauncher;
+
+    Uri petImageUri;
+    List<OfferType> offerTypes;
+    List<PetSpecies> petSpecies;
+    int startDay;
+    int startMonth;
+    int startYear;
+    int endDay;
+    int endMonth;
+    int endYear;
+    String petImagePath;
+
+    long profileId = 1; // TEST-ONLY
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_offer);
 
-        etStartDate = findViewById(R.id.etStartDate);
-        etEndDate = findViewById(R.id.etEndDate);
-        btnSubmit = findViewById(R.id.btnSubmit);
-        btnUploadImage = findViewById(R.id.btnUploadImage);
+        offerViewModel = ViewModelProviders.of(NewOfferActivity.this)
+                .get(OfferViewModel.class);
 
-        this.activityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if(result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        System.out.println(Objects.requireNonNull(data).getData());
-                        btnUploadImage.setText("File chosen");
-                    }
-                }
-        );
+        bindViews();
+
+        populateSpinners();
+
+        init();
 
         btnUploadImage.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -52,34 +83,110 @@ public class NewOfferActivity extends AppCompatActivity {
             this.activityResultLauncher.launch(intent);
         });
 
-        Calendar calendar = Calendar.getInstance();
+        pickDate(etStartDate, startDateListener);
 
-        final int startDay = calendar.get(Calendar.DAY_OF_MONTH);
-        final int startMonth = calendar.get(Calendar.MONTH);
-        final int startYear = calendar.get(Calendar.YEAR);
-        pickDate(etStartDate, startDay, startMonth, startYear);
-
-        final int endDay = calendar.get(Calendar.DAY_OF_MONTH);
-        final int endMonth = calendar.get(Calendar.MONTH);
-        final int endYear = calendar.get(Calendar.YEAR);
-        pickDate(etEndDate, endDay, endMonth, endYear);
+        pickDate(etEndDate, endDateListener);
 
 
-        btnSubmit.setOnClickListener(view -> startActivity(new Intent(NewOfferActivity.this, OfferOwnerActivity.class)));
+        btnSubmit.setOnClickListener(view -> {
+            Offer offer = new Offer(
+                    (OfferType) spOfferType.getSelectedItem(),
+                    (PetSpecies) spPetType.getSelectedItem(),
+                    etOfferTitle.getText().toString(),
+                    etOfferDesc.getText().toString(),
+                    petImagePath,
+                    new GregorianCalendar(startYear, startMonth, startDay).getTime(),
+                    new GregorianCalendar(endYear, endMonth, endDay).getTime(),
+                    new Date(),
+                    profileId
+            );
+
+            long createdOfferId = offerViewModel.insert(offer);
+
+            Intent intent = new Intent(NewOfferActivity.this, OfferOwnerActivity.class);
+            intent.putExtra("offerId", createdOfferId);
+            startActivity(intent);
+        });
     }
 
-    public void pickDate(TextView input, int day, int month, int year) {
+    private void init() {
+        this.activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if(result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        petImageUri =  Objects.requireNonNull(data).getData();
+                        btnUploadImage.setText("File chosen");
+
+                        try {
+                            petImagePath = PathUtility.getPath(NewOfferActivity.this, petImageUri);
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+
+        startDateListener = (datePicker, year, month, day) -> {
+            int displayedMonth = month +1;
+            etStartDate.setText(day + "/" + displayedMonth + "/" + year);
+            startDay = day;
+            startMonth = month;
+            startYear = year;
+        };
+
+        endDateListener = (datePicker, year, month, day) -> {
+            int displayedMonth = month +1;
+            etEndDate.setText(day + "/" + displayedMonth + "/" + year);
+            endDay = day;
+            endMonth = month;
+            endYear = year;
+        };
+    }
+
+
+    private void bindViews() {
+        spOfferType = findViewById(R.id.spOfferTypes);
+        etOfferTitle = findViewById(R.id.etOfferTitle);
+        btnUploadImage = findViewById(R.id.btnUploadImage);
+        spPetType = findViewById(R.id.spPetTypes);
+        etStartDate = findViewById(R.id.etStartDate);
+        etEndDate = findViewById(R.id.etEndDate);
+        etOfferDesc = findViewById(R.id.etOfferDesc);
+        btnSubmit = findViewById(R.id.btnSubmit);
+    }
+
+    private void populateSpinners() {
+        offerTypes = Arrays.asList(OfferType.KEEPER, OfferType.OWNER);
+        petSpecies = Arrays.asList(PetSpecies.CAT, PetSpecies.DOG, PetSpecies.BIRD,
+                PetSpecies.FISH, PetSpecies.TURTLE);
+
+        ArrayAdapter<OfferType> offerTypeAdapter = new ArrayAdapter<OfferType>(
+                NewOfferActivity.this,
+                android.R.layout.simple_spinner_item,
+                offerTypes
+        );
+        offerTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spOfferType.setAdapter(offerTypeAdapter);
+        ArrayAdapter<PetSpecies> petSpeciesAdapter = new ArrayAdapter<PetSpecies>(
+                NewOfferActivity.this,
+                android.R.layout.simple_spinner_item,
+                petSpecies
+        );
+        petSpeciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spPetType.setAdapter(petSpeciesAdapter);
+    }
+
+    public void pickDate(TextView input, DatePickerDialog.OnDateSetListener dateListener) {
         input.setOnClickListener(view -> {
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
+
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     NewOfferActivity.this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker datePicker, int pickedYear, int pickedMonth, int pickedDay) {
-                            pickedMonth++;
-                            String startDate = pickedDay + "/" + pickedMonth + "/" + pickedYear;
-                            input.setText(startDate);
-                        }
-                    },
+                    dateListener,
                     year,
                     month,
                     day
