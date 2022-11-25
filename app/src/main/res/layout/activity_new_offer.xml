@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="20dp"
         android:clickable="true"

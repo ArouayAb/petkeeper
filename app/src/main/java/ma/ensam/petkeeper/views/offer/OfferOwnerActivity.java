@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ma.ensam.petkeeper.R;
+import ma.ensam.petkeeper.config.app.AppConfig;
 import ma.ensam.petkeeper.config.database.AppDatabase;
 import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
@@ -55,7 +56,7 @@ public class OfferOwnerActivity extends AppCompatActivity {
         offerId = getIntent().getLongExtra("offerId", 1);
         currentProfileId = getIntent().getLongExtra("currentProfileId", 1);
 
-        if (offerId == 1 || currentProfileId == 1) {
+        if (offerId == 0 || currentProfileId == 0) {
             Toast.makeText(
                     OfferOwnerActivity.this,
                     "Error retrieving offer details",
@@ -121,14 +122,14 @@ public class OfferOwnerActivity extends AppCompatActivity {
     public void updateView(ProfileAndOffer pwo) {
         ivProfilePic.setImageBitmap(BitmapUtility.extractFromPath(pwo.profile.getProfilePicUrl()));
         tvProfileName.setText(pwo.profile.getFullName());
-        tvOfferDate.setText(pwo.offer.getCreationDate().toString());
+        tvOfferDate.setText(AppConfig.dateFormat.format(pwo.offer.getCreationDate()));
         tvOfferTitle.setText(pwo.offer.getTitle());
         tvOfferDescr.setText(pwo.offer.getDescription());
         ivPetImage.setImageBitmap(BitmapUtility.extractFromPath(pwo.offer.getImage_url()));
         tvPetResp.setText(pwo.offer.getPet().name());
         tvAddressResp.setText(pwo.profile.getCity() + ", " + pwo.profile.getCountry());
-        tvFromResp.setText(pwo.offer.getFromDate().toString());
-        tvToResp.setText(pwo.offer.getToDate().toString());
+        tvFromResp.setText(AppConfig.dateFormat.format(pwo.offer.getFromDate()));
+        tvToResp.setText(AppConfig.dateFormat.format(pwo.offer.getToDate()));
 
         float daysBetween = (pwo.offer.getToDate().getTime()
                 - pwo.offer.getFromDate().getTime()) / (1000 * 60 * 60 * 24);
