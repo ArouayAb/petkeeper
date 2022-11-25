@@ -19,11 +19,16 @@ import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.utils.BitmapUtility;
 import ma.ensam.petkeeper.viewmodels.OfferViewModel;
+import ma.ensam.petkeeper.views.profile.ProfileActivity;
 
 public class OfferOwnerActivity extends AppCompatActivity {
     OfferViewModel offerViewModel;
     long offerId;
+    String phoneNumber;
+    Long currentProfileId;
+    Long offerCreatorProfileId;
 
+    ImageView btnOfferBack;
     ImageView ivProfilePic;
     TextView tvProfileName;
     TextView tvOfferDate;
@@ -46,8 +51,11 @@ public class OfferOwnerActivity extends AppCompatActivity {
 
         offerViewModel = ViewModelProviders.of(OfferOwnerActivity.this)
                 .get(OfferViewModel.class);
-        offerId = getIntent().getLongExtra("offerId", 0);
-        if (offerId == 0) {
+
+        offerId = getIntent().getLongExtra("offerId", 1);
+        currentProfileId = getIntent().getLongExtra("currentProfileId", 1);
+
+        if (offerId == 1 || currentProfileId == 1) {
             Toast.makeText(
                     OfferOwnerActivity.this,
                     "Error retrieving offer details",
@@ -57,17 +65,34 @@ public class OfferOwnerActivity extends AppCompatActivity {
             fetchOfferAndUpdateActivity();
         }
 
+        btnOfferBack.setOnClickListener(view -> OfferOwnerActivity.this.finish());
+
+        ivProfilePic.setOnClickListener(view -> goToProfile());
+        tvProfileName.setOnClickListener(view -> goToProfile());
+
         btnCall.setOnClickListener(view -> {
-            String number = "0669696969";
-            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number)));
+            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber)));
         });
+    }
+
+    private void goToProfile() {
+        Intent intent = new Intent(OfferOwnerActivity.this, ProfileActivity.class);
+        intent.putExtra("selfProfileId", currentProfileId);
+        intent.putExtra("currentProfileId", offerCreatorProfileId);
+        startActivity(intent);
     }
 
     private void fetchOfferAndUpdateActivity() {
         try {
             offerViewModel.findProfileAndOfferByOfferId(offerId).observe(
                     OfferOwnerActivity.this,
-                    this::updateView);
+                    pwo -> {
+                        if (pwo != null) {
+                            this.offerCreatorProfileId = pwo.profile.getId();
+                            this.phoneNumber = pwo.profile.getPhoneNumber();
+                            updateView(pwo);
+                        }
+                    });
         } catch (Exception e) {
             Toast.makeText(
                     OfferOwnerActivity.this,
@@ -78,6 +103,7 @@ public class OfferOwnerActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
+        btnOfferBack = findViewById(R.id.btnOfferBack);
         ivProfilePic = findViewById(R.id.ivProfilePic);
         tvProfileName = findViewById(R.id.tvProfileName);
         tvOfferDate = findViewById(R.id.tvOfferDate);

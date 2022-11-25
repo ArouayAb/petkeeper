@@ -8,16 +8,18 @@
     tools:context=".views.offer.NewOfferActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/OfferBack"
-        android:layout_width="match_parent"
+        android:id="@+id/newOfferBack"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp">
+        android:clickable="true"
+        tools:ignore="TouchTargetSizeCheck">
 
         <ImageView
-            android:id="@+id/btnBack"
+            android:id="@+id/btnNewOfferBack"
             android:layout_width="20dp"
             android:layout_height="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,14 +31,13 @@
             android:id="@+id/tvOffer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
             android:text="Offer"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/btnBack"
-            app:layout_constraintStart_toEndOf="@+id/btnBack"
-            app:layout_constraintTop_toTopOf="@+id/btnBack" />
+            app:layout_constraintBottom_toBottomOf="@+id/btnNewOfferBack"
+            app:layout_constraintStart_toEndOf="@+id/btnNewOfferBack"
+            app:layout_constraintTop_toTopOf="@+id/btnNewOfferBack" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,7 +62,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins"
                 android:text="Offer"
                 android:textColor="#000"
                 android:textSize="16sp"
@@ -76,17 +76,18 @@
                 android:layout_height="48dp"
                 android:background="@drawable/custom_spinner"
                 android:dropDownVerticalOffset="47dp"
-                android:popupBackground="@drawable/custom_input"
                 android:padding="4dp"
+                android:layout_marginTop="8dp"
+                android:popupBackground="@drawable/custom_input"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvOfferType" />
+                app:layout_constraintTop_toBottomOf="@id/tvOfferType"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/tvOfferTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins"
                 android:text="Title"
                 android:textColor="#000"
                 android:textSize="16sp"
@@ -99,10 +100,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_input"
-                android:fontFamily="@font/poppins"
                 android:hint="Give your offer a title"
                 android:inputType="text"
                 android:minHeight="48dp"
+                android:layout_marginTop="8dp"
                 android:padding="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvOfferTitle" />
@@ -125,9 +126,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/upload_button"
                 android:minHeight="48dp"
+                android:layout_marginTop="8dp"
                 android:padding="10dp"
                 android:textColor="#000"
-                android:fontFamily="@font/poppins"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:text="Choose file"
@@ -140,7 +141,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins"
                 android:text="Pet"
                 android:textColor="#000"
                 android:textSize="16sp"
@@ -155,17 +155,18 @@
                 android:layout_height="48dp"
                 android:background="@drawable/custom_spinner"
                 android:dropDownVerticalOffset="47dp"
-                android:popupBackground="@drawable/custom_input"
+                android:layout_marginTop="8dp"
                 android:padding="4dp"
+                android:popupBackground="@drawable/custom_input"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPetType" />
+                app:layout_constraintTop_toBottomOf="@id/tvPetType"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/tvStartDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins"
                 android:text="From"
                 android:textColor="#000"
                 android:textSize="16sp"
@@ -179,10 +180,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_input"
                 android:drawableEnd="@drawable/ic_calendar"
-                android:fontFamily="@font/poppins"
                 android:hint="DD/MM/YYYY"
                 android:inputType="text"
                 android:minHeight="48dp"
+                android:layout_marginTop="8dp"
                 android:padding="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvStartDate" />
@@ -192,7 +193,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins"
                 android:text="To"
                 android:textColor="#000"
                 android:textSize="16sp"
@@ -206,10 +206,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_input"
                 android:drawableEnd="@drawable/ic_calendar"
-                android:fontFamily="@font/poppins"
                 android:hint="DD/MM/YYYY"
                 android:inputType="text"
                 android:minHeight="48dp"
+                android:layout_marginTop="8dp"
                 android:padding="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvEndDate" />
@@ -219,7 +219,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins"
                 android:text="Description"
                 android:textColor="#000"
                 android:textSize="16sp"
@@ -232,12 +231,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_input"
-                android:fontFamily="@font/poppins"
                 android:gravity="top"
                 android:hint="Enter more details"
                 android:inputType="textMultiLine"
                 android:lines="2"
                 android:minHeight="48dp"
+                android:layout_marginTop="8dp"
                 android:padding="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvOfferDesc" />
@@ -249,7 +248,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:backgroundTint="#EFEFEF"
-                android:fontFamily="@font/poppins"
                 android:text="Cancel"
                 android:textAllCaps="false"
                 android:textColor="#000"
@@ -264,9 +262,8 @@
                 android:id="@+id/btnSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/primary_color"
-                android:fontFamily="@font/poppins"
                 android:text="Submit"
                 android:textAllCaps="false"
                 android:textColor="#FFF"

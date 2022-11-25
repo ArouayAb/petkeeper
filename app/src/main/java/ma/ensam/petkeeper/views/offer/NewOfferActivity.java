@@ -10,11 +10,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
     DatePickerDialog.OnDateSetListener startDateListener;
     DatePickerDialog.OnDateSetListener endDateListener;
 
+    ImageView btnNewOfferBack;
     Spinner spOfferType;
     EditText etOfferTitle;
     TextView btnUploadImage;
@@ -51,6 +54,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
     TextView etStartDate;
     TextView etEndDate;
     EditText etOfferDesc;
+    MaterialButton btnCancel;
     MaterialButton btnSubmit;
 
     Uri petImageUri;
@@ -73,7 +77,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
 
     };
 
-    long profileId = 1; // TEST-ONLY
+    long currentProfileId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,8 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
         populateSpinners();
 
         init();
+
+        btnNewOfferBack.setOnClickListener(view -> NewOfferActivity.this.finish());
 
         btnUploadImage.setOnClickListener(view -> {
             Runnable openGallery = () -> {
@@ -113,6 +119,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
 
         pickDate(etEndDate, endDateListener);
 
+        btnCancel.setOnClickListener(view -> NewOfferActivity.this.finish());
 
         btnSubmit.setOnClickListener(view -> {
             Offer offer = new Offer(
@@ -124,18 +131,30 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
                     new GregorianCalendar(startYear, startMonth, startDay).getTime(),
                     new GregorianCalendar(endYear, endMonth, endDay).getTime(),
                     new Date(),
-                    profileId
+                    currentProfileId
             );
 
             long createdOfferId = offerViewModel.insert(offer);
 
-            Intent intent = new Intent(NewOfferActivity.this, OfferOwnerActivity.class);
+            Intent intent = spOfferType.getSelectedItem().equals(OfferType.OWNER) ?
+                    new Intent(NewOfferActivity.this, OfferOwnerActivity.class) :
+                    new Intent(NewOfferActivity.this, OfferKeeperActivity.class);
             intent.putExtra("offerId", createdOfferId);
+            intent.putExtra("currentProfileId", currentProfileId);
             startActivity(intent);
         });
     }
 
     private void init() {
+        currentProfileId = getIntent().getLongExtra("currentProfileId", 1);
+        if (currentProfileId == 0) {
+            Toast.makeText(
+                    NewOfferActivity.this,
+                    "Unable to retrive current profile informations",
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
+
         this.activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -172,6 +191,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
 
 
     private void bindViews() {
+        btnNewOfferBack = findViewById(R.id.btnNewOfferBack);
         spOfferType = findViewById(R.id.spOfferTypes);
         etOfferTitle = findViewById(R.id.etOfferTitle);
         btnUploadImage = findViewById(R.id.btnUploadImage);
@@ -179,6 +199,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
         etStartDate = findViewById(R.id.etStartDate);
         etEndDate = findViewById(R.id.etEndDate);
         etOfferDesc = findViewById(R.id.etOfferDesc);
+        btnCancel = findViewById(R.id.btnCancel);
         btnSubmit = findViewById(R.id.btnSubmit);
     }
 
