@@ -37,4 +37,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="you_don_t_have_an_account">You don\'t have an account?</string>
     <string name="you_already_have_an_account">You already have an account?</string>
+    <string name="phone_number">Phone</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
 </resources>

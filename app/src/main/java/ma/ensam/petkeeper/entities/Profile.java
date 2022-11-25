@@ -27,7 +27,8 @@ public class Profile {
 
     }
 
-    public Profile(String fullName, String phoneNumber, String about, String profilePicUrl, String country, String city, long userId) {
+    public Profile(String fullName, String phoneNumber, String about,
+                   String profilePicUrl, String country, String city, long userId) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.about = about;
@@ -35,6 +36,13 @@ public class Profile {
         this.country = country;
         this.city = city;
         this.userId = userId;
+    }
+
+    public Profile(String fullName, String phoneNumber, String country, String city) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.country = country;
+        this.city = city;
     }
 
     public long getId() {

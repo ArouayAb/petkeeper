@@ -15,7 +15,7 @@ import ma.ensam.petkeeper.entities.Profile;
 public interface ProfileDao {
 
     @Insert
-    void insert(Profile profile);
+    long insert(Profile profile);
 
     @Insert
     void insertAll(Profile... profiles);

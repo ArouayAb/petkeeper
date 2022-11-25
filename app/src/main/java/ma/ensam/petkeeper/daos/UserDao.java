@@ -16,7 +16,7 @@ import ma.ensam.petkeeper.entities.User;
 public interface UserDao {
 
     @Insert
-    void insert(User user);
+    long insert(User user);
 
     @Insert
     void insertAll(User... users);
@@ -29,6 +29,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE id = :id")
     LiveData<User> findById(long id);
+
+    @Query("SELECT * FROM Users WHERE email LIKE :email AND password LIKE :password")
+    LiveData<User> login(String email, String password);
 
     @Query("SELECT * FROM users")
     LiveData<List<User>> findAll();

@@ -40,10 +40,16 @@ public class ProfileRepository {
         this.allProfiles = this.profileDao.findAll();
     }
 
-    public void insert(Profile profile) {
-        this.executor.execute(() -> {
-            this.profileDao.insert(profile);
-        });
+    public long insert(Profile profile) {
+        CompletableFuture<Long> id = CompletableFuture.supplyAsync(
+                () -> profileDao.insert(profile)
+        );
+        try {
+            return id.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public void update(Profile profile) {
