@@ -102,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         this.drawableMap.put("star_empty", ContextCompat.getDrawable(this, R.drawable.star_empty));
 
         this.current_profile_id = AppConfig.DEBUG_MODE ? 1L : this.intent.getExtras().getLong("currentProfileId", 0L);
-        this.self_profile_id = AppConfig.DEBUG_MODE ? 2L : this.intent.getExtras().getLong("selfProfileId", 0L);
+        this.self_profile_id = AppConfig.DEBUG_MODE ? 1L : this.intent.getExtras().getLong("selfProfileId", 0L);
         this.isVisitingSelfProfile = this.current_profile_id == this.self_profile_id;
 
         this.profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);

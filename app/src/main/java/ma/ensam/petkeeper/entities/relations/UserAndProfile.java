@@ -11,9 +11,8 @@ public class UserAndProfile {
     @Embedded public User user;
 
     @Relation(
-            entity = User.class,
-            parentColumn = "userId",
-            entityColumn = "id"
+            parentColumn = "id",
+            entityColumn = "userId"
     )
 
     public Profile profile;

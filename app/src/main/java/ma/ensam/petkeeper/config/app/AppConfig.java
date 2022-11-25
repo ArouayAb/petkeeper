@@ -18,3 +18,4 @@ public class AppConfig {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat(
             "dd MMM yyyy", Locale.getDefault()
     );
+}
