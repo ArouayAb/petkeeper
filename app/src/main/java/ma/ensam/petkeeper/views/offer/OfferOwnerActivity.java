@@ -29,7 +29,7 @@ public class OfferOwnerActivity extends AppCompatActivity {
     Long currentProfileId;
     Long offerCreatorProfileId;
 
-    ImageView btnOfferBack;
+    TextView offerBack;
     ImageView ivProfilePic;
     TextView tvProfileName;
     TextView tvOfferDate;
@@ -66,7 +66,7 @@ public class OfferOwnerActivity extends AppCompatActivity {
             fetchOfferAndUpdateActivity();
         }
 
-        btnOfferBack.setOnClickListener(view -> OfferOwnerActivity.this.finish());
+        offerBack.setOnClickListener(view -> OfferOwnerActivity.this.finish());
 
         ivProfilePic.setOnClickListener(view -> goToProfile());
         tvProfileName.setOnClickListener(view -> goToProfile());
@@ -104,7 +104,7 @@ public class OfferOwnerActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        btnOfferBack = findViewById(R.id.btnOfferBack);
+        offerBack = findViewById(R.id.offerBack);
         ivProfilePic = findViewById(R.id.ivProfilePic);
         tvProfileName = findViewById(R.id.tvProfileName);
         tvOfferDate = findViewById(R.id.tvOfferDate);

@@ -46,7 +46,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
     DatePickerDialog.OnDateSetListener startDateListener;
     DatePickerDialog.OnDateSetListener endDateListener;
 
-    ImageView btnNewOfferBack;
+    TextView newOfferBack;
     Spinner spOfferType;
     EditText etOfferTitle;
     TextView btnUploadImage;
@@ -93,7 +93,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
 
         init();
 
-        btnNewOfferBack.setOnClickListener(view -> NewOfferActivity.this.finish());
+        newOfferBack.setOnClickListener(view -> NewOfferActivity.this.finish());
 
         btnUploadImage.setOnClickListener(view -> {
             Runnable openGallery = () -> {
@@ -191,7 +191,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
 
 
     private void bindViews() {
-        btnNewOfferBack = findViewById(R.id.btnNewOfferBack);
+        newOfferBack = findViewById(R.id.newOfferBack);
         spOfferType = findViewById(R.id.spOfferTypes);
         etOfferTitle = findViewById(R.id.etOfferTitle);
         btnUploadImage = findViewById(R.id.btnUploadImage);
