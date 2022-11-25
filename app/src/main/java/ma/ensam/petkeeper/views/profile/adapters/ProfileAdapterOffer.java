@@ -16,70 +16,61 @@ import java.util.List;
 
 import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.config.app.AppConfig;
-import ma.ensam.petkeeper.entities.Profile;
-import ma.ensam.petkeeper.models.PostHome;
-import ma.ensam.petkeeper.models.PostProfile;
-import ma.ensam.petkeeper.models.ReviewProfile;
+import ma.ensam.petkeeper.models.OfferProfile;
 import ma.ensam.petkeeper.utils.BitmapUtility;
-import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
-import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
 
-public class ProfileAdapterPost extends RecyclerView.Adapter<ProfileAdapterPost.ViewHolder> {
-    private List<PostProfile> profilePosts;
+public class ProfileAdapterOffer extends RecyclerView.Adapter<ProfileAdapterOffer.ViewHolder> {
+    private List<OfferProfile> profileOffers;
     private ItemClickedListener mItemClickListener;
 
-    public ProfileAdapterPost(List<PostProfile> profilePosts, ItemClickedListener mItemClickListener) {
-        this.profilePosts = profilePosts;
+    public ProfileAdapterOffer(List<OfferProfile> profileOffers, ItemClickedListener mItemClickListener) {
+        this.profileOffers = profileOffers;
         this.mItemClickListener = mItemClickListener;
     }
 
-    public void updateProfilePosts(List<PostProfile> profilePosts) {
-        this.profilePosts = profilePosts;
+    public void updateProfileOffers(List<OfferProfile> profileOffers) {
+        this.profileOffers = profileOffers;
         this.notifyDataSetChanged();
-    }
-
-    public List<PostProfile> getProfilePosts() {
-        return this.profilePosts;
     }
 
     @NonNull
     @Override
-    public ProfileAdapterPost.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProfileAdapterOffer.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflated = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
-        return new ProfileAdapterPost.ViewHolder(inflated);
+        return new ProfileAdapterOffer.ViewHolder(inflated);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileAdapterPost.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProfileAdapterOffer.ViewHolder holder, int position) {
         holder.cardProfileImage.setImageBitmap(
-                BitmapUtility.extractFromPath(profilePosts.get(position).getProfileUrl())
+                BitmapUtility.extractFromPath(profileOffers.get(position).getProfileUrl())
         );
         holder.cardCreationDate.setText(
-                AppConfig.dateFormat.format(profilePosts.get(position).getCreationDate())
+                AppConfig.dateFormat.format(profileOffers.get(position).getCreationDate())
         );
         holder.cardFromDate.setText(
-                AppConfig.dateFormat.format(profilePosts.get(position).getFrom())
+                AppConfig.dateFormat.format(profileOffers.get(position).getFrom())
         );
         holder.cardToDate.setText(
-                AppConfig.dateFormat.format(profilePosts.get(position).getTo())
+                AppConfig.dateFormat.format(profileOffers.get(position).getTo())
         );
-        holder.cardProfileName.setText(profilePosts.get(position).getUserName());
-        holder.cardTitle.setText(profilePosts.get(position).getTitre());
-        holder.petSpecies.setText(profilePosts.get(position).getPetSpecies());
-        holder.petSpecies.setText(profilePosts.get(position).getPetSpecies());
+        holder.cardProfileName.setText(profileOffers.get(position).getUserName());
+        holder.cardTitle.setText(profileOffers.get(position).getTitre());
+        holder.petSpecies.setText(profileOffers.get(position).getPetSpecies());
+        holder.petSpecies.setText(profileOffers.get(position).getPetSpecies());
 
         holder.rootView.setOnClickListener(view -> {
-            mItemClickListener.onItemClick(profilePosts.get(position));
+            mItemClickListener.onItemClick(profileOffers.get(position));
         });
     }
 
     @Override
     public int getItemCount() {
-        return profilePosts.size();
+        return profileOffers.size();
     }
 
     public interface ItemClickedListener {
-        void onItemClick(PostProfile postProfile);
+        void onItemClick(OfferProfile postProfile);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

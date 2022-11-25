@@ -3,13 +3,11 @@ package ma.ensam.petkeeper.views.profile.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -17,10 +15,6 @@ import com.google.android.material.imageview.ShapeableImageView;
 import java.util.List;
 
 import ma.ensam.petkeeper.R;
-import ma.ensam.petkeeper.config.app.AppConfig;
-import ma.ensam.petkeeper.entities.Review;
-import ma.ensam.petkeeper.models.PetCategory;
-import ma.ensam.petkeeper.models.PostProfile;
 import ma.ensam.petkeeper.models.ReviewProfile;
 import ma.ensam.petkeeper.utils.BitmapUtility;
 

@@ -2,7 +2,7 @@ package ma.ensam.petkeeper.models;
 
 import java.util.Date;
 
-public class PostProfile {
+public class OfferProfile {
     private long id;
     private String OfferType;
     private String profileUrl;
@@ -13,7 +13,7 @@ public class PostProfile {
     private Date from;
     private Date to;
 
-    public PostProfile(long id, String offerType, String profileUrl, String userName, Date creationDate, String titre, String petSpecies, Date from, Date to) {
+    public OfferProfile(long id, String offerType, String profileUrl, String userName, Date creationDate, String titre, String petSpecies, Date from, Date to) {
         this.id = id;
         OfferType = offerType;
         this.profileUrl = profileUrl;
