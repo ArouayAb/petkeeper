@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -21,13 +22,16 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -77,8 +81,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
 
     private long current_profile_id;
     private long self_profile_id;
-
-    private final boolean isVisitingSelfProfile = self_profile_id == current_profile_id;
+    private boolean isVisitingSelfProfile;
 
     private Runnable lastAction = () -> {
 
@@ -99,7 +102,8 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         this.drawableMap.put("star_empty", ContextCompat.getDrawable(this, R.drawable.star_empty));
 
         this.current_profile_id = AppConfig.DEBUG_MODE ? 1L : this.intent.getExtras().getLong("currentProfileId", 0L);
-        this.self_profile_id = AppConfig.DEBUG_MODE ? 1L : this.intent.getExtras().getLong("selfProfileId", 0L);
+        this.self_profile_id = AppConfig.DEBUG_MODE ? 2L : this.intent.getExtras().getLong("selfProfileId", 0L);
+        this.isVisitingSelfProfile = this.current_profile_id == this.self_profile_id;
 
         this.profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         this.reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
@@ -150,10 +154,22 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         );
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        RelativeLayout inflated = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.review_layout, null);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            inflated.setGravity(Gravity.CENTER);
+        } else {
+            inflated.setGravity(Gravity.START);
+        }
+    }
+
+
     public void ensureReviewEligibility() {
         if(this.isVisitingSelfProfile) {
             LinearLayout reviewSection = findViewById(R.id.review_section);
-            LinearLayout starContainer = findViewById(R.id.star_container);
+            FlexboxLayout starContainer = findViewById(R.id.star_container);
             TextView writeReview = findViewById(R.id.write_review);
 
             reviewSection.removeView(starContainer);
@@ -371,7 +387,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
     private void onProfileStarsChange(Review review) {
         if (this.isVisitingSelfProfile) return;
         if (review == null) {
-            LinearLayout starContainer = findViewById(R.id.star_container);
+            FlexboxLayout starContainer = findViewById(R.id.star_container);
             for (int i = 0; i < starContainer.getChildCount(); i++) {
                 ImageButton star = (ImageButton) starContainer.getChildAt(i);
                 star.setImageDrawable(drawableMap.get("star_empty"));
@@ -379,7 +395,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
             return;
         }
 
-        LinearLayout starContainer = findViewById(R.id.star_container);
+        FlexboxLayout starContainer = findViewById(R.id.star_container);
         for (int i = 0; i < review.getRating(); i++) {
             ImageButton star = (ImageButton) starContainer.getChildAt(i);
             star.setImageDrawable(drawableMap.get("star_full"));
