@@ -215,32 +215,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tvEndDate" />
 
             <TextView
-                android:id="@+id/tvOfferAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins"
-                android:text="Address"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etEndDate" />
-
-            <EditText
-                android:id="@+id/etOfferAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_input"
-                android:fontFamily="@font/poppins"
-                android:hint="Enter your address"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:padding="10dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvOfferAddress" />
-
-            <TextView
                 android:id="@+id/tvOfferDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,7 +225,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etOfferAddress" />
+                app:layout_constraintTop_toBottomOf="@id/etEndDate" />
 
             <EditText
                 android:id="@+id/etOfferDesc"

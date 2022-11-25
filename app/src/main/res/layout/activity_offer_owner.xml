@@ -105,16 +105,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvProfileName" />
 
             <TextView
-                android:id="@+id/tvOfferDescr"
+                android:id="@+id/tvOfferTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/poppins"
-                android:text="Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. Someone to look after my cat in the next 2 weeks in Marrakesh. "
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="White cat owner"
                 android:textColor="#000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cvProfilePic" />
+
+            <TextView
+                android:id="@+id/tvOfferDescr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins"
+                android:text="Someone to look after my cat in the next 2 weeks in Marrakesh."
+                android:textColor="#000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvOfferTitle" />
 
             <ImageView
                 android:id="@+id/ivPetImage"

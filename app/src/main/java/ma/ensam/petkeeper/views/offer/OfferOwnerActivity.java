@@ -17,6 +17,7 @@ import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.config.database.AppDatabase;
 import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
+import ma.ensam.petkeeper.utils.BitmapUtility;
 import ma.ensam.petkeeper.viewmodels.OfferViewModel;
 
 public class OfferOwnerActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class OfferOwnerActivity extends AppCompatActivity {
     ImageView ivProfilePic;
     TextView tvProfileName;
     TextView tvOfferDate;
+    TextView tvOfferTitle;
     TextView tvOfferDescr;
     ImageView ivPetImage;
     TextView tvPetResp;
@@ -79,6 +81,7 @@ public class OfferOwnerActivity extends AppCompatActivity {
         ivProfilePic = findViewById(R.id.ivProfilePic);
         tvProfileName = findViewById(R.id.tvProfileName);
         tvOfferDate = findViewById(R.id.tvOfferDate);
+        tvOfferTitle = findViewById(R.id.tvOfferTitle);
         tvOfferDescr = findViewById(R.id.tvOfferDescr);
         ivPetImage = findViewById(R.id.ivPetImage);
         tvPetResp = findViewById(R.id.tvPetResp);
@@ -90,11 +93,12 @@ public class OfferOwnerActivity extends AppCompatActivity {
     }
 
     public void updateView(ProfileAndOffer pwo) {
-        // ivProfilePic
+        ivProfilePic.setImageBitmap(BitmapUtility.extractFromPath(pwo.profile.getProfilePicUrl()));
         tvProfileName.setText(pwo.profile.getFullName());
         tvOfferDate.setText(pwo.offer.getCreationDate().toString());
+        tvOfferTitle.setText(pwo.offer.getTitle());
         tvOfferDescr.setText(pwo.offer.getDescription());
-        // ivPetImage
+        ivPetImage.setImageBitmap(BitmapUtility.extractFromPath(pwo.offer.getImage_url()));
         tvPetResp.setText(pwo.offer.getPet().name());
         tvAddressResp.setText(pwo.profile.getCity() + ", " + pwo.profile.getCountry());
         tvFromResp.setText(pwo.offer.getFromDate().toString());
@@ -104,4 +108,6 @@ public class OfferOwnerActivity extends AppCompatActivity {
                 - pwo.offer.getFromDate().getTime()) / (1000 * 60 * 60 * 24);
         tvDurationResp.setText(daysBetween + " days");
     }
+
+
 }

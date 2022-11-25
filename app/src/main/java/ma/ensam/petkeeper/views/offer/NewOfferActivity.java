@@ -2,9 +2,11 @@ package ma.ensam.petkeeper.views.offer;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -34,8 +36,9 @@ import ma.ensam.petkeeper.entities.enums.OfferType;
 import ma.ensam.petkeeper.entities.enums.PetSpecies;
 import ma.ensam.petkeeper.utils.PathUtility;
 import ma.ensam.petkeeper.viewmodels.OfferViewModel;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class NewOfferActivity extends AppCompatActivity {
+public class NewOfferActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
     OfferViewModel offerViewModel;
     ActivityResultLauncher<Intent> activityResultLauncher;
     DatePickerDialog.OnDateSetListener startDateListener;
@@ -61,6 +64,15 @@ public class NewOfferActivity extends AppCompatActivity {
     int endYear;
     String petImagePath;
 
+    private final String[] galleryPermissions = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    private Runnable lastAction = () -> {
+
+    };
+
     long profileId = 1; // TEST-ONLY
 
     @Override
@@ -78,9 +90,23 @@ public class NewOfferActivity extends AppCompatActivity {
         init();
 
         btnUploadImage.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            this.activityResultLauncher.launch(intent);
+            Runnable openGallery = () -> {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                this.activityResultLauncher.launch(intent);
+            };
+
+            if(EasyPermissions.hasPermissions(NewOfferActivity.this, galleryPermissions)){
+                openGallery.run();
+            } else {
+                this.lastAction = openGallery;
+                EasyPermissions.requestPermissions(
+                        NewOfferActivity.this,
+                        "Access for storage",
+                        101,
+                        galleryPermissions
+                );
+            }
         });
 
         pickDate(etStartDate, startDateListener);
@@ -193,5 +219,21 @@ public class NewOfferActivity extends AppCompatActivity {
             );
             datePickerDialog.show();
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        this.lastAction.run();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        System.out.println("Permission denied");
     }
 }
