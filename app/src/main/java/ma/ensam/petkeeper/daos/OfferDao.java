@@ -1,12 +1,16 @@
 package ma.ensam.petkeeper.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 import ma.ensam.petkeeper.entities.Offer;
+import ma.ensam.petkeeper.entities.Profile;
 
 @Dao
 public interface OfferDao {
@@ -25,4 +29,8 @@ public interface OfferDao {
 
     @Query("SELECT * FROM offers WHERE id = :id")
     Offer findById(long id);
+
+    @Query("SELECT * FROM offers WHERE type = :type")
+    LiveData<List<Offer>> findOffersByType(String type);
+
 }

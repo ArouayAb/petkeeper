@@ -1,11 +1,30 @@
 package ma.ensam.petkeeper.viewmodels;
 
+import android.app.Application;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import java.util.ArrayList;
+import java.util.List;
 
+import ma.ensam.petkeeper.entities.enums.OfferType;
+import ma.ensam.petkeeper.entities.relations.OfferWithProfile;
 import ma.ensam.petkeeper.models.PetCategory;
-import ma.ensam.petkeeper.models.PostHome;
+import ma.ensam.petkeeper.models.HomeOffers;
+import ma.ensam.petkeeper.repositories.OfferRepo;
 
-public class HomeViewModel {
+public class HomeViewModel  extends AndroidViewModel {
+    private final OfferRepo repository;
+
+    public HomeViewModel(@NonNull Application application) {
+        super(application);
+        this.repository = new OfferRepo(application);
+    }
+
+    public LiveData<List<OfferWithProfile>> getOffersByType(OfferType type) {
+        return this.repository.getOfferByType(type);
+    }
+
 
     public  static ArrayList<PetCategory> getAllCategories (){
         ArrayList<PetCategory> categories = new ArrayList<PetCategory>() ;
@@ -19,15 +38,16 @@ public class HomeViewModel {
         return categories;
     }
 
-    public static ArrayList<PostHome> getAllPosts (){
-        ArrayList<PostHome> posts = new ArrayList<PostHome>();
-        posts.add(new PostHome("Hamza Daiz","dog","canish","22-Nov-2022","25-Nov-2022",
+    /*public static ArrayList<HomeOffers> getAllPosts (){
+        ArrayList<HomeOffers> posts = new ArrayList<HomeOffers>();
+        posts.add(new HomeOffers("Hamza Daiz","dog","canish","22-Nov-2022","25-Nov-2022",
                 "Looking for someone who will keep my dog Looking for someone who will keep my dog","female","3 days" ));
-        posts.add(new PostHome("Rabia Jomala","cat","ross","11-Des-2022","21-des-2022",
+        posts.add(new HomeOffers("Rabia Jomala","cat","ross","11-Des-2022","21-des-2022",
                 "Please someone to keep my cat","male","10 days" ));
-        posts.add(new PostHome("Fouad Khalil","fish","golden","08-Des-2022","22-des-2022",
+        posts.add(new HomeOffers("Fouad Khalil","fish","golden","08-Des-2022","22-des-2022",
                 "Please someone to keep my fish","female","2 weeks" ));
 
         return  posts;
-    }
+    }*/
+
 }

@@ -13,18 +13,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import ma.ensam.petkeeper.config.app.AppConfig;
 import ma.ensam.petkeeper.R;
-import ma.ensam.petkeeper.models.PostHome;
+import ma.ensam.petkeeper.models.HomeOffers;
 
 public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewModel>{
 
-    ArrayList<PostHome> allPosts;
+    List<HomeOffers> homeOffers;
     private HomeAdapterPost.ItemClickedListener mItemListener;
 
-    public HomeAdapterPost(ArrayList<PostHome> petCategories, HomeAdapterPost.ItemClickedListener mItemListener) {
+    public HomeAdapterPost(ArrayList<HomeOffers> offerWithProfiles, HomeAdapterPost.ItemClickedListener mItemListener) {
         //this.petCategories = petCategories;
-        this.allPosts =  petCategories;
+        this.homeOffers =  offerWithProfiles;
         this.mItemListener = mItemListener;
     }
     @NonNull
@@ -37,41 +39,45 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewMo
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull HomeAdapterPost.ViewModel holder, int position) {
-        holder.postUserName.setText(allPosts.get(position).getUserName());
-        holder.postPet.setText(allPosts.get(position).getPet());
-        holder.postFrom.setText(allPosts.get(position).getFrom());
-        holder.postTo.setText(allPosts.get(position).getTo());
-        holder.postDuration.setText(allPosts.get(position).getDuration());
-        holder.postGender.setText(allPosts.get(position).getGender());
-        holder.postType.setText(allPosts.get(position).getType());
-        holder.postDesc.setText(allPosts.get(position).getDescription());
+        String duration = String.valueOf(((homeOffers.get(position).getTo().getTime()- homeOffers.get(position).getFrom().getTime())/(60*60*24)));
+        holder.postUserName.setText(homeOffers.get(position).getUserName());
+        holder.postPet.setText(homeOffers.get(position).getPet().name());
+        holder.postFrom.setText(AppConfig.dateFormat.format(homeOffers.get(position).getFrom()));
+        holder.postTo.setText(AppConfig.dateFormat.format(homeOffers.get(position).getTo()));
+        holder.postDuration.setText(duration);
+        holder.postDesc.setText(homeOffers.get(position).getDescription());
 
         holder.constraintLayout.setOnClickListener(view -> {
-            mItemListener.onClickItem(allPosts.get(position));
+            mItemListener.onClickItem(homeOffers.get(position));
             notifyDataSetChanged();
         });
         holder.seePostLayout.setOnClickListener(view -> {
-            mItemListener.onCLickSeePost(allPosts.get(position));
+            mItemListener.onCLickSeePost(homeOffers.get(position));
         });
         holder.postImage.setOnClickListener(view -> {
-            mItemListener.onClickSeeProfile("OwnerId Or OwnerProfile");
+            mItemListener.onClickSeeProfile(homeOffers.get(position));
         });
 
     }
 
     @Override
     public int getItemCount() {
-        return allPosts.size();
+        return homeOffers.size();
     }
 
     public interface ItemClickedListener {
-        void onClickItem(PostHome postHome);
-        void onCLickSeePost(PostHome postHome);
-        void onClickSeeProfile(String ownerProfileOrOwnerProfileId);
+        void onClickItem(HomeOffers postHome);
+        void onCLickSeePost(HomeOffers postHome);
+        void onClickSeeProfile(HomeOffers postHome);
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateRecyclerView(List<HomeOffers> offers){
+        this.homeOffers = offers ;
+        notifyDataSetChanged();
     }
 
     public class ViewModel extends RecyclerView.ViewHolder {
-        TextView postUserName, postPet, postType, postFrom, postTo, postGender, postDuration,postDesc;
+        TextView postUserName, postPet, postFrom, postTo, postDuration,postDesc;
         ImageView postImage;
         ConstraintLayout constraintLayout;
         LinearLayout seePostLayout;
@@ -81,10 +87,8 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewMo
             postUserName = itemView.findViewById(R.id.user_name_id);
             postDesc = itemView.findViewById(R.id.post_desc_id);
             postPet = itemView.findViewById(R.id.pet_id);
-            postType = itemView.findViewById(R.id.type_id);
             postFrom = itemView.findViewById(R.id.from_id);
             postTo = itemView.findViewById(R.id.to_id);
-            postGender = itemView.findViewById(R.id.gender_id);
             postDuration = itemView.findViewById(R.id.duration_id);
             postImage = itemView.findViewById(R.id.post_profile_image_id);
             constraintLayout = itemView.findViewById(R.id.post_constraint_id);

@@ -1,5 +1,6 @@
 package ma.ensam.petkeeper.views.home.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategor
         return new ViewModel(inflate);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull ViewModel holder, int position) {
         holder.categoryName.setText(allCategories.get(position).getName());
@@ -61,8 +63,44 @@ public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategor
         return allCategories.size();
     }
 
+
+
     public interface  ItemClickedListener{
         void onItemClick(PetCategory petCategory);
+    }
+    public void resetAllCategoriesToInactive(){
+        for(PetCategory petCategory : allCategories){
+            if(!petCategory.getName().equals("All")){
+                petCategory.setImg(petCategory.getName().toLowerCase());
+                petCategory.setActive(false);
+            }else {
+                petCategory.setImg("all_active");
+                petCategory.setActive(true);
+            }
+        }
+    }
+    public void disableAllCategoryChoice() {
+        this.allCategories.forEach(
+                petCategory -> {
+                    if(petCategory.getName().equals("All")){
+                        petCategory.setImg("all");
+                        petCategory.setActive(false);
+                    }
+                });
+
+    }
+
+    public boolean isOneIsActive(String categoryNameExcluded){
+        for(PetCategory petCategory : allCategories){
+            if(!petCategory.getName().equals("All")
+                    && !petCategory.getName().equals(categoryNameExcluded)
+                    && petCategory.isActive()){
+                return true;
+            }
+
+
+        }
+        return false;
     }
 
     public static class ViewModel extends RecyclerView.ViewHolder {

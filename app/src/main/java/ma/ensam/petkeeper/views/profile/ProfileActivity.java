@@ -155,7 +155,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
                 cardContainer.addView(card);
             }
             profileViewModel.findProfileWithOffersById(temp_id).removeObservers(this);
-        });
+        } );
 
         this.activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
