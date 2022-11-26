@@ -87,13 +87,22 @@ public abstract class AppDatabase extends RoomDatabase {
 
                 instance.offerDao().insertAll(
                         new Offer(OfferType.KEEPER, PetSpecies.CAT, "cats",
-                        "all cats welcome : )", "img_url",new Date(),
+                        "All cats welcome : )", "img_url",new Date(),
+                                new Date(), new Date(), 1),
+                        new Offer(OfferType.KEEPER, PetSpecies.BIRD, "2 birds",
+                                "Any one can hold my 2 couple birds : )", "img_url",new Date(),
+                                new Date(), new Date(), 1),
+                        new Offer(OfferType.KEEPER, PetSpecies.DOG, "All dogs welcome",
+                                "I have a special place for dogs )", "img_url",new Date(),
                                 new Date(), new Date(), 1),
                         new Offer(OfferType.OWNER, PetSpecies.DOG, "d o g",
-                                "big  m a l e  sleepy dog", "img_url",new Date(),
-                                new Date(), new Date(), 1),
-                        new Offer(OfferType.OWNER, PetSpecies.DOG, "DOG AHEAD",
-                                "big pansexual non binary dog", "img_url",new Date(),
+                                "big  male  sleepy dog", "img_url",new Date(1669419983723L),
+                                new Date(1669429383723L), new Date(), 1),
+                        new Offer(OfferType.OWNER, PetSpecies.DOG, "d o g",
+                                "big  male  sleepy dog", "img_url",new Date(1669419383723L),
+                                new Date(1669419983723L), new Date(), 1),
+                        new Offer(OfferType.OWNER, PetSpecies.TURTLE, "Turtle kind",
+                                "Asian turtle", "img_url",new Date(),
                                 new Date(), new Date(), 1)
 
                 );

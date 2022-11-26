@@ -8,6 +8,7 @@ import androidx.room.Transaction;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.enums.OfferType;
+import ma.ensam.petkeeper.entities.enums.PetSpecies;
 import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.entities.relations.ProfileWithReviewsOnIt;
@@ -26,6 +27,6 @@ public interface RelationDao {
     LiveData<List<ProfileWithReviewsOnIt>> findProfilesWithReviewsOnIt(long id);
 
     @Transaction
-    @Query("SELECT * FROM offers o JOIN profiles p ON p.profileId = o.profileCreatorId WHERE o.type = :type")
+    @Query("SELECT * FROM offers o JOIN profiles p ON p.profileId = o.profileCreatorId WHERE o.type = :type  ")
     LiveData<List<ProfileAndOffer>> findAllOffersWithProfileByType(OfferType type);
 }

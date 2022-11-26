@@ -46,6 +46,7 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
         holder.postTo.setText(AppConfig.dateFormat.format(homeOffers.get(position).getTo()));
         holder.postDuration.setText(duration);
         holder.postDesc.setText(homeOffers.get(position).getDescription());
+        holder.postTitle.setText(homeOffers.get(position).getTitle());
 
         holder.constraintLayout.setOnClickListener(view -> {
             mItemListener.onClickItem(homeOffers.get(position));
@@ -76,8 +77,35 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void filterRecycleView(List<String> petCategories){
+        if(petCategories.contains("All")) {
+            notifyDataSetChanged();
+            return;
+        }
+        List<HomeOffers> newHomeOffers = new ArrayList<>();
+        for(HomeOffers homeOffer : this.homeOffers) {
+            if (petCategories.contains(homeOffer.getPet().name())) {
+                newHomeOffers.add(homeOffer);
+            }
+        }
+        this.homeOffers = newHomeOffers;
+        notifyDataSetChanged();
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void searchRecycleView(String text){
+        List<HomeOffers> newHomeOffers = new ArrayList<>();
+        for(HomeOffers homeOffer : this.homeOffers) {
+            if (homeOffer.getDescription().contains(text) || homeOffer.getTitle().contains(text)) {
+                newHomeOffers.add(homeOffer);
+            }
+        }
+        this.homeOffers = newHomeOffers;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView postUserName, postPet, postFrom, postTo, postDuration,postDesc;
+        TextView postUserName, postPet, postFrom, postTo, postDuration,postDesc,postTitle;
         ImageView postImage;
         ConstraintLayout constraintLayout;
         LinearLayout seePostLayout;
@@ -93,7 +121,7 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
             postImage = itemView.findViewById(R.id.post_profile_image_id);
             constraintLayout = itemView.findViewById(R.id.post_constraint_id);
             seePostLayout = itemView.findViewById(R.id.see_post_id);
-
+            postTitle = itemView.findViewById(R.id.post_title_id);
         }
     }
 }

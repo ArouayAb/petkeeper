@@ -40,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<HomeOffers> keeperOffers = new ArrayList<>();
     private HomeAdapterPost recyclerViewOfferAdapter;
     private HomeAdapterCategory recyclerViewCategoryAdapter;
+    private List<String> petSpecies= new ArrayList<>();
 
 
     @SuppressLint("MissingInflatedId")
@@ -51,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         ownerTab  = findViewById(R.id.owners_tab_id);
         search_button = findViewById(R.id.seach_button_id);
         search_edit_text=findViewById(R.id.search_edit_text_id);
+        petSpecies.add("All");
 
         this.homeViewModel =  ViewModelProviders.of(this).get(HomeViewModel.class);
 
@@ -67,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.profile.getId(),
                                     offerWithProfile.profile.getFullName(),
                                     offerWithProfile.offer.getDescription(),
+                                    offerWithProfile.offer.getTitle(),
                                     offerWithProfile.offer.getPet(),
                                     offerWithProfile.offer.getType(),
                                     offerWithProfile.offer.getFromDate(),
@@ -86,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.profile.getId(),
                                     offerWithProfile.profile.getFullName(),
                                     offerWithProfile.offer.getDescription(),
+                                    offerWithProfile.offer.getTitle(),
                                     offerWithProfile.offer.getPet(),
                                     offerWithProfile.offer.getType(),
                                     offerWithProfile.offer.getFromDate(),
@@ -100,11 +104,18 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String searchText = String.valueOf(search_edit_text.getText());
                 if (searchText.length() >= 3) {
-                    showToast(searchText);
                     search_edit_text.setBackgroundResource(R.drawable.search_bg_style);
+                    if(HomeActivity.tabIndex ==0){
+                        HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(keeperOffers);
+                        HomeActivity.this.recyclerViewOfferAdapter.searchRecycleView(searchText);
+                    }else{
+                        HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(ownerOffers);
+                        HomeActivity.this.recyclerViewOfferAdapter.searchRecycleView(searchText);
+                    }
+
                 } else {
                     search_edit_text.setBackgroundResource(R.drawable.search_bg_style_error);
-                    showToast("min character for search : 3..");
+                    showToast("min characters 3..");
                 }
             }
         });
@@ -113,25 +124,32 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(HomeActivity.tabIndex ==1){
+                    String searchText = String.valueOf(search_edit_text.getText());
                     keeperTab.setBackgroundResource(R.drawable.tab_style_active);
                     ownerTab.setBackgroundResource(R.drawable.tab_style_inactive);
                     HomeActivity.tabIndex = 0;
                     HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(keeperOffers);
-
+                    HomeActivity.this.recyclerViewOfferAdapter.filterRecycleView(petSpecies);
+                    if (searchText.length() >= 3) {
+                        HomeActivity.this.recyclerViewOfferAdapter.searchRecycleView(searchText);
+                    }
                 }
             }
         });
 
         ownerTab.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 if(HomeActivity.tabIndex ==0){
+                    String searchText = String.valueOf(search_edit_text.getText());
                     ownerTab.setBackgroundResource(R.drawable.tab_style_active);
                     keeperTab.setBackgroundResource(R.drawable.tab_style_inactive);
                     HomeActivity.tabIndex = 1;
                     HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(ownerOffers);
-
+                    HomeActivity.this.recyclerViewOfferAdapter.filterRecycleView(petSpecies);
+                    if (searchText.length() >= 3) {
+                        HomeActivity.this.recyclerViewOfferAdapter.searchRecycleView(searchText);
+                    }
                 }
             }
         });
@@ -182,21 +200,38 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(PetCategory petCategory) {
                 if(petCategory.getName().equals("All") && !petCategory.isActive()){
                     HomeActivity.this.recyclerViewCategoryAdapter.resetAllCategoriesToInactive();
-
+                    petSpecies = new ArrayList<>();
+                    petSpecies.add("All");
                 }
                 if(petCategory.isActive() && !petCategory.getName().equals("All")){
+                    if(petSpecies.contains("All")) petSpecies = new ArrayList<>();
                     if(HomeActivity.this.recyclerViewCategoryAdapter.isOneIsActive(petCategory.getName())){
                         int lengthOfImage = petCategory.getImg().length();
+                        if(lengthOfImage<7){
+                            // data synchronisation prob..
+                        }else{
                         petCategory.setImg( petCategory.getImg().substring(0,lengthOfImage-7) );
+                        petSpecies.remove(petCategory.getName().toUpperCase());
+                        }
                     }else {
                         HomeActivity.this.recyclerViewCategoryAdapter.resetAllCategoriesToInactive();
+                        petSpecies = new ArrayList<>();
+                        petSpecies.add("All");
                     }
                 }else if(!petCategory.getName().equals("All")){
                     petCategory.setImg(petCategory.getImg()+"_active") ;
                     HomeActivity.this.recyclerViewCategoryAdapter.disableAllCategoryChoice();
+                    petSpecies.remove("All");
+                    petSpecies.add(petCategory.getName().toUpperCase());
+
                 }
                 petCategory.setActive(!petCategory.isActive());
-
+                if(HomeActivity.tabIndex ==1){
+                    HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(ownerOffers);
+                }else{
+                    HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(keeperOffers);
+                }
+                HomeActivity.this.recyclerViewOfferAdapter.filterRecycleView(petSpecies);
             }
         });
 
@@ -205,6 +240,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showToast(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    }
+    private void showListToast(List<String> msg){
+        Toast.makeText(this,msg.toString(),Toast.LENGTH_SHORT).show();
     }
 
 

@@ -8,6 +8,7 @@ import ma.ensam.petkeeper.entities.enums.PetSpecies;
 public class HomeOffers {
     private String userName;
     private String description;
+    private String title;
     private PetSpecies pet;
     private OfferType type;
     private Date from;
@@ -15,7 +16,7 @@ public class HomeOffers {
     private Long offerId;
     private Long profileId;
 
-    public HomeOffers(Long offerId,Long profileId,String userName, String description, PetSpecies pet, OfferType type, Date from, Date to) {
+    public HomeOffers(Long offerId,Long profileId,String userName, String description,String title, PetSpecies pet, OfferType type, Date from, Date to) {
         this.offerId = offerId;
         this.profileId = profileId;
         this.userName = userName;
@@ -24,6 +25,7 @@ public class HomeOffers {
         this.from = from;
         this.to = to;
         this.description = description;
+        this.title = title;
     }
 
     public String getDescription() {
@@ -87,5 +89,13 @@ public class HomeOffers {
 
     public void setProfileId(Long profileId) {
         this.profileId = profileId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
