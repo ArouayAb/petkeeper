@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -49,6 +51,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
     TextView newOfferBack;
     Spinner spOfferType;
     EditText etOfferTitle;
+    TextView tvOfferImage;
     TextView btnUploadImage;
     Spinner spPetType;
     TextView etStartDate;
@@ -67,6 +70,8 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
     int endMonth;
     int endYear;
     String petImagePath;
+    boolean startDatePicked;
+    boolean endDatePicked;
 
     private final String[] galleryPermissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -95,6 +100,25 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
 
         newOfferBack.setOnClickListener(view -> NewOfferActivity.this.finish());
 
+        spOfferType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (spOfferType.getSelectedItem().equals(OfferType.KEEPER)) {
+                    tvOfferImage.setVisibility(View.GONE);
+                    btnUploadImage.setVisibility(View.GONE);
+                    petImagePath = "";
+                    btnUploadImage.setText("Choose File");
+                } else {
+                    tvOfferImage.setVisibility(View.VISIBLE);
+                    btnUploadImage.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
         btnUploadImage.setOnClickListener(view -> {
             Runnable openGallery = () -> {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -122,27 +146,50 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
         btnCancel.setOnClickListener(view -> NewOfferActivity.this.finish());
 
         btnSubmit.setOnClickListener(view -> {
-            Offer offer = new Offer(
-                    (OfferType) spOfferType.getSelectedItem(),
-                    (PetSpecies) spPetType.getSelectedItem(),
-                    etOfferTitle.getText().toString(),
-                    etOfferDesc.getText().toString(),
-                    petImagePath,
-                    new GregorianCalendar(startYear, startMonth, startDay).getTime(),
-                    new GregorianCalendar(endYear, endMonth, endDay).getTime(),
-                    new Date(),
-                    currentProfileId
-            );
+            String message = validate();
+            if (message.isEmpty()) {
+                Offer offer = new Offer(
+                        (OfferType) spOfferType.getSelectedItem(),
+                        (PetSpecies) spPetType.getSelectedItem(),
+                        etOfferTitle.getText().toString(),
+                        etOfferDesc.getText().toString(),
+                        petImagePath,
+                        new GregorianCalendar(startYear, startMonth, startDay).getTime(),
+                        new GregorianCalendar(endYear, endMonth, endDay).getTime(),
+                        new Date(),
+                        currentProfileId
+                );
 
-            long createdOfferId = offerViewModel.insert(offer);
+                long createdOfferId = offerViewModel.insert(offer);
 
-            Intent intent = spOfferType.getSelectedItem().equals(OfferType.OWNER) ?
-                    new Intent(NewOfferActivity.this, OfferOwnerActivity.class) :
-                    new Intent(NewOfferActivity.this, OfferKeeperActivity.class);
-            intent.putExtra("offerId", createdOfferId);
-            intent.putExtra("currentProfileId", currentProfileId);
-            startActivity(intent);
+                Intent intent = spOfferType.getSelectedItem().equals(OfferType.OWNER) ?
+                        new Intent(NewOfferActivity.this, OfferOwnerActivity.class) :
+                        new Intent(NewOfferActivity.this, OfferKeeperActivity.class);
+                intent.putExtra("offerId", createdOfferId);
+                intent.putExtra("currentProfileId", currentProfileId);
+                startActivity(intent);
+            } else {
+                Toast.makeText(
+                        this,
+                        message,
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
         });
+    }
+
+    private String validate() {
+        if (etOfferTitle.getText().toString().isEmpty() ||
+                (petImagePath.isEmpty() && spOfferType.getSelectedItem().equals(OfferType.OWNER))
+                || !startDatePicked || !endDatePicked || etOfferDesc.getText().toString().isEmpty()
+        )
+            return "Make sure to fill all the fields before submitting your offer";
+
+        if (new GregorianCalendar(startYear, startMonth, startDay).getTime()
+                .after(new GregorianCalendar(endYear, endMonth, endDay).getTime()))
+            return "Start date and end dates are not valid";
+
+        return "";
     }
 
     private void init() {
@@ -178,6 +225,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
             startDay = day;
             startMonth = month;
             startYear = year;
+            startDatePicked = true;
         };
 
         endDateListener = (datePicker, year, month, day) -> {
@@ -186,7 +234,12 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
             endDay = day;
             endMonth = month;
             endYear = year;
+            endDatePicked = true;
         };
+
+        startDatePicked = false;
+        endDatePicked = false;
+        petImagePath = "";
     }
 
 
@@ -194,6 +247,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
         newOfferBack = findViewById(R.id.newOfferBack);
         spOfferType = findViewById(R.id.spOfferTypes);
         etOfferTitle = findViewById(R.id.etOfferTitle);
+        tvOfferImage = findViewById(R.id.tvOfferImage);
         btnUploadImage = findViewById(R.id.btnUploadImage);
         spPetType = findViewById(R.id.spPetTypes);
         etStartDate = findViewById(R.id.etStartDate);
@@ -204,7 +258,7 @@ public class NewOfferActivity extends AppCompatActivity implements EasyPermissio
     }
 
     private void populateSpinners() {
-        offerTypes = Arrays.asList(OfferType.KEEPER, OfferType.OWNER);
+        offerTypes = Arrays.asList(OfferType.OWNER, OfferType.KEEPER);
         petSpecies = Arrays.asList(PetSpecies.CAT, PetSpecies.DOG, PetSpecies.BIRD,
                 PetSpecies.FISH, PetSpecies.TURTLE);
 
