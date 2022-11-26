@@ -42,13 +42,13 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull HomeAdapterPost.ViewHolder holder, int position) {
-        String duration = String.valueOf(((homeOffers.get(position).getTo().getTime()- homeOffers.get(position).getFrom().getTime())/(60*60*24)));
+        String duration = String.valueOf(((homeOffers.get(position).getTo().getTime()- homeOffers.get(position).getFrom().getTime())/(1000 * 60 * 60 * 24)));
         holder.postUserName.setText(homeOffers.get(position).getUserName());
         holder.postPet.setText(homeOffers.get(position).getPet().name());
         holder.postFrom.setText(AppConfig.dateFormat.format(homeOffers.get(position).getFrom()));
         holder.postTo.setText(AppConfig.dateFormat.format(homeOffers.get(position).getTo()));
-        holder.postDuration.setText(duration);
-        holder.postDesc.setText(homeOffers.get(position).getDescription());
+        holder.postDuration.setText(duration + " days");
+        holder.postCreationDate.setText(AppConfig.dateFormat.format(homeOffers.get(position).getCreationDate()));
         holder.postTitle.setText(homeOffers.get(position).getTitle());
         holder.postImage.setImageBitmap(
                 BitmapUtility.extractFromPath(homeOffers.get(position).getProfileUrl())
@@ -101,7 +101,9 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
     public void searchRecycleView(String text){
         List<HomeOffers> newHomeOffers = new ArrayList<>();
         for(HomeOffers homeOffer : this.homeOffers) {
-            if (homeOffer.getDescription().contains(text) || homeOffer.getTitle().contains(text)) {
+            if (homeOffer.getDescription().toLowerCase().contains(text.toLowerCase())
+                    || homeOffer.getTitle().toLowerCase().contains(text.toLowerCase())
+            ) {
                 newHomeOffers.add(homeOffer);
             }
         }
@@ -110,7 +112,7 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView postUserName, postPet, postFrom, postTo, postDuration,postDesc,postTitle;
+        TextView postUserName, postPet, postFrom, postTo, postDuration,postCreationDate,postTitle;
         ShapeableImageView postImage;
         ConstraintLayout constraintLayout;
         LinearLayout seePostLayout;
@@ -118,7 +120,7 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             postUserName = itemView.findViewById(R.id.user_name_id);
-            postDesc = itemView.findViewById(R.id.post_desc_id);
+            postTitle = itemView.findViewById(R.id.post_desc_id);
             postPet = itemView.findViewById(R.id.pet_id);
             postFrom = itemView.findViewById(R.id.from_id);
             postTo = itemView.findViewById(R.id.to_id);
@@ -126,7 +128,7 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
             postImage = itemView.findViewById(R.id.post_profile_image_id);
             constraintLayout = (ConstraintLayout) itemView;
             seePostLayout = itemView.findViewById(R.id.see_post_id);
-            postTitle = itemView.findViewById(R.id.post_title_id);
+            postCreationDate = itemView.findViewById(R.id.post_title_id);
         }
     }
 }

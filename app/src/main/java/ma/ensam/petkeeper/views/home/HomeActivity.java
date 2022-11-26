@@ -33,6 +33,7 @@ import ma.ensam.petkeeper.viewmodels.HomeViewModel;
 import ma.ensam.petkeeper.views.auth.LoginActivity;
 import ma.ensam.petkeeper.views.home.adapters.HomeAdapterCategory;
 import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
+import ma.ensam.petkeeper.views.offer.NewOfferActivity;
 import ma.ensam.petkeeper.views.offer.OfferKeeperActivity;
 import ma.ensam.petkeeper.views.offer.OfferOwnerActivity;
 import ma.ensam.petkeeper.views.profile.ProfileActivity;
@@ -96,7 +97,8 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.offer.getType(),
                                     offerWithProfile.offer.getFromDate(),
                                     offerWithProfile.offer.getToDate(),
-                                    offerWithProfile.profile.getProfilePicUrl()
+                                    offerWithProfile.profile.getProfilePicUrl(),
+                                    offerWithProfile.offer.getCreationDate()
                             ))
                     .collect(Collectors.toList());
             if (this.tabIndex == 1)
@@ -117,7 +119,8 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.offer.getType(),
                                     offerWithProfile.offer.getFromDate(),
                                     offerWithProfile.offer.getToDate(),
-                                    offerWithProfile.profile.getProfilePicUrl()
+                                    offerWithProfile.profile.getProfilePicUrl(),
+                                    offerWithProfile.offer.getCreationDate()
                             ))
                     .collect(Collectors.toList());
             if (this.tabIndex == 0)
@@ -230,6 +233,7 @@ public class HomeActivity extends AppCompatActivity {
         this.recyclerViewCategoryAdapter = new HomeAdapterCategory(HomeViewModel.getAllCategories(), new HomeAdapterCategory.ItemClickedListener() {
             @Override
             public void onItemClick(PetCategory petCategory) {
+                if(petCategory.getName().equals("All")) ((EditText) findViewById(R.id.search_edit_text_id)).setText("");
                 if(petCategory.getName().equals("All") && !petCategory.isActive()){
                     HomeActivity.this.recyclerViewCategoryAdapter.resetAllCategoriesToInactive();
                     petSpecies = new ArrayList<>();
@@ -280,5 +284,11 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("selfProfileId", HomeActivity.this.selfProfileId);
         intent.putExtra("currentProfileId", HomeActivity.this.selfProfileId);
         activityResultLauncher.launch(intent);
+    }
+
+    public void onClickRedirectToNewOffer(View view) {
+        Intent offerActivityIntent = new Intent(this, NewOfferActivity.class);
+        offerActivityIntent.putExtra("currentProfileId", this.selfProfileId);
+        this.activityResultLauncher.launch(offerActivityIntent);
     }
 }

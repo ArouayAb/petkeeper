@@ -211,8 +211,9 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         this.reviewsAdapter = new ProfileAdapterReview(
                 reviewProfiles,
                 reviewProfile -> {
-                    Toast.makeText(ProfileActivity.this, reviewProfile.getId().toString() + " clicked", Toast.LENGTH_SHORT)
-                            .show();
+                    if (AppConfig.DEBUG_MODE)
+                        Toast.makeText(ProfileActivity.this, reviewProfile.getId().toString() + " clicked", Toast.LENGTH_SHORT)
+                                .show();
                 });
 
         recyclerViewCardList.setAdapter(this.reviewsAdapter);

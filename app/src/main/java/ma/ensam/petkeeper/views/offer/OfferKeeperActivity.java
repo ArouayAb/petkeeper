@@ -240,8 +240,9 @@ public class OfferKeeperActivity extends AppCompatActivity {
         this.reviewsAdapter = new OfferKeeperAdapterReview(
                 reviewProfiles,
                 reviewProfile -> {
-                    Toast.makeText(OfferKeeperActivity.this, reviewProfile.getId().toString() + " clicked", Toast.LENGTH_SHORT)
-                            .show();
+                    if (AppConfig.DEBUG_MODE)
+                            Toast.makeText(OfferKeeperActivity.this, reviewProfile.getId().toString() + " clicked", Toast.LENGTH_SHORT)
+                                .show();
                 });
 
         recyclerViewCardList.setAdapter(this.reviewsAdapter);
