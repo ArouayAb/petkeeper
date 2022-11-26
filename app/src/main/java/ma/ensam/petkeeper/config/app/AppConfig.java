@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class AppConfig {
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public static final String[] galleryPermissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,

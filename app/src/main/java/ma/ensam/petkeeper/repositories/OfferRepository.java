@@ -10,19 +10,36 @@ import java.util.concurrent.ExecutionException;
 
 import ma.ensam.petkeeper.config.database.AppDatabase;
 import ma.ensam.petkeeper.daos.OfferDao;
+import ma.ensam.petkeeper.daos.RelationDao;
 import ma.ensam.petkeeper.entities.Offer;
+import ma.ensam.petkeeper.entities.enums.OfferType;
 import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
 import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 
 public class OfferRepository {
-    private OfferDao offerDao;
+    private final OfferDao offerDao;
+    private final RelationDao relationDao;
 
     private LiveData<List<Offer>> allOffers;
 
     public OfferRepository(Application application) {
         AppDatabase appDatabase = AppDatabase.getInstance(application);
         offerDao = appDatabase.offerDao();
+        this.relationDao = appDatabase.relationDao();
         allOffers = offerDao.findAll();
+    }
+
+    public LiveData<List<ProfileAndOffer>> findAllOffersWithProfileByType(OfferType type){
+        CompletableFuture<LiveData<List<ProfileAndOffer>>> offer = CompletableFuture.supplyAsync(
+                () -> this.relationDao.findAllOffersWithProfileByType(type)
+        );
+        try {
+
+            return offer.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public LiveData<List<Offer>> getAllOffers() {

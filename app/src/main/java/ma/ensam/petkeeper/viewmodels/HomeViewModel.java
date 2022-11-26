@@ -7,18 +7,21 @@ import androidx.lifecycle.LiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import ma.ensam.petkeeper.entities.Profile;
 import ma.ensam.petkeeper.entities.enums.OfferType;
 import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
-import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.models.PetCategory;
-import ma.ensam.petkeeper.repositories.OfferRepo;
+import ma.ensam.petkeeper.repositories.OfferRepository;
+import ma.ensam.petkeeper.repositories.ProfileRepository;
 
 public class HomeViewModel  extends AndroidViewModel {
-    private final OfferRepo repository;
+    private final OfferRepository repository;
+    private final ProfileRepository profileRepository;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        this.repository = new OfferRepo(application);
+        this.repository = new OfferRepository(application);
+        this.profileRepository = new ProfileRepository(application);
     }
 
     public LiveData<List<ProfileAndOffer>> findAllOffersWithProfileByType(OfferType type) {
@@ -36,6 +39,10 @@ public class HomeViewModel  extends AndroidViewModel {
         categories.add(new PetCategory("Bird","bird"));
         categories.add(new PetCategory("Turtle","turtle"));
         return categories;
+    }
+
+    public LiveData<Profile> findProfileById(long selfProfileId) {
+        return this.profileRepository.findById(selfProfileId);
     }
 
     /*public static ArrayList<HomeOffers> getAllPosts (){

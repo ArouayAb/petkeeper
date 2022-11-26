@@ -12,12 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ma.ensam.petkeeper.config.app.AppConfig;
 import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.models.HomeOffers;
+import ma.ensam.petkeeper.utils.BitmapUtility;
 
 public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHolder>{
 
@@ -47,6 +50,9 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
         holder.postDuration.setText(duration);
         holder.postDesc.setText(homeOffers.get(position).getDescription());
         holder.postTitle.setText(homeOffers.get(position).getTitle());
+        holder.postImage.setImageBitmap(
+                BitmapUtility.extractFromPath(homeOffers.get(position).getProfileUrl())
+        );
 
         holder.constraintLayout.setOnClickListener(view -> {
             mItemListener.onClickItem(homeOffers.get(position));
@@ -105,7 +111,7 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView postUserName, postPet, postFrom, postTo, postDuration,postDesc,postTitle;
-        ImageView postImage;
+        ShapeableImageView postImage;
         ConstraintLayout constraintLayout;
         LinearLayout seePostLayout;
 

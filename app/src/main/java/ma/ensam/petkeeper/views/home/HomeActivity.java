@@ -1,5 +1,7 @@
 package ma.ensam.petkeeper.views.home;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,33 +16,41 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.imageview.ShapeableImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ma.ensam.petkeeper.R;
+import ma.ensam.petkeeper.config.app.AppConfig;
 import ma.ensam.petkeeper.entities.enums.OfferType;
 import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
 import ma.ensam.petkeeper.models.HomeOffers;
 import ma.ensam.petkeeper.models.PetCategory;
+import ma.ensam.petkeeper.utils.BitmapUtility;
 import ma.ensam.petkeeper.viewmodels.HomeViewModel;
 import ma.ensam.petkeeper.views.auth.LoginActivity;
 import ma.ensam.petkeeper.views.home.adapters.HomeAdapterCategory;
 import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
+import ma.ensam.petkeeper.views.offer.OfferKeeperActivity;
+import ma.ensam.petkeeper.views.offer.OfferOwnerActivity;
 import ma.ensam.petkeeper.views.profile.ProfileActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
     private HomeViewModel homeViewModel;
     static int tabIndex = 1;
-    TextView keeperTab, ownerTab ;
-    ImageView search_button ;
-    EditText search_edit_text;
+    private TextView keeperTab, ownerTab ;
+    private ImageView search_button ;
+    private EditText search_edit_text;
     private ArrayList<HomeOffers> ownerOffers = new ArrayList<>();
     private ArrayList<HomeOffers> keeperOffers = new ArrayList<>();
     private HomeAdapterPost recyclerViewOfferAdapter;
     private HomeAdapterCategory recyclerViewCategoryAdapter;
     private List<String> petSpecies= new ArrayList<>();
+    private long selfProfileId;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
 
 
     @SuppressLint("MissingInflatedId")
@@ -48,6 +58,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        this.selfProfileId = AppConfig.DEBUG_MODE ? 1L : getIntent().getLongExtra("userId", 0L);
+
         keeperTab = findViewById(R.id.keepers_tab_id);
         ownerTab  = findViewById(R.id.owners_tab_id);
         search_button = findViewById(R.id.seach_button_id);
@@ -58,6 +71,15 @@ public class HomeActivity extends AppCompatActivity {
 
         recyclerViewCategory();
         recyclerViewPost(this.ownerOffers);
+
+        this.homeViewModel.findProfileById(this.selfProfileId).observe(this, (profile) -> {
+            if(profile == null) return;
+
+            ShapeableImageView profileImage = findViewById(R.id.home_profile_image);
+            profileImage.setImageBitmap(
+                    BitmapUtility.extractFromPath(profile.getProfilePicUrl())
+            );
+        });
 
         this.homeViewModel.findAllOffersWithProfileByType(OfferType.OWNER).observe(this, offersWithProfile -> {
             if(offersWithProfile == null) return;
@@ -73,8 +95,8 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.offer.getPet(),
                                     offerWithProfile.offer.getType(),
                                     offerWithProfile.offer.getFromDate(),
-                                    offerWithProfile.offer.getToDate()
-
+                                    offerWithProfile.offer.getToDate(),
+                                    offerWithProfile.profile.getProfilePicUrl()
                             ))
                     .collect(Collectors.toList());
             if (HomeActivity.tabIndex == 1)
@@ -94,8 +116,8 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.offer.getPet(),
                                     offerWithProfile.offer.getType(),
                                     offerWithProfile.offer.getFromDate(),
-                                    offerWithProfile.offer.getToDate()
-
+                                    offerWithProfile.offer.getToDate(),
+                                    offerWithProfile.profile.getProfilePicUrl()
                             ))
                     .collect(Collectors.toList());
             if (HomeActivity.tabIndex == 0)
@@ -156,6 +178,13 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        this.activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+
+                }
+        );
     }
 
     private void recyclerViewPost(ArrayList<HomeOffers> offers) {
@@ -167,25 +196,25 @@ public class HomeActivity extends AppCompatActivity {
          this.recyclerViewOfferAdapter = new HomeAdapterPost(offers, new HomeAdapterPost.ItemClickedListener() {
             @Override
             public void onClickItem(HomeOffers postHome) {
-                showToast(" said : "+postHome.getDescription());
+                Class<?> targetActivity = postHome.getType().equals(OfferType.KEEPER) ?
+                        OfferKeeperActivity.class : OfferOwnerActivity.class;
+                Intent offerActivityIntent = new Intent(HomeActivity.this, targetActivity);
+                offerActivityIntent.putExtra("offerId", postHome.getOfferId());
+                offerActivityIntent.putExtra("currentProfileId", postHome.getProfileId());
+                activityResultLauncher.launch(offerActivityIntent);
             }
 
             @Override
             public void onCLickSeePost(HomeOffers homeOffer) {
-                showToast("See Post Clicked");
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                intent.putExtra("lprofileId",homeOffer.getOfferId());
-                startActivity(intent);
-
+                onClickItem(homeOffer);
             }
 
             @Override
             public void onClickSeeProfile(HomeOffers homeOffer) {
-               /* Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                intent.putExtra("lprofileId",homeOffer.getProfileId());
-                intent.putExtra("profileId","myId");
-                startActivity(intent);*/
-                showToast("See profile Clicked");
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent.putExtra("currentProfileId", homeOffer.getProfileId());
+                intent.putExtra("selfProfileId", HomeActivity.this.selfProfileId);
+                activityResultLauncher.launch(intent);
             }
 
         });
@@ -246,4 +275,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void onClickSelfProfile(View view) {
+        Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+        intent.putExtra("selfProfileId", HomeActivity.this.selfProfileId);
+        intent.putExtra("currentProfileId", HomeActivity.this.selfProfileId);
+        activityResultLauncher.launch(intent);
+    }
 }
