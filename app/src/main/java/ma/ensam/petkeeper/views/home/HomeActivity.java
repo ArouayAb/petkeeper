@@ -207,12 +207,10 @@ public class HomeActivity extends AppCompatActivity {
                     if(petSpecies.contains("All")) petSpecies = new ArrayList<>();
                     if(HomeActivity.this.recyclerViewCategoryAdapter.isOneIsActive(petCategory.getName())){
                         int lengthOfImage = petCategory.getImg().length();
-                        if(lengthOfImage<7){
-                            // data synchronisation prob..
-                        }else{
+
                         petCategory.setImg( petCategory.getImg().substring(0,lengthOfImage-7) );
                         petSpecies.remove(petCategory.getName().toUpperCase());
-                        }
+
                     }else {
                         HomeActivity.this.recyclerViewCategoryAdapter.resetAllCategoriesToInactive();
                         petSpecies = new ArrayList<>();
