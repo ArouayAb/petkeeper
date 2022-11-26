@@ -29,27 +29,27 @@
         android:layout_toEndOf="@id/profile_picture_review"
         android:text="John Doe"
         android:textColor="@color/black"
-        android:textSize="11sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/profile_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="I will give him 3 stars"
-        android:textSize="8sp"
+        android:textSize="12sp"
         android:layout_toEndOf="@id/profile_picture_review"
         android:layout_below="@id/profile_name_review"/>
 
     <RatingBar
         android:id="@+id/review_rating_stars"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/ratingBarStyleSmall"
-        android:rating="3"
-        android:numStars="5"
-        android:progressTint="@color/petkeeper_yellow"
-        android:progressBackgroundTint="@color/petkeeper_yellow"
-        android:layout_marginStart="140dp"
+        android:layout_marginStart="200dp"
         android:layout_marginTop="8dp"
-        android:layout_toEndOf="@id/profile_picture_review" />
+        android:layout_toEndOf="@id/profile_picture_review"
+        android:numStars="5"
+        android:progressBackgroundTint="@color/petkeeper_yellow"
+        android:progressTint="@color/petkeeper_yellow"
+        android:rating="3" />
 </RelativeLayout>
