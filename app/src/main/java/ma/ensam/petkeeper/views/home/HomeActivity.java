@@ -40,7 +40,7 @@ import ma.ensam.petkeeper.views.profile.ProfileActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private HomeViewModel homeViewModel;
-    static int tabIndex = 1;
+    private int tabIndex = 1;
     private TextView keeperTab, ownerTab ;
     private ImageView search_button ;
     private EditText search_edit_text;
@@ -99,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.profile.getProfilePicUrl()
                             ))
                     .collect(Collectors.toList());
-            if (HomeActivity.tabIndex == 1)
+            if (this.tabIndex == 1)
                 recyclerViewOfferAdapter.updateRecyclerView(this.ownerOffers);
         } );
         this.homeViewModel.findAllOffersWithProfileByType(OfferType.KEEPER).observe(this, offersWithProfile -> {
@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
                                     offerWithProfile.profile.getProfilePicUrl()
                             ))
                     .collect(Collectors.toList());
-            if (HomeActivity.tabIndex == 0)
+            if (this.tabIndex == 0)
                 this.recyclerViewOfferAdapter.updateRecyclerView(this.keeperOffers);
         } );
 
@@ -130,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
                 String searchText = String.valueOf(search_edit_text.getText());
                 if (searchText.length() >= 3) {
                     search_edit_text.setBackgroundResource(R.drawable.search_bg_style);
-                    if(HomeActivity.tabIndex ==0){
+                    if(HomeActivity.this.tabIndex ==0){
                         HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(keeperOffers);
                         HomeActivity.this.recyclerViewOfferAdapter.searchRecycleView(searchText);
                     }else{
@@ -148,11 +148,11 @@ public class HomeActivity extends AppCompatActivity {
         keeperTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(HomeActivity.tabIndex ==1){
+                if(HomeActivity.this.tabIndex ==1){
+                    HomeActivity.this.tabIndex = 0;
                     String searchText = String.valueOf(search_edit_text.getText());
                     keeperTab.setBackgroundResource(R.drawable.tab_style_active);
                     ownerTab.setBackgroundResource(R.drawable.tab_style_inactive);
-                    HomeActivity.tabIndex = 0;
                     HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(keeperOffers);
                     HomeActivity.this.recyclerViewOfferAdapter.filterRecycleView(petSpecies);
                     if (searchText.length() >= 3) {
@@ -165,11 +165,11 @@ public class HomeActivity extends AppCompatActivity {
         ownerTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(HomeActivity.tabIndex ==0){
+                if(HomeActivity.this.tabIndex ==0){
+                    HomeActivity.this.tabIndex = 1;
                     String searchText = String.valueOf(search_edit_text.getText());
                     ownerTab.setBackgroundResource(R.drawable.tab_style_active);
                     keeperTab.setBackgroundResource(R.drawable.tab_style_inactive);
-                    HomeActivity.tabIndex = 1;
                     HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(ownerOffers);
                     HomeActivity.this.recyclerViewOfferAdapter.filterRecycleView(petSpecies);
                     if (searchText.length() >= 3) {
@@ -255,7 +255,7 @@ public class HomeActivity extends AppCompatActivity {
                     petSpecies.add(petCategory.getName().toUpperCase());
 
                 }
-                if(HomeActivity.tabIndex ==1){
+                if(HomeActivity.this.tabIndex ==1){
                     HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(ownerOffers);
                 }else{
                     HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(keeperOffers);

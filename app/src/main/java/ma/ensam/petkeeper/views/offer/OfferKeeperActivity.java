@@ -60,7 +60,7 @@ public class OfferKeeperActivity extends AppCompatActivity {
     TextView totalReviewers;
     TextView tv1, tv2, tv3, tv4, tv5;
     ProgressBar progress1,progress2,progress3,progress4,progress5;
-    Button back_btn;
+    TextView back_btn;
     FloatingActionButton call_btn;
 
     private ProfileViewModel profileViewModel;
