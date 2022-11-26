@@ -218,11 +218,13 @@ public class OfferKeeperActivity extends AppCompatActivity {
         tv3.setText(Integer.toString(stars[2]));
         tv4.setText(Integer.toString(stars[3]));
         tv5.setText(Integer.toString(stars[4]));
-        progress1.setProgress((int)((stars[0]*100)/totalReviews));
-        progress2.setProgress((int)((stars[1]*100)/totalReviews));
-        progress3.setProgress((int)((stars[2]*100)/totalReviews));
-        progress4.setProgress((int)((stars[3]*100)/totalReviews));
-        progress5.setProgress((int)((stars[4]*100)/totalReviews));
+
+        progress1.setProgress(totalReviews > 0 ? (int)((stars[0]*100)/totalReviews) : 0);
+        progress2.setProgress(totalReviews > 0 ? (int)((stars[1]*100)/totalReviews) : 0);
+        progress3.setProgress(totalReviews > 0 ? (int)((stars[2]*100)/totalReviews) : 0);
+        progress4.setProgress(totalReviews > 0 ? (int)((stars[3]*100)/totalReviews) : 0);
+        progress5.setProgress(totalReviews > 0 ? (int)((stars[4]*100)/totalReviews) : 0);
+
         totalReviewers.setText(Long.toString(totalReviews));
         rating_tv.setText(Double.toString(averageStars));
         ratingBar_rb.setRating((float) averageStars);
