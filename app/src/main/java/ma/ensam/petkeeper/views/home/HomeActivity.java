@@ -77,7 +77,8 @@ public class HomeActivity extends AppCompatActivity {
 
                             ))
                     .collect(Collectors.toList());
-            recyclerViewOfferAdapter.updateRecyclerView(this.ownerOffers);
+            if (HomeActivity.tabIndex == 1)
+                recyclerViewOfferAdapter.updateRecyclerView(this.ownerOffers);
         } );
         this.homeViewModel.findAllOffersWithProfileByType(OfferType.KEEPER).observe(this, offersWithProfile -> {
             if(offersWithProfile == null) return;
@@ -97,6 +98,8 @@ public class HomeActivity extends AppCompatActivity {
 
                             ))
                     .collect(Collectors.toList());
+            if (HomeActivity.tabIndex == 0)
+                this.recyclerViewOfferAdapter.updateRecyclerView(this.keeperOffers);
         } );
 
         search_button.setOnClickListener(new View.OnClickListener() {
