@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ma.ensam.petkeeper.entities.enums.OfferType;
-import ma.ensam.petkeeper.entities.relations.OfferWithProfile;
+import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
+import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 import ma.ensam.petkeeper.models.PetCategory;
-import ma.ensam.petkeeper.models.HomeOffers;
 import ma.ensam.petkeeper.repositories.OfferRepo;
 
 public class HomeViewModel  extends AndroidViewModel {
@@ -21,8 +21,8 @@ public class HomeViewModel  extends AndroidViewModel {
         this.repository = new OfferRepo(application);
     }
 
-    public LiveData<List<OfferWithProfile>> getOffersByType(OfferType type) {
-        return this.repository.getOfferByType(type);
+    public LiveData<List<ProfileAndOffer>> findAllOffersWithProfileByType(OfferType type) {
+        return this.repository.findAllOffersWithProfileByType(type);
     }
 
 

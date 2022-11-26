@@ -14,7 +14,7 @@ public class ProfileWithReviewsOnIt {
 
     @Relation(
             entity = Review.class,
-            parentColumn = "id",
+            parentColumn = "profileId",
             entityColumn = "reviewerProfileId"
     )
 

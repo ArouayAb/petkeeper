@@ -9,13 +9,14 @@ import ma.ensam.petkeeper.entities.Offer;
 import ma.ensam.petkeeper.entities.Profile;
 
 public class ProfileAndOffer {
+
     @Embedded
+    public Offer offer;
+    @Relation(
+            entity = Profile.class,
+            parentColumn = "profileCreatorId",
+            entityColumn = "profileId"
+    )
     public Profile profile;
 
-    @Relation(
-            entity = Offer.class,
-            parentColumn = "id",
-            entityColumn = "profileCreatorId"
-    )
-    public Offer offer;
 }

@@ -1,7 +1,6 @@
 package ma.ensam.petkeeper.repositories;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,7 +14,8 @@ import java.util.concurrent.ExecutionException;
 import ma.ensam.petkeeper.config.database.AppDatabase;
 import ma.ensam.petkeeper.daos.RelationDao;
 import ma.ensam.petkeeper.entities.enums.OfferType;
-import ma.ensam.petkeeper.entities.relations.OfferWithProfile;
+import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
+import ma.ensam.petkeeper.entities.relations.ProfileWithOffers;
 
 public class OfferRepo {
     private final RelationDao relationDao;
@@ -31,9 +31,9 @@ public class OfferRepo {
         return newsData;
     }
 
-    public LiveData<List<OfferWithProfile>> getOfferByType(OfferType type){
-        CompletableFuture<LiveData<List<OfferWithProfile>>> offer = CompletableFuture.supplyAsync(
-                () -> this.relationDao.findOfferWithProfileByType(type)
+    public LiveData<List<ProfileAndOffer>> findAllOffersWithProfileByType(OfferType type){
+        CompletableFuture<LiveData<List<ProfileAndOffer>>> offer = CompletableFuture.supplyAsync(
+                () -> this.relationDao.findAllOffersWithProfileByType(type)
         );
         try {
 

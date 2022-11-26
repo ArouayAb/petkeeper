@@ -1,4 +1,4 @@
-package ma.ensam.petkeeper.views.home.adapter;
+package ma.ensam.petkeeper.views.home.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import ma.ensam.petkeeper.config.app.AppConfig;
 import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.models.HomeOffers;
 
-public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewModel>{
+public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHolder>{
 
     List<HomeOffers> homeOffers;
     private HomeAdapterPost.ItemClickedListener mItemListener;
@@ -31,14 +31,14 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewMo
     }
     @NonNull
     @Override
-    public HomeAdapterPost.ViewModel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeAdapterPost.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_home_post,parent,false);
-        return new HomeAdapterPost.ViewModel(inflate);
+        return new HomeAdapterPost.ViewHolder(inflate);
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBindViewHolder(@NonNull HomeAdapterPost.ViewModel holder, int position) {
+    public void onBindViewHolder(@NonNull HomeAdapterPost.ViewHolder holder, int position) {
         String duration = String.valueOf(((homeOffers.get(position).getTo().getTime()- homeOffers.get(position).getFrom().getTime())/(60*60*24)));
         holder.postUserName.setText(homeOffers.get(position).getUserName());
         holder.postPet.setText(homeOffers.get(position).getPet().name());
@@ -76,13 +76,13 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewMo
         notifyDataSetChanged();
     }
 
-    public class ViewModel extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView postUserName, postPet, postFrom, postTo, postDuration,postDesc;
         ImageView postImage;
         ConstraintLayout constraintLayout;
         LinearLayout seePostLayout;
 
-        public ViewModel(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             postUserName = itemView.findViewById(R.id.user_name_id);
             postDesc = itemView.findViewById(R.id.post_desc_id);

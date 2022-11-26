@@ -23,13 +23,13 @@ public interface ProfileDao {
     @Update
     void update(Profile profile);
 
-    @Query("UPDATE profiles SET profilePicUrl = :profilePicUrl WHERE id = :id")
+    @Query("UPDATE profiles SET profilePicUrl = :profilePicUrl WHERE profileId = :id")
     void updateProfilePicUrlById(long id, String profilePicUrl);
 
     @Delete
     void delete(Profile profile);
 
-    @Query("SELECT * FROM profiles WHERE id = :id")
+    @Query("SELECT * FROM profiles WHERE profileId = :id")
     LiveData<Profile> findById(long id);
 
     @Query("SELECT * FROM profiles")

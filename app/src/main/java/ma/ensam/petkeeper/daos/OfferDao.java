@@ -29,13 +29,13 @@ public interface OfferDao {
     @Delete
     void delete(Offer offer);
 
-    @Query("SELECT * FROM offers WHERE id = :id")
+    @Query("SELECT * FROM offers WHERE offerId = :id")
     LiveData<Offer> findById(long id);
 
     @Query("SELECT * FROM offers")
     LiveData<List<Offer>> findAll();
 
     @Transaction
-    @Query("SELECT * FROM offers JOIN profiles ON offers.profileCreatorId = profiles.id WHERE offers.id = :id")
+    @Query("SELECT * FROM offers JOIN profiles ON offers.profileCreatorId = profiles.profileId WHERE offers.offerId = :id")
     LiveData<ProfileAndOffer> findOfferAndProfileByOfferId(long id);
 }

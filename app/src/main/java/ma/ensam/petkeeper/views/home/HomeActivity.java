@@ -15,16 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.entities.enums.OfferType;
+import ma.ensam.petkeeper.entities.relations.ProfileAndOffer;
 import ma.ensam.petkeeper.models.HomeOffers;
 import ma.ensam.petkeeper.models.PetCategory;
 import ma.ensam.petkeeper.viewmodels.HomeViewModel;
 import ma.ensam.petkeeper.views.auth.LoginActivity;
-import ma.ensam.petkeeper.views.home.adapter.HomeAdapterCategory;
-import ma.ensam.petkeeper.views.home.adapter.HomeAdapterPost;
+import ma.ensam.petkeeper.views.home.adapters.HomeAdapterCategory;
+import ma.ensam.petkeeper.views.home.adapters.HomeAdapterPost;
 import ma.ensam.petkeeper.views.profile.ProfileActivity;
 
 public class HomeActivity extends AppCompatActivity {
@@ -55,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewCategory();
         recyclerViewPost(this.ownerOffers);
 
-        this.homeViewModel.getOffersByType(OfferType.OWNER).observe(this, offersWithProfile -> {
+        this.homeViewModel.findAllOffersWithProfileByType(OfferType.OWNER).observe(this, offersWithProfile -> {
             if(offersWithProfile == null) return;
 
             this.ownerOffers = (ArrayList<HomeOffers>) offersWithProfile.stream()
@@ -74,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
                     .collect(Collectors.toList());
             recyclerViewOfferAdapter.updateRecyclerView(this.ownerOffers);
         } );
-        this.homeViewModel.getOffersByType(OfferType.KEEPER).observe(this, offersWithProfile -> {
+        this.homeViewModel.findAllOffersWithProfileByType(OfferType.KEEPER).observe(this, offersWithProfile -> {
             if(offersWithProfile == null) return;
 
             this.keeperOffers = (ArrayList<HomeOffers>) offersWithProfile.stream()

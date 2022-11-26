@@ -1,5 +1,6 @@
 package ma.ensam.petkeeper.entities;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class Profile {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long profileId;
 
     private String fullName;
 
@@ -45,12 +46,31 @@ public class Profile {
         this.city = city;
     }
 
+    public Profile(long profileId, String fullName, String phoneNumber, String about, String profilePicUrl, String country, String city, long userId) {
+        this.profileId = profileId;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.about = about;
+        this.profilePicUrl = profilePicUrl;
+        this.country = country;
+        this.city = city;
+        this.userId = userId;
+    }
+
+    public long getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(long profileId) {
+        this.profileId = profileId;
+    }
+
     public long getId() {
-        return id;
+        return profileId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.profileId = id;
     }
 
     public String getFullName() {
