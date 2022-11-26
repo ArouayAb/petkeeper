@@ -50,7 +50,6 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
 
         holder.constraintLayout.setOnClickListener(view -> {
             mItemListener.onClickItem(homeOffers.get(position));
-            notifyDataSetChanged();
         });
         holder.seePostLayout.setOnClickListener(view -> {
             mItemListener.onCLickSeePost(homeOffers.get(position));
@@ -119,7 +118,7 @@ public class HomeAdapterPost extends RecyclerView.Adapter<HomeAdapterPost.ViewHo
             postTo = itemView.findViewById(R.id.to_id);
             postDuration = itemView.findViewById(R.id.duration_id);
             postImage = itemView.findViewById(R.id.post_profile_image_id);
-            constraintLayout = itemView.findViewById(R.id.post_constraint_id);
+            constraintLayout = (ConstraintLayout) itemView;
             seePostLayout = itemView.findViewById(R.id.see_post_id);
             postTitle = itemView.findViewById(R.id.post_title_id);
         }
