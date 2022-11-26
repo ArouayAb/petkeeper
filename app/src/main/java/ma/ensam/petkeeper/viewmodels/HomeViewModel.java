@@ -29,12 +29,12 @@ public class HomeViewModel  extends AndroidViewModel {
     public  static ArrayList<PetCategory> getAllCategories (){
         ArrayList<PetCategory> categories = new ArrayList<PetCategory>() ;
 
-        categories.add(new PetCategory("All","all_active",true));
-        categories.add(new PetCategory("Cat","cat",false));
-        categories.add(new PetCategory("Dog","dog",false));
-        categories.add(new PetCategory("Fish","fish",false));
-        categories.add(new PetCategory("Bird","bird",false));
-        categories.add(new PetCategory("Turtle","turtle",false));
+        categories.add(new PetCategory("All","all_active"));
+        categories.add(new PetCategory("Cat","cat"));
+        categories.add(new PetCategory("Dog","dog"));
+        categories.add(new PetCategory("Fish","fish"));
+        categories.add(new PetCategory("Bird","bird"));
+        categories.add(new PetCategory("Turtle","turtle"));
         return categories;
     }
 

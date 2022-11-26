@@ -72,10 +72,8 @@ public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategor
         for(PetCategory petCategory : allCategories){
             if(!petCategory.getName().equals("All")){
                 petCategory.setImg(petCategory.getName().toLowerCase());
-                petCategory.setActive(false);
             }else {
                 petCategory.setImg("all_active");
-                petCategory.setActive(true);
             }
         }
     }
@@ -84,7 +82,6 @@ public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategor
                 petCategory -> {
                     if(petCategory.getName().equals("All")){
                         petCategory.setImg("all");
-                        petCategory.setActive(false);
                     }
                 });
 

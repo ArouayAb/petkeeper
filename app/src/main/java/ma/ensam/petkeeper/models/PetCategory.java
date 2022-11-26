@@ -3,21 +3,16 @@ package ma.ensam.petkeeper.models;
 public class PetCategory {
     private String name;
     private String img;
-    private boolean isActive;
 
-    public PetCategory(String name, String img, boolean isActive) {
+    public PetCategory(String name, String img) {
         this.name = name;
         this.img = img;
-        this.isActive = isActive;
     }
 
     public boolean isActive() {
-        return isActive;
+        return this.img.contains("_active");
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 
     public String getName() {
         return name;

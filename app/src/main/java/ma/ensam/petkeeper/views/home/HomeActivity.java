@@ -225,7 +225,6 @@ public class HomeActivity extends AppCompatActivity {
                     petSpecies.add(petCategory.getName().toUpperCase());
 
                 }
-                petCategory.setActive(!petCategory.isActive());
                 if(HomeActivity.tabIndex ==1){
                     HomeActivity.this.recyclerViewOfferAdapter.updateRecyclerView(ownerOffers);
                 }else{
