@@ -71,6 +71,8 @@
                         android:layout_height="112dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="3dp"
+                        android:clickable="true"
+                        android:onClick="onClickUploadImage"
                         app:layout_constraintBottom_toTopOf="@+id/profile_name"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"

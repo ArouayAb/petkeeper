@@ -1,5 +1,6 @@
 package ma.ensam.petkeeper.views.home.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import ma.ensam.petkeeper.R;
 import ma.ensam.petkeeper.models.PetCategory;
 
-public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategory.ViewModel> {
+public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategory.ViewHolder> {
 
     ArrayList<PetCategory> allCategories;
     private ItemClickedListener mItemListener;
@@ -30,13 +31,14 @@ public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategor
 
     @NonNull
     @Override
-    public ViewModel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_category,parent,false);
-        return new ViewModel(inflate);
+        return new ViewHolder(inflate);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBindViewHolder(@NonNull ViewModel holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.categoryName.setText(allCategories.get(position).getName());
         String imgUrl = allCategories.get(position).getImg();
         int drawableResourceId = holder.itemView.getContext().getResources().getIdentifier(
@@ -61,16 +63,49 @@ public class HomeAdapterCategory extends RecyclerView.Adapter<HomeAdapterCategor
         return allCategories.size();
     }
 
+
+
     public interface  ItemClickedListener{
         void onItemClick(PetCategory petCategory);
     }
+    public void resetAllCategoriesToInactive(){
+        for(PetCategory petCategory : allCategories){
+            if(!petCategory.getName().equals("All")){
+                petCategory.setImg(petCategory.getName().toLowerCase());
+            }else {
+                petCategory.setImg("all_active");
+            }
+        }
+    }
+    public void disableAllCategoryChoice() {
+        this.allCategories.forEach(
+                petCategory -> {
+                    if(petCategory.getName().equals("All")){
+                        petCategory.setImg("all");
+                    }
+                });
 
-    public static class ViewModel extends RecyclerView.ViewHolder {
+    }
+
+    public boolean isOneIsActive(String categoryNameExcluded){
+        for(PetCategory petCategory : allCategories){
+            if(!petCategory.getName().equals("All")
+                    && !petCategory.getName().equals(categoryNameExcluded)
+                    && petCategory.isActive()){
+                return true;
+            }
+
+
+        }
+        return false;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView categoryName;
         ImageView categoryImg;
         ConstraintLayout constraintLayout;
-        public ViewModel(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryName= itemView.findViewById(R.id.category_text_id);
             categoryImg = itemView.findViewById(R.id.category_img_id);

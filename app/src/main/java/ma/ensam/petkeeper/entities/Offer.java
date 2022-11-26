@@ -13,7 +13,7 @@ import ma.ensam.petkeeper.entities.enums.PetSpecies;
 public class Offer {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long offerId;
 
     private OfferType type;
 
@@ -33,9 +33,6 @@ public class Offer {
 
     private long profileCreatorId;
 
-    @Ignore
-    private Profile creator;
-
     public Offer(OfferType type, PetSpecies pet, String title, String description, String image_url,
                  Date fromDate, Date toDate, Date creationDate, long profileCreatorId) {
         this.type = type;
@@ -49,12 +46,33 @@ public class Offer {
         this.profileCreatorId = profileCreatorId;
     }
 
+    public Offer(long offerId, OfferType type, PetSpecies pet, String title, String description, String image_url, Date fromDate, Date toDate, Date creationDate, long profileCreatorId, Profile creator) {
+        this.offerId = offerId;
+        this.type = type;
+        this.pet = pet;
+        this.title = title;
+        this.description = description;
+        this.image_url = image_url;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.creationDate = creationDate;
+        this.profileCreatorId = profileCreatorId;
+    }
+
+    public long getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(long offerId) {
+        this.offerId = offerId;
+    }
+
     public long getId() {
-        return id;
+        return offerId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.offerId = id;
     }
 
     public OfferType getType() {

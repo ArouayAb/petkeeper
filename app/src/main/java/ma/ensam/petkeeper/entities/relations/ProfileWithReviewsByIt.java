@@ -13,7 +13,7 @@ public class ProfileWithReviewsByIt {
     @Embedded public Profile profile;
 
     @Relation(
-            parentColumn = "id",
+            parentColumn = "profileId",
             entityColumn = "revieweeProfileId"
     )
 

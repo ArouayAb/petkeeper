@@ -5,216 +5,181 @@
     android:id="@+id/post_constraint_id"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:layout_margin="16dp"
-    android:background="@drawable/post_home_style"
+    android:layout_margin="20dp"
+    android:background="@drawable/clickable_rounded_shadow"
     android:elevation="20dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/post_home_style"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/petText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="duration:"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/petText6"
+        app:layout_constraintEnd_toStartOf="@+id/duration_id" />
+
+    <TextView
+        android:id="@+id/petText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="pet:"
+        android:textColor="#000000"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.044"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:elevation="20dp">
+        app:layout_constraintTop_toBottomOf="@+id/post_desc_id" />
+
+    <TextView
+        android:id="@+id/petText6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="to:"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/petText4"
+        app:layout_constraintTop_toTopOf="@+id/from_id" />
+
+    <TextView
+        android:id="@+id/from_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="17-Nov-2022"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/petText3"
+        app:layout_constraintTop_toTopOf="@+id/petText3" />
+
+    <TextView
+        android:id="@+id/to_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="23-Nov-2022"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/see_post_id"
+        app:layout_constraintTop_toTopOf="@+id/petText6" />
+
+    <TextView
+        android:id="@+id/user_name_id"
+        android:layout_width="246dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:text="John Smith"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_profile_image_id"
+        app:layout_constraintStart_toEndOf="@+id/post_profile_image_id"
+        app:layout_constraintTop_toTopOf="@+id/post_profile_image_id"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/duration_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Persian"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/to_id"
+        app:layout_constraintTop_toTopOf="@+id/petText4" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/post_profile_image_id"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/avatar"
+        android:padding="1dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/circleView"
+        app:strokeColor="#FFB82E"
+        app:strokeWidth="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/petText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="from:"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/petText"
+        app:layout_constraintTop_toBottomOf="@+id/petText" />
+
+    <TextView
+        android:id="@+id/pet_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cat"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/from_id"
+        app:layout_constraintTop_toTopOf="@+id/petText" />
+
+    <TextView
+        android:id="@+id/post_desc_id"
+        android:layout_width="264dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="15dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Someone to look after my cat for next 2 weeks"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/post_profile_image_id"
+        app:layout_constraintTop_toBottomOf="@+id/post_profile_image_id" />
+
+    <TextView
+        android:id="@+id/post_title_id"
+        android:layout_width="264dp"
+        android:layout_height="14dp"
+        android:layout_marginBottom="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Someone to look after my cat for next 2 weeks"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_profile_image_id"
+        app:layout_constraintStart_toStartOf="@+id/user_name_id" />
+
+    <LinearLayout
+        android:id="@+id/see_post_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/to_id">
 
         <TextView
-            android:id="@+id/petText4"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
+            android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
-            android:text="duration:"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/duration_id"
-            app:layout_constraintTop_toTopOf="@+id/type_id" />
-
-        <TextView
-            android:id="@+id/petText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="pet:"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.044"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_profile_image_id" />
-
-        <TextView
-            android:id="@+id/type_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Persian"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/from_id"
-            app:layout_constraintTop_toTopOf="@+id/petText2" />
-
-        <TextView
-            android:id="@+id/petText6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="to:"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/petText4"
-            app:layout_constraintTop_toTopOf="@+id/from_id" />
-
-        <TextView
-            android:id="@+id/from_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:text="17-Nov-2022"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/petText3"
-            app:layout_constraintTop_toTopOf="@+id/petText3" />
-
-        <TextView
-            android:id="@+id/to_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="23-Nov-2022"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.899"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/petText6" />
-
-        <TextView
-            android:id="@+id/petText5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="gender:"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/petText4"
-            app:layout_constraintTop_toTopOf="@+id/pet_id" />
-
-        <TextView
-            android:id="@+id/user_name_id"
-            android:layout_width="246dp"
-            android:layout_height="14dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:fontFamily="sans-serif-medium"
-            android:maxLines="1"
-            android:text="John Smith"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/post_profile_image_id"
-            app:layout_constraintTop_toTopOf="@+id/post_profile_image_id" />
-
-        <TextView
-            android:id="@+id/duration_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Persian"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/to_id"
-            app:layout_constraintTop_toTopOf="@+id/petText4" />
+            android:text="See post"
+            android:textColor="#FFB82E"
+            android:textSize="12sp" />
 
         <ImageView
-            android:id="@+id/post_profile_image_id"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/avatar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/petText3"
+            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="from:"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/petText2"
-            app:layout_constraintTop_toBottomOf="@+id/petText2" />
-
-        <TextView
-            android:id="@+id/pet_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cat"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/type_id"
-            app:layout_constraintTop_toTopOf="@+id/petText" />
-
-        <TextView
-            android:id="@+id/post_desc_id"
-            android:layout_width="264dp"
-            android:layout_height="14dp"
-            android:layout_marginBottom="2dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Someone to look after my cat for next 2 weeks"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/post_profile_image_id"
-            app:layout_constraintStart_toStartOf="@+id/user_name_id" />
-
-        <TextView
-            android:id="@+id/petText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="type:"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/petText"
-            app:layout_constraintTop_toBottomOf="@+id/petText" />
-
-        <TextView
-            android:id="@+id/gender_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cat"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/duration_id"
-            app:layout_constraintTop_toTopOf="@+id/petText5" />
-
-        <LinearLayout
-            android:id="@+id/see_post_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/to_id">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:text="See post"
-                android:textColor="#FFB82E"
-                android:textSize="12sp" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="13dp"
-                android:layout_marginLeft="4dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/icon__" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="13dp"
+            android:layout_marginLeft="4dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon__" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@ public class ProfileWithOffers {
 
     @Relation(
             entity = Offer.class,
-            parentColumn = "id",
+            parentColumn = "profileId",
             entityColumn = "profileCreatorId"
     )
     public List<Offer> offers;

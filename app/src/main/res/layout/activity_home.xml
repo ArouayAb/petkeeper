@@ -7,23 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".views.home.HomeActivity">
 
-    <ScrollView
-        android:id="@+id/scroll_home_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout"
@@ -33,13 +20,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/imageView"
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/home_profile_image"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginBottom="5dp"
+                        android:clickable="true"
+                        android:onClick="onClickSelfProfile"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/circleView"
+                        app:strokeColor="#FFB82E"
+                        app:strokeWidth="1dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -105,7 +99,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_category_id"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -150,12 +144,10 @@
                     android:id="@+id/recycler_post_id"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
