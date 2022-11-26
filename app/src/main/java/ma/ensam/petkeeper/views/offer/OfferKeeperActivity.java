@@ -2,6 +2,8 @@ package ma.ensam.petkeeper.views.offer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -30,10 +32,14 @@ import ma.ensam.petkeeper.utils.BitmapUtility;
 import ma.ensam.petkeeper.viewmodels.OfferViewModel;
 import ma.ensam.petkeeper.viewmodels.ProfileViewModel;
 import ma.ensam.petkeeper.viewmodels.ReviewViewModel;
+import ma.ensam.petkeeper.views.offer.adapters.OfferKeeperAdapterReview;
 import ma.ensam.petkeeper.views.profile.ProfileActivity;
+import ma.ensam.petkeeper.views.profile.adapters.ProfileAdapterReview;
 
 public class OfferKeeperActivity extends AppCompatActivity {
     OfferViewModel offerViewModel;
+    private OfferKeeperAdapterReview reviewsAdapter;
+
     long offerId;
     String phoneNumber;
     Long currentProfileId;
@@ -94,6 +100,8 @@ public class OfferKeeperActivity extends AppCompatActivity {
         profileName_tv.setOnClickListener(view -> goToProfile());
 
         call_btn.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber))));
+
+        initProfileReviewRecyclerView(this.reviewProfiles);
 
         this.profileViewModel.findProfilesWithReviewsOnIt(currentProfileId).observe(
                 this,
@@ -218,6 +226,22 @@ public class OfferKeeperActivity extends AppCompatActivity {
         totalReviewers.setText(Long.toString(totalReviews));
         rating_tv.setText(Double.toString(averageStars));
         ratingBar_rb.setRating((float) averageStars);
-//        this.reviewsAdapter.updateProfileReviews(this.reviewProfiles);
+        this.reviewsAdapter.updateProfileReviews(this.reviewProfiles);
+    }
+
+
+    public void initProfileReviewRecyclerView(List<ReviewProfile> reviewProfiles) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView recyclerViewCardList = findViewById(R.id.review_container);
+        recyclerViewCardList.setLayoutManager(linearLayoutManager);
+
+        this.reviewsAdapter = new OfferKeeperAdapterReview(
+                reviewProfiles,
+                reviewProfile -> {
+                    Toast.makeText(OfferKeeperActivity.this, reviewProfile.getId().toString() + " clicked", Toast.LENGTH_SHORT)
+                            .show();
+                });
+
+        recyclerViewCardList.setAdapter(this.reviewsAdapter);
     }
 }
