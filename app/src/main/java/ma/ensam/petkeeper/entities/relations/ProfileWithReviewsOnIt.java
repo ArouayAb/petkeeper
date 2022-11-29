@@ -10,14 +10,14 @@ import ma.ensam.petkeeper.entities.Review;
 
 public class ProfileWithReviewsOnIt {
     @Embedded
-    public Profile profile;
+    public Review review;
 
     @Relation(
-            entity = Review.class,
-            parentColumn = "profileId",
-            entityColumn = "reviewerProfileId"
+            entity = Profile.class,
+            parentColumn = "reviewerProfileId",
+            entityColumn = "profileId"
     )
 
-    public Review review;
+    public Profile profile;
 
 }
