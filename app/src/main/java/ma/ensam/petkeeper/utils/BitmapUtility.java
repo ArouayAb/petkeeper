@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import ma.ensam.petkeeper.R;
+
 public class BitmapUtility {
     public static Bitmap extractFromUri(Context context, Uri uri) {
         Bitmap bitmap = null;
@@ -34,9 +36,12 @@ public class BitmapUtility {
     }
 
     public static Bitmap extractFromPath(String url) {
-        File imageFile = new File(url);
+        if (url == null) {
+            return Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
+        }
         FileInputStream fis = null;
         try {
+            File imageFile = new File(url);
             fis = new FileInputStream(imageFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
