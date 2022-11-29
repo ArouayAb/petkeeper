@@ -203,7 +203,7 @@ public class HomeActivity extends AppCompatActivity {
                         OfferKeeperActivity.class : OfferOwnerActivity.class;
                 Intent offerActivityIntent = new Intent(HomeActivity.this, targetActivity);
                 offerActivityIntent.putExtra("offerId", postHome.getOfferId());
-                offerActivityIntent.putExtra("currentProfileId", postHome.getProfileId());
+                offerActivityIntent.putExtra("currentProfileId", HomeActivity.this.selfProfileId);
                 activityResultLauncher.launch(offerActivityIntent);
             }
 

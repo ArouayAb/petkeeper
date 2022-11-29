@@ -53,8 +53,8 @@ public class OfferOwnerActivity extends AppCompatActivity {
         offerViewModel = ViewModelProviders.of(OfferOwnerActivity.this)
                 .get(OfferViewModel.class);
 
-        offerId = getIntent().getLongExtra("offerId", 1);
-        currentProfileId = getIntent().getLongExtra("currentProfileId", 1);
+        offerId = getIntent().getLongExtra("offerId", 0L);
+        currentProfileId = getIntent().getLongExtra("currentProfileId", 0L);
 
         if (offerId == 0 || currentProfileId == 0) {
             Toast.makeText(

@@ -107,13 +107,13 @@ public abstract class AppDatabase extends RoomDatabase {
 
                 );
 
-                instance.reviewDao().insertAll(
-                        new Review(1,2, 1, "very bad"),
-                        new Review(3,1, 2, "mildly bad"),
-                        new Review(4,1, 3, "mediocre"),
-                        new Review(5,1, 4, "good"),
-                        new Review(2, 1, 1, "very bad too >:(")
-                );
+//                instance.reviewDao().insertAll(
+//                        new Review(1,2, 1, "very bad"),
+//                        new Review(3,1, 2, "mildly bad"),
+//                        new Review(4,1, 3, "mediocre"),
+//                        new Review(5,1, 4, "good"),
+//                        new Review(2, 1, 1, "very bad too >:(")
+//                );
 
             }).start();
         }
