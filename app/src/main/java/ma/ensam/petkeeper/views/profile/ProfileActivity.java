@@ -111,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         this.writeReviewRootView = layoutInflater.inflate(R.layout.write_review_layout, null);
 
         ensureReviewEligibility();
-        toggleOfferCreation();
+        toggleOfferCreationAndProfileEdit();
 
         initProfileCardRecyclerView(this.offerProfiles);
         initProfileReviewRecyclerView(this.reviewProfiles);
@@ -175,12 +175,17 @@ public class ProfileActivity extends AppCompatActivity implements EasyPermission
         }
     }
 
-    public void toggleOfferCreation() {
+    public void toggleOfferCreationAndProfileEdit() {
         if(!this.isVisitingSelfProfile) {
             FloatingActionButton addOfferButton = findViewById(R.id.add_offer_button);
+            ShapeableImageView uploadImageButton = findViewById(R.id.upload_image);
+            ShapeableImageView profilePicture = findViewById(R.id.profile_picture);
             ConstraintLayout rootView = findViewById(R.id.root_view);
+            ConstraintLayout upperInfo = findViewById(R.id.upper_info);
 
             rootView.removeView(addOfferButton);
+            upperInfo.removeView(uploadImageButton);
+            profilePicture.setClickable(false);
         }
     }
 
